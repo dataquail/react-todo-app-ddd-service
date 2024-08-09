@@ -1,28 +1,63 @@
-import { Reactive } from 'src/utils/domain/Reactive';
-import { InvokableReactive } from 'src/utils/domain/InvokableReactive';
 import { Todo } from '../Todo';
 import { CreateTodoBody } from '../dtos/CreateTodoBody';
 
 export type ITodoService = {
   create: (createTodoBody: CreateTodoBody) => Promise<void>;
-  // delete: (id: string) => void;
+  delete: (todoId: string) => Promise<void>;
   getAll: () => Promise<Todo[]>;
+  complete: (id: string) => Promise<void>;
+  uncomplete: (id: string) => Promise<void>;
   // getOneById: (id: string) => Promise<Todo | undefined>;
-  // complete: (id: string) => Promise<void>;
-  // uncomplete: (id: string) => Promise<void>;
 };
 
 export type ITodoServiceReactive = {
-  useGetAll: () => Reactive<Awaited<ReturnType<ITodoService['getAll']>>>;
-  useCreate: () => InvokableReactive<ITodoService['create']>;
-  // useGetOneById: ITodoService['getOneById'];
+  create: {
+    mutateAsync: ITodoService['create'];
+    isPending: boolean;
+    isSuccess: boolean;
+    isError: boolean;
+    error: Error | null;
+    data: Awaited<ReturnType<ITodoService['create']>> | undefined;
+  };
+  delete: {
+    mutateAsync: ITodoService['delete'];
+    isPending: boolean;
+    isSuccess: boolean;
+    isError: boolean;
+    error: Error | null;
+    data: Awaited<ReturnType<ITodoService['delete']>> | undefined;
+  };
+  complete: {
+    mutateAsync: ITodoService['complete'];
+    isPending: boolean;
+    isSuccess: boolean;
+    isError: boolean;
+    error: Error | null;
+    data: Awaited<ReturnType<ITodoService['complete']>> | undefined;
+  };
+  uncomplete: {
+    mutateAsync: ITodoService['uncomplete'];
+    isPending: boolean;
+    isSuccess: boolean;
+    isError: boolean;
+    error: Error | null;
+    data: Awaited<ReturnType<ITodoService['uncomplete']>> | undefined;
+  };
+  getAll: {
+    queryAsync: ITodoService['getAll'];
+    meta: {
+      isPending: boolean;
+      isSuccess: boolean;
+      isError: boolean;
+      error: Error | null;
+      data: Todo[] | undefined;
+    };
+    useQuery: () => {
+      isPending: boolean;
+      isSuccess: boolean;
+      isError: boolean;
+      error: Error | null;
+      data: Todo[] | undefined;
+    };
+  };
 };
-
-// const { create } = useTodoService();
-
-// create.execute({ title: 'Buy milk' });
-// if (create.isPending) {
-//   // Show loading spinner
-// }
-
-// const { data, isPending } = useTodoService().getAll();

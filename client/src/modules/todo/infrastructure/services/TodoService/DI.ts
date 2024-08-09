@@ -1,13 +1,22 @@
-import { useMemo } from 'react';
-import { TodoService } from '.';
-import { useGetTodoList } from './network/getTodoList';
-import { useMutationCreateTodo } from './network/createTodo';
+import { ITodoServiceReactive } from 'src/modules/todo/domain/services/ITodoService';
+import { useMutationCreate } from './methods/create/DI';
+import { useGetAll, useQueryGetAll } from './methods/getAll/DI';
+import { useMutationDelete } from './methods/delete/DI';
+import { useMutationComplete } from './methods/complete/DI';
+import { useMutationUncomplete } from './methods/uncomplete/DI';
 
-export const useTodoService = () => {
-  const getTodoList = useGetTodoList();
-  const { mutateAsync: createTodo } = useMutationCreateTodo();
-  return useMemo(
-    () => new TodoService(getTodoList, createTodo),
-    [getTodoList, createTodo],
-  );
+const useQueryEnabledGetAll = () => useQueryGetAll(true);
+
+export const useTodoService = (): ITodoServiceReactive => {
+  return {
+    create: useMutationCreate(),
+    delete: useMutationDelete(),
+    complete: useMutationComplete(),
+    uncomplete: useMutationUncomplete(),
+    getAll: {
+      queryAsync: useGetAll(),
+      meta: useQueryGetAll(false),
+      useQuery: useQueryEnabledGetAll,
+    },
+  };
 };
