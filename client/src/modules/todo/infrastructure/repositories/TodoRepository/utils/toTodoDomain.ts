@@ -7,5 +7,6 @@ export const toTodoDomain = (todoRecord: TodoRecord): Todo => {
     todoRecord.title,
     todoRecord.created_at,
     todoRecord.completed_at,
+    false,
   );
 };

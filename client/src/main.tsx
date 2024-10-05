@@ -10,7 +10,7 @@ import { setupApi } from './api/setupApi';
 
 async function prepare() {
   if (import.meta.env.DEV) {
-    // @ts-expect-error
+    // @ts-expect-error - async import needed for dev environment
     await import('/mockServiceWorker.js?url&worker');
     const { setupWorker } = await import('msw/browser');
     const worker = setupWorker();
