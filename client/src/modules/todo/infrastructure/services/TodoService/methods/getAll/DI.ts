@@ -3,10 +3,11 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { GetAll } from '.';
 import { useGetTodoList } from '../../network/getTodoList';
 import { serviceQueryKeys } from 'src/modules/todo/domain/services/serviceQueryKeys';
+import { todoStore } from '../../store';
 
 const useGetAllServiceMethod = () => {
   const getTodoList = useGetTodoList();
-  return useMemo(() => GetAll(getTodoList), [getTodoList]);
+  return useMemo(() => GetAll(getTodoList, todoStore), [getTodoList]);
 };
 
 export const useQueryGetAll = (enabled: boolean = true) => {

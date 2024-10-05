@@ -2,11 +2,12 @@ import { useMemo } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { serviceQueryKeys } from 'src/modules/todo/domain/services/serviceQueryKeys';
 import { useMutationDeleteTodo } from 'src/modules/todo/infrastructure/services/TodoService/network/deleteTodo';
+import { todoStore } from '../../store';
 import { Delete } from '.';
 
 const useDeleteServiceMethod = () => {
   const { mutateAsync } = useMutationDeleteTodo();
-  return useMemo(() => Delete(mutateAsync), [mutateAsync]);
+  return useMemo(() => Delete(mutateAsync, todoStore), [mutateAsync]);
 };
 
 export const useMutationDelete = () => {

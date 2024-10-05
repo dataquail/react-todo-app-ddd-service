@@ -7,7 +7,9 @@ export type ITodoService = {
   getAll: () => Promise<Todo[]>;
   complete: (id: string) => Promise<void>;
   uncomplete: (id: string) => Promise<void>;
-  // getOneById: (id: string) => Promise<Todo | undefined>;
+  favorite: (id: string) => Promise<void>;
+  unfavorite: (id: string) => Promise<void>;
+  getOneById: (id: string) => Promise<Todo | undefined>;
 };
 
 export type ITodoServiceReactive = {
@@ -43,9 +45,25 @@ export type ITodoServiceReactive = {
     error: Error | null;
     data: Awaited<ReturnType<ITodoService['uncomplete']>> | undefined;
   };
+  favorite: {
+    mutateAsync: ITodoService['favorite'];
+    isPending: boolean;
+    isSuccess: boolean;
+    isError: boolean;
+    error: Error | null;
+    data: Awaited<ReturnType<ITodoService['favorite']>> | undefined;
+  };
+  unfavorite: {
+    mutateAsync: ITodoService['unfavorite'];
+    isPending: boolean;
+    isSuccess: boolean;
+    isError: boolean;
+    error: Error | null;
+    data: Awaited<ReturnType<ITodoService['unfavorite']>> | undefined;
+  };
   getAll: {
     queryAsync: ITodoService['getAll'];
-    meta: {
+    useMeta: () => {
       isPending: boolean;
       isSuccess: boolean;
       isError: boolean;
@@ -58,6 +76,23 @@ export type ITodoServiceReactive = {
       isError: boolean;
       error: Error | null;
       data: Todo[] | undefined;
+    };
+  };
+  getOneById: {
+    queryAsync: ITodoService['getOneById'];
+    useMeta: (todoId: string) => {
+      isPending: boolean;
+      isSuccess: boolean;
+      isError: boolean;
+      error: Error | null;
+      data: Todo | undefined;
+    };
+    useQuery: (id: string) => {
+      isPending: boolean;
+      isSuccess: boolean;
+      isError: boolean;
+      error: Error | null;
+      data: Todo | undefined;
     };
   };
 };

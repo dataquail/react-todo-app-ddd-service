@@ -3,10 +3,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Create } from '.';
 import { serviceQueryKeys } from 'src/modules/todo/domain/services/serviceQueryKeys';
 import { useMutationCreateTodo } from '../../network/createTodo';
+import { todoStore } from '../../store';
 
 const useCreateServiceMethod = () => {
   const { mutateAsync } = useMutationCreateTodo();
-  return useMemo(() => Create(mutateAsync), [mutateAsync]);
+  return useMemo(() => Create(mutateAsync, todoStore), [mutateAsync]);
 };
 
 export const useMutationCreate = () => {

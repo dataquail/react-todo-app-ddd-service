@@ -20,14 +20,15 @@ class TodoRepository {
     return this.todoList.find((todo) => todo.id === id);
   }
 
-  public create(createTodoBody: CreateTodoBody): void {
+  public create(createTodoBody: CreateTodoBody): string {
+    const todoId = v4();
     this.todoList.push({
-      id: v4(),
+      id: todoId,
       title: createTodoBody.title,
       created_at: new Date().toISOString(),
       completed_at: null,
     });
-    return;
+    return todoId;
   }
 
   public delete(id: string): void {
@@ -64,8 +65,8 @@ export const setupApi = (worker: SetupWorker) => {
     http.post(`${getConfig().API_URL}/todo`, async ({ request }) => {
       const createTodoBody =
         (await request.json()) as unknown as CreateTodoBody;
-      todoRepository.create(createTodoBody);
-      return HttpResponse.json({ message: 'success' });
+      const todoId = todoRepository.create(createTodoBody);
+      return HttpResponse.json({ id: todoId });
     }),
 
     http.delete(`${getConfig().API_URL}/todo/:id`, async ({ params }) => {
