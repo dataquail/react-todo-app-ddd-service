@@ -9,7 +9,7 @@ export default defineConfig({
       src: '/src',
     },
   },
-  // base: '/react-ddd-todo-app/',
+  base: '/react-todo-app-ddd-service/',
   test: {
     globals: true,
     environment: 'jsdom',
