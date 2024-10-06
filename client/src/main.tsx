@@ -9,11 +9,19 @@ import { ErrorPage } from './ErrorPage';
 import { setupApi } from './api/setupApi';
 
 async function prepare() {
-  // @ts-expect-error - async import needed for dev environment
-  await import('/mockServiceWorker.js?url&worker');
-  const { setupWorker } = await import('msw/browser');
-  const worker = setupWorker();
-  setupApi(worker);
+  if (import.meta.env.DEV) {
+    // @ts-expect-error - async import needed for dev environment
+    await import('/mockServiceWorker.js?url&worker');
+    const { setupWorker } = await import('msw/browser');
+    const worker = setupWorker();
+    setupApi(worker);
+  } else {
+    // @ts-expect-error - async import needed for dev environment
+    await import('/react-todo-app-ddd-service/mockServiceWorker.js?url&worker');
+    const { setupWorker } = await import('msw/browser');
+    const worker = setupWorker();
+    setupApi(worker);
+  }
 }
 
 prepare().then(() => {
