@@ -24,7 +24,7 @@
       "src/*": ["./src/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", "src", "public/mockServiceWorker.js"],
+  "include": ["**/*.ts", "**/*.tsx", "src", "public/react-todo-app-ddd-service/mockServiceWorker.js"],
   "exclude": ["node_modules"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
