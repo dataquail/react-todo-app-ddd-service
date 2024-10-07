@@ -103,5 +103,9 @@ export const setupApi = (worker: SetupWorker) => {
     }),
   );
 
-  return worker.start();
+  return worker.start({
+    serviceWorker: {
+      url: './mockServiceWorker.js',
+    },
+  });
 };
