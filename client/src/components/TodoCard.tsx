@@ -16,11 +16,11 @@ import {
   IconStarFilled,
   IconTrash,
 } from '@tabler/icons-react';
-import { useTodoService } from 'src/modules/todo/infrastructure/services/TodoService/DI';
-import { Todo } from 'src/modules/todo/domain/Todo';
+import { ActiveTodo } from 'src/modules/todo/domain/ActiveTodo';
+import { useActiveTodoService } from 'src/modules/todo/infrastructure/services/ServiceProvider';
 
-export const TodoCard = ({ todo }: { todo: Todo }) => {
-  const todoService = useTodoService();
+export const TodoCard = ({ todo }: { todo: ActiveTodo }) => {
+  const activeTodoService = useActiveTodoService();
 
   return (
     <Box key={todo.id} p="xs" pr="lg">
@@ -28,22 +28,20 @@ export const TodoCard = ({ todo }: { todo: Todo }) => {
         <Checkbox.Card
           radius="md"
           checked={Boolean(todo.completedAt)}
-          disabled={todoService.delete.isPending}
+          disabled={activeTodoService.deleteOne.isPending}
           onClick={() => {
             const isCompleted = Boolean(todo.completedAt);
             if (isCompleted) {
-              todoService.uncomplete.mutateAsync(todo.id);
+              activeTodoService.uncompleteOne.mutateAsync(todo.id);
             } else {
-              todoService.complete.mutateAsync(todo.id);
+              activeTodoService.completeOne.mutateAsync(todo.id);
             }
           }}
         >
           <Group wrap="nowrap" align="flex-start">
-            {todoService.delete.isPending ||
-            todoService.complete.isPending ||
-            todoService.uncomplete.isPending ||
-            todoService.favorite.isPending ||
-            todoService.unfavorite.isPending ? (
+            {activeTodoService.deleteOne.isPending ||
+            activeTodoService.completeOne.isPending ||
+            activeTodoService.uncompleteOne.isPending ? (
               <Loader p="xs" />
             ) : (
               <Checkbox.Indicator mt="sm" ml="sm" />
@@ -53,7 +51,7 @@ export const TodoCard = ({ todo }: { todo: Todo }) => {
               <Text size="sm">{`Created At: ${format(todo.createdAt, 'M/d/yyyy h:m aaa')}`}</Text>
               <Text size="sm">{`Completed At: ${todo.completedAt ? format(todo.completedAt, 'M/d/yyyy h:m aaa') : 'N/A'}`}</Text>
             </Stack>
-            {todo.isFavorited && (
+            {todo.isPrioritized && (
               <Box style={{ flexGrow: 1 }} p="xs">
                 <IconStarFilled
                   style={{
@@ -79,27 +77,27 @@ export const TodoCard = ({ todo }: { todo: Todo }) => {
               leftSection={
                 <IconTrash style={{ width: rem(14), height: rem(14) }} />
               }
-              onClick={() => todoService.delete.mutateAsync(todo.id)}
+              onClick={() => activeTodoService.deleteOne.mutateAsync(todo.id)}
             >
               Delete
             </Menu.Item>
-            {todo.isFavorited ? (
+            {todo.isPrioritized ? (
               <Menu.Item
                 leftSection={
                   <IconStar style={{ width: rem(14), height: rem(14) }} />
                 }
-                onClick={() => todoService.unfavorite.mutateAsync(todo.id)}
+                onClick={() => activeTodoService.deprioritize(todo.id)}
               >
-                Unfavorite
+                Deprioritize
               </Menu.Item>
             ) : (
               <Menu.Item
                 leftSection={
                   <IconStarFilled style={{ width: rem(14), height: rem(14) }} />
                 }
-                onClick={() => todoService.favorite.mutateAsync(todo.id)}
+                onClick={() => activeTodoService.prioritize(todo.id)}
               >
-                Favorite
+                Prioritize
               </Menu.Item>
             )}
           </Menu.Dropdown>

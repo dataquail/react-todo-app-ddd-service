@@ -3,6 +3,7 @@ import { AppStore, makeStore } from 'src/lib/store';
 import { StoreProvider } from './StoreProvider';
 import { ThemeProvider } from './ThemeProvider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ServiceProvider } from 'src/modules/todo/infrastructure/services/ServiceProvider';
 
 export const Providers = ({ children }: { children: ReactNode }) => {
   const storeRef = useRef<AppStore>();
@@ -30,7 +31,7 @@ export const Providers = ({ children }: { children: ReactNode }) => {
     <StoreProvider store={storeRef.current}>
       <ThemeProvider>
         <QueryClientProvider client={queryClientRef.current}>
-          {children}
+          <ServiceProvider>{children}</ServiceProvider>
         </QueryClientProvider>
       </ThemeProvider>
     </StoreProvider>

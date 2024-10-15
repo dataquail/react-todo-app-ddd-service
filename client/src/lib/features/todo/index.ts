@@ -1,6 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import { todosReducer } from 'src/modules/todo/infrastructure/repositories/TodoRepository/reduxImpl/todosReduxConfig';
+import { activeTodosReducer } from 'src/modules/todo/infrastructure/services/ActiveTodoService/activeTodoStore';
 
 export const todoReducer = combineReducers({
-  todos: todosReducer,
+  activeTodos: activeTodosReducer,
 });

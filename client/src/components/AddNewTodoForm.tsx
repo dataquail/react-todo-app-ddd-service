@@ -1,9 +1,9 @@
 import { Button, Group, TextInput } from '@mantine/core';
 import { hasLength, useForm } from '@mantine/form';
-import { useTodoService } from 'src/modules/todo/infrastructure/services/TodoService/DI';
+import { useActiveTodoService } from 'src/modules/todo/infrastructure/services/ServiceProvider';
 
 export const AddNewTodoForm = () => {
-  const todoService = useTodoService();
+  const activeTodoService = useActiveTodoService();
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
@@ -17,7 +17,7 @@ export const AddNewTodoForm = () => {
   return (
     <form
       onSubmit={form.onSubmit(async (values) => {
-        await todoService.create.mutateAsync({ title: values.title });
+        await activeTodoService.createOne.mutateAsync({ title: values.title });
         form.setFieldValue('title', '');
       })}
     >
@@ -29,8 +29,8 @@ export const AddNewTodoForm = () => {
         />
         <Button
           type="submit"
-          loading={todoService.create.isPending}
-          disabled={todoService.create.isPending}
+          loading={activeTodoService.createOne.isPending}
+          disabled={activeTodoService.createOne.isPending}
         >
           Add
         </Button>

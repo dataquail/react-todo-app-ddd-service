@@ -4,4 +4,5 @@ export const networkQueryKeys = {
   DELETE_TODO: 'DELETE_TODO',
   COMPLETE_TODO: 'COMPLETE_TODO',
   UNCOMPLETE_TODO: 'UNCOMPLETE_TODO',
+  GET_TODO: 'GET_TODO',
 };

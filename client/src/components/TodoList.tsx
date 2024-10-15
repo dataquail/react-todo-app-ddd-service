@@ -1,9 +1,9 @@
 import { Flex, Loader, ScrollArea } from '@mantine/core';
-import { useTodoService } from 'src/modules/todo/infrastructure/services/TodoService/DI';
 import { TodoCard } from './TodoCard';
+import { useActiveTodoService } from 'src/modules/todo/infrastructure/services/ServiceProvider';
 
 export const TodoList = () => {
-  const { isPending, data } = useTodoService().getAll.useQuery();
+  const { isPending, data } = useActiveTodoService().getAll.useQuery();
 
   if (isPending || !data) {
     return (
