@@ -1,4 +1,3 @@
 export type QueryOptions = {
-  enabled?: boolean;
-  forceRefetch?: boolean;
+  enabled: boolean;
 };

@@ -1,25 +1,35 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { QueryClient, useMutation } from '@tanstack/react-query';
 import { CreateOne } from '.';
 import { createActiveTodo } from '../../network/createActiveTodo';
 import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
+import { Injectable } from 'react-obsidian';
+import { ApplicationGraph } from 'src/api/global/ApplicationGraph';
+import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
 
-const createOneServiceMethod = CreateOne(createActiveTodo);
+@Injectable(ApplicationGraph)
+export class CreateOneGraph {
+  private useMutation: IActiveTodoService['createOne']['useMutation'];
 
-export const useMutationCreateOne = () => {
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation({
-    mutationKey: [networkQueryKeys.CREATE_TODO],
-    mutationFn: createOneServiceMethod,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: [networkQueryKeys.GET_TODO_LIST],
+  constructor(queryClient: QueryClient) {
+    const createOneServiceMethod = CreateOne(createActiveTodo);
+    this.useMutation = () =>
+      useMutation({
+        mutationKey: [networkQueryKeys.CREATE_TODO],
+        mutationFn: createOneServiceMethod,
+        onSuccess: async () => {
+          await queryClient.invalidateQueries({
+            queryKey: [networkQueryKeys.GET_TODO_LIST],
+          });
+        },
       });
-    },
-  });
+  }
 
-  return {
-    ...mutation,
-    errorHelpers: {},
-  };
-};
+  public useMutationCreateOne(): IActiveTodoService['createOne'] {
+    const callAsync = this.useMutation().mutateAsync;
+    return {
+      callAsync,
+      useMutation: this.useMutation,
+      errorHelpers: {},
+    };
+  }
+}

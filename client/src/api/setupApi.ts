@@ -55,10 +55,13 @@ class TodoRepository {
   }
 }
 
+export const wait = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+
 export const setupApi = (worker: SetupWorker) => {
   const todoRepository = new TodoRepository();
   worker.use(
-    http.get(`${getConfig().API_URL}/todo`, () => {
+    http.get(`${getConfig().API_URL}/todo`, async () => {
       return HttpResponse.json(todoRepository.getAll());
     }),
 

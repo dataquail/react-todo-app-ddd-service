@@ -1,13 +1,17 @@
-import { AppStore } from 'src/lib/store';
+import {
+  ActiveTodo,
+  mapTodoDtoToActiveTodo,
+} from 'src/modules/todo/domain/ActiveTodo';
 import { IGetAllActiveTodos } from './types';
-import { mapTodoDtoToActiveTodo } from 'src/modules/todo/domain/ActiveTodo';
-import { saveAllActiveTodos } from '../../activeTodoStore';
 
 export const GetAll =
-  (getAllActiveTodos: IGetAllActiveTodos, appStore: AppStore) => async () => {
+  (
+    getAllActiveTodos: IGetAllActiveTodos,
+    saveToStore: (activeTodos: ActiveTodo[]) => void,
+  ) =>
+  async () => {
     const todoListDto = await getAllActiveTodos();
-
     const activeTodos = todoListDto.list.map(mapTodoDtoToActiveTodo);
-
-    appStore.dispatch(saveAllActiveTodos(activeTodos));
+    saveToStore(activeTodos);
+    return null;
   };

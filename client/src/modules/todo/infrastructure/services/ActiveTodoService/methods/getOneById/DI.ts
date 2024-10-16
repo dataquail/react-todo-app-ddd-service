@@ -15,7 +15,7 @@ const useGetOneById = () => {
 
 const getUseQueryGetOneById =
   (queryOptions: QueryOptions): IActiveTodoService['getOneById']['useQuery'] =>
-  (activeTodoId: string) => {
+  ({ activeTodoId }: { activeTodoId: string }) => {
     const getOneById = useGetOneById();
     const query = useQuery({
       queryKey: [networkQueryKeys.GET_TODO, activeTodoId],
@@ -46,8 +46,8 @@ export const useQueryAsyncGetOneById =
     const queryClient = useQueryClient();
 
     return useCallback(
-      async (activeTodoId: string, queryOptions?: QueryOptions) => {
-        if (queryOptions?.forceRefetch) {
+      async ({ activeTodoId, forceRefetch }) => {
+        if (forceRefetch) {
           await queryClient.invalidateQueries({
             queryKey: [networkQueryKeys.GET_TODO, activeTodoId],
           });

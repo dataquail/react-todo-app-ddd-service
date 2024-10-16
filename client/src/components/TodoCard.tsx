@@ -17,7 +17,7 @@ import {
   IconTrash,
 } from '@tabler/icons-react';
 import { ActiveTodo } from 'src/modules/todo/domain/ActiveTodo';
-import { useActiveTodoService } from 'src/modules/todo/infrastructure/services/ServiceProvider';
+import { useActiveTodoService } from 'src/modules/todo/infrastructure/services/ActiveTodoService/DI';
 
 export const TodoCard = ({ todo }: { todo: ActiveTodo }) => {
   const activeTodoService = useActiveTodoService();

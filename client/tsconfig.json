@@ -22,7 +22,9 @@
     "baseUrl": ".",
     "paths": {
       "src/*": ["./src/*"]
-    }
+    },
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["**/*.ts", "**/*.tsx", "src", "public/react-todo-app-ddd-service/mockServiceWorker.js"],
   "exclude": ["node_modules"],
