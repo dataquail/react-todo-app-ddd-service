@@ -7,17 +7,14 @@ export type ReactiveQuery<
 > = {
   queryAsync: (
     args: Parameters<T>[0] extends void
-      ? { forceRefetch?: boolean } | undefined
+      ? { forceRefetch: boolean } | void
       : Parameters<T>[0] & { forceRefetch?: boolean },
   ) => ReturnType<T>;
-  useMeta: (...args: Parameters<T>) => {
-    isPending: boolean;
-    isSuccess: boolean;
-    isError: boolean;
-    error: E | null;
-    data: Awaited<ReturnType<T>> | undefined;
-  };
-  useQuery: (...args: Parameters<T>) => {
+  useQuery: (
+    args: Parameters<T>[0] extends void
+      ? { enabled: boolean } | void
+      : Parameters<T>[0] & { enabled?: boolean },
+  ) => {
     isPending: boolean;
     isSuccess: boolean;
     isError: boolean;

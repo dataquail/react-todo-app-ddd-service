@@ -1,15 +1,3 @@
-import { useCallback } from 'react';
-import { type AppStore, type AppDispatch } from 'src/lib/store';
-import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
-import {
-  useMetaGetOneById,
-  useQueryAsyncGetOneById,
-  useQueryGetOneById,
-} from './methods/getOneById/DI';
-import { removeAllActiveTodos } from './activeTodoStore';
-import { useMutationDeleteOne } from './methods/deleteOne/DI';
-import { useMutationCompleteOne } from './methods/complete/DI';
-import { useMutationUncompleteOne } from './methods/uncomplete/DI';
 import {
   DependenciesOf,
   Graph,
@@ -18,75 +6,81 @@ import {
   Provides,
   Singleton,
 } from 'react-obsidian';
-import { GetAllGraph } from './methods/getAll/DI';
-import { Prioritize } from './methods/prioritize';
-import { Deprioritize } from './methods/deprioritize';
-import { CreateOneGraph } from './methods/createOne/DI';
-import { QueryClient } from '@tanstack/react-query';
+import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
+import { GetOneByIdMethod } from './methods/getOneById/DI';
+import { DeleteOneMethod } from './methods/deleteOne/DI';
+import { CompleteOneMethod } from './methods/complete/DI';
+import { UncompleteOneMethod } from './methods/uncomplete/DI';
+import { GetAllMethod } from './methods/getAll/DI';
+import { CreateOneMethod } from './methods/createOne/DI';
+import { PrioritizeMethod } from './methods/prioritize/DI';
+import { DeprioritizeMethod } from './methods/deprioritize/DI';
+import { ClearAllMethod } from './methods/clearAll/DI';
 
 @Singleton()
-@Graph({ subgraphs: [GetAllGraph] })
+@Graph({
+  subgraphs: [
+    GetAllMethod,
+    GetOneByIdMethod,
+    CreateOneMethod,
+    DeleteOneMethod,
+    CompleteOneMethod,
+    UncompleteOneMethod,
+    PrioritizeMethod,
+    DeprioritizeMethod,
+    ClearAllMethod,
+  ],
+})
 export class ActiveTodoService extends ObjectGraph {
   @Provides()
-  getAll(
-    useQueryAsyncGetAll: ReturnType<GetAllGraph['useQueryAsyncGetAll']>,
-    useMetaGetAll: ReturnType<GetAllGraph['useMetaGetAll']>,
-    useQueryGetAll: ReturnType<GetAllGraph['useQueryGetAll']>,
-  ): IActiveTodoService['getAll'] {
-    return {
-      queryAsync: useQueryAsyncGetAll,
-      useMeta: useMetaGetAll,
-      useQuery: useQueryGetAll,
-      errorHelpers: {},
-    };
+  getAll(getAllImpl: ReturnType<GetAllMethod['getAllImpl']>) {
+    return getAllImpl;
   }
 
   @Provides()
-  getOneById() {
-    return {
-      queryAsync: useQueryAsyncGetOneById(),
-      useMeta: useMetaGetOneById,
-      useQuery: useQueryGetOneById,
-      errorHelpers: {},
-    };
+  getOneById(getOneByIdImpl: ReturnType<GetOneByIdMethod['getOneByIdImpl']>) {
+    return getOneByIdImpl;
   }
 
   @Provides()
-  clearAll(appDispatch: AppDispatch) {
-    return useCallback(
-      () => appDispatch(removeAllActiveTodos()),
-      [appDispatch],
-    );
+  clearAll(clearAllImpl: ReturnType<ClearAllMethod['clearAllImpl']>) {
+    return clearAllImpl;
   }
 
   @Provides()
-  createOne(queryClient: QueryClient) {
-    return new CreateOneGraph(queryClient).useMutationCreateOne();
+  createOne(createOneImpl: ReturnType<CreateOneMethod['createOneImpl']>) {
+    return createOneImpl;
   }
 
   @Provides()
-  deleteOne() {
-    return useMutationDeleteOne();
+  deleteOne(deleteOneImpl: ReturnType<DeleteOneMethod['deleteOneImpl']>) {
+    return deleteOneImpl;
   }
 
   @Provides()
-  completeOne() {
-    return useMutationCompleteOne();
+  completeOne(
+    completeOneImpl: ReturnType<CompleteOneMethod['completeOneImpl']>,
+  ) {
+    return completeOneImpl;
   }
 
   @Provides()
-  uncompleteOne() {
-    return useMutationUncompleteOne();
+  uncompleteOne(
+    uncompleteOneImpl: ReturnType<UncompleteOneMethod['uncompleteOneImpl']>,
+  ) {
+    return uncompleteOneImpl;
   }
 
   @Provides()
-  prioritize(appStore: AppStore) {
-    return Prioritize(appStore);
+  prioritize(prioritizeImpl: ReturnType<PrioritizeMethod['prioritizeImpl']>) {
+    return prioritizeImpl;
   }
 
   @Provides()
-  deprioritize(appStore: AppStore) {
-    return Deprioritize(appStore);
+  deprioritize(
+    deprioritizeImpl: ReturnType<DeprioritizeMethod['deprioritizeImpl']>,
+  ) {
+    return deprioritizeImpl;
   }
 }
 

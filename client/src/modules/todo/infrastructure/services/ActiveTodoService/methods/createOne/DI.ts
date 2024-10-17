@@ -2,33 +2,35 @@ import { QueryClient, useMutation } from '@tanstack/react-query';
 import { CreateOne } from '.';
 import { createActiveTodo } from '../../network/createActiveTodo';
 import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
-import { Injectable } from 'react-obsidian';
+import { Graph, ObjectGraph, Provides } from 'react-obsidian';
 import { ApplicationGraph } from 'src/api/global/ApplicationGraph';
 import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
+import { CreateTodoBody } from 'src/modules/todo/domain/dtos/CreateTodoBody';
 
-@Injectable(ApplicationGraph)
-export class CreateOneGraph {
-  private useMutation: IActiveTodoService['createOne']['useMutation'];
-
-  constructor(queryClient: QueryClient) {
+@Graph({ subgraphs: [ApplicationGraph] })
+export class CreateOneMethod extends ObjectGraph {
+  @Provides()
+  createOneImpl(queryClient: QueryClient): IActiveTodoService['createOne'] {
     const createOneServiceMethod = CreateOne(createActiveTodo);
-    this.useMutation = () =>
-      useMutation({
-        mutationKey: [networkQueryKeys.CREATE_TODO],
-        mutationFn: createOneServiceMethod,
-        onSuccess: async () => {
-          await queryClient.invalidateQueries({
-            queryKey: [networkQueryKeys.GET_TODO_LIST],
-          });
-        },
-      });
-  }
 
-  public useMutationCreateOne(): IActiveTodoService['createOne'] {
-    const callAsync = this.useMutation().mutateAsync;
+    const mutationFn = async (createTodoBody: CreateTodoBody) => {
+      const result = await createOneServiceMethod(createTodoBody);
+      await queryClient.invalidateQueries({
+        queryKey: [networkQueryKeys.GET_TODO_LIST],
+      });
+      return result;
+    };
+
+    const useMutationHook = () => {
+      return useMutation({
+        mutationKey: [networkQueryKeys.CREATE_TODO],
+        mutationFn,
+      });
+    };
+
     return {
-      callAsync,
-      useMutation: this.useMutation,
+      mutateAsync: mutationFn,
+      useMutation: useMutationHook,
       errorHelpers: {},
     };
   }

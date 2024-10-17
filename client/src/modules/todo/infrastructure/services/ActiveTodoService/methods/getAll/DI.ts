@@ -1,9 +1,8 @@
-import { Singleton, Graph, Provides, ObjectGraph } from 'react-obsidian';
+import { Graph, Provides, ObjectGraph } from 'react-obsidian';
 import { QueryClient, useQuery } from '@tanstack/react-query';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { type AppStore, useAppSelector } from 'src/lib/store';
 import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
-import { QueryOptions } from 'src/utils/domain/QueryOptions';
 import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
 import { ActiveTodo } from 'src/modules/todo/domain/ActiveTodo';
 import { saveAllActiveTodos } from '../../activeTodoStore';
@@ -11,73 +10,39 @@ import { ApplicationGraph } from 'src/api/global/ApplicationGraph';
 import { getTodoList } from '../../network/getAllActiveTodos';
 import { GetAll } from '.';
 
-@Singleton()
 @Graph({ subgraphs: [ApplicationGraph] })
-export class GetAllGraph extends ObjectGraph {
-  @Provides()
-  getAllServiceMethod(appStore: AppStore) {
-    return GetAll(getTodoList, (activeTodos) =>
-      appStore.dispatch(saveAllActiveTodos(activeTodos)),
-    );
-  }
-
-  @Provides()
-  useQueryAsyncGetAll(
-    getAllServiceMethod: ReturnType<GetAllGraph['getAllServiceMethod']>,
+export class GetAllMethod extends ObjectGraph {
+  private constructQueryAsync(
+    getAllServiceMethod: ReturnType<typeof GetAll>,
     appStore: AppStore,
     queryClient: QueryClient,
   ): IActiveTodoService['getAll']['queryAsync'] {
-    return useCallback(
-      async ({ forceRefetch } = {}) => {
-        if (forceRefetch) {
-          await queryClient.invalidateQueries({
-            queryKey: [networkQueryKeys.GET_TODO_LIST],
-          });
-        }
-        await queryClient.fetchQuery({
+    return async (props) => {
+      if (props?.forceRefetch) {
+        await queryClient.invalidateQueries({
           queryKey: [networkQueryKeys.GET_TODO_LIST],
-          queryFn: getAllServiceMethod,
         });
-        return Object.values(appStore.getState().todo.activeTodos.dict).filter(
-          Boolean,
-        ) as ActiveTodo[];
-      },
-      [getAllServiceMethod, queryClient],
-    );
+      }
+      await queryClient.fetchQuery({
+        queryKey: [networkQueryKeys.GET_TODO_LIST],
+        queryFn: getAllServiceMethod,
+      });
+      return Object.values(appStore.getState().todo.activeTodos.dict).filter(
+        Boolean,
+      ) as ActiveTodo[];
+    };
   }
 
-  @Provides()
-  useMetaGetAll(
-    getAllServiceMethod: ReturnType<GetAllGraph['getAllServiceMethod']>,
-  ): IActiveTodoService['getAll']['useMeta'] {
-    return this.constructGetAllHook({
-      queryOptions: { enabled: false },
-      getAllServiceMethod,
-    });
-  }
-
-  @Provides()
-  useQueryGetAll(
-    getAllServiceMethod: ReturnType<GetAllGraph['getAllServiceMethod']>,
-  ): IActiveTodoService['getAll']['useQuery'] {
-    return this.constructGetAllHook({
-      queryOptions: { enabled: true },
-      getAllServiceMethod,
-    });
-  }
-
-  constructGetAllHook({
-    queryOptions,
+  private constructUseQuery({
     getAllServiceMethod,
   }: {
-    queryOptions: QueryOptions;
-    getAllServiceMethod: ReturnType<GetAllGraph['getAllServiceMethod']>;
-  }) {
-    return (): ReturnType<IActiveTodoService['getAll']['useMeta']> => {
+    getAllServiceMethod: ReturnType<typeof GetAll>;
+  }): IActiveTodoService['getAll']['useQuery'] {
+    return (props) => {
       const query = useQuery({
         queryKey: [networkQueryKeys.GET_TODO_LIST],
         queryFn: getAllServiceMethod,
-        enabled: queryOptions.enabled,
+        enabled: props?.enabled,
       });
       const activeTodoListDictionary = useAppSelector(
         (state) => state.todo.activeTodos.dict,
@@ -93,6 +58,28 @@ export class GetAllGraph extends ObjectGraph {
           [activeTodoListDictionary],
         ),
       };
+    };
+  }
+
+  @Provides()
+  getAllImpl(
+    appStore: AppStore,
+    queryClient: QueryClient,
+  ): IActiveTodoService['getAll'] {
+    const getAllServiceMethod = GetAll(getTodoList, (activeTodos) =>
+      appStore.dispatch(saveAllActiveTodos(activeTodos)),
+    );
+
+    return {
+      queryAsync: this.constructQueryAsync(
+        getAllServiceMethod,
+        appStore,
+        queryClient,
+      ),
+      useQuery: this.constructUseQuery({
+        getAllServiceMethod,
+      }),
+      errorHelpers: {},
     };
   }
 }

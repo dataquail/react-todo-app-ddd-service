@@ -17,12 +17,15 @@
       "jsx": true
     }
   },
-  "plugins": ["react", "@typescript-eslint", "import"],
+  "plugins": ["react", "@typescript-eslint", "import", "obsidian"],
   "rules": {
     "@typescript-eslint/no-namespace": "off",
     "no-empty-function": "off",
     "@typescript-eslint/no-empty-function": "error",
-    "@typescript-eslint/no-non-null-assertion": "error"
+    "@typescript-eslint/no-non-null-assertion": "error",
+    "obsidian/unresolved-provider-dependencies": "error",
+    "obsidian/no-circular-dependencies": "error",
+    "obsidian/strongly-typed-inject-component": "error"
   },
   "settings": {
     "react": {

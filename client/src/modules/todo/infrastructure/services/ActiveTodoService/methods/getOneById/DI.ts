@@ -1,62 +1,73 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCallback, useMemo } from 'react';
+import { useQuery, QueryClient } from '@tanstack/react-query';
 import { GetOneById } from '.';
-import { useAppSelector, useAppStore } from 'src/lib/store';
+import { useAppSelector, type AppStore } from 'src/lib/store';
 import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
-import { QueryOptions } from 'src/utils/domain/QueryOptions';
 import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
 import { getActiveTodo } from '../../network/getActiveTodo';
+import { Graph, Provides, ObjectGraph } from 'react-obsidian';
+import { ApplicationGraph } from 'src/api/global/ApplicationGraph';
 
-const useGetOneById = () => {
-  const appStore = useAppStore();
+@Graph({ subgraphs: [ApplicationGraph] })
+export class GetOneByIdMethod extends ObjectGraph {
+  private constructQueryAsync(
+    getOneByIdServiceMethod: ReturnType<typeof GetOneById>,
+    appStore: AppStore,
+    queryClient: QueryClient,
+  ): IActiveTodoService['getOneById']['queryAsync'] {
+    return async ({ forceRefetch, activeTodoId }) => {
+      if (forceRefetch) {
+        await queryClient.invalidateQueries({
+          queryKey: [networkQueryKeys.GET_TODO, activeTodoId],
+        });
+      }
+      await queryClient.fetchQuery({
+        queryKey: [networkQueryKeys.GET_TODO, activeTodoId],
+        queryFn: () => getOneByIdServiceMethod(activeTodoId),
+      });
 
-  return useMemo(() => GetOneById(getActiveTodo, appStore), [appStore]);
-};
+      return appStore.getState().todo.activeTodos.dict[activeTodoId];
+    };
+  }
 
-const getUseQueryGetOneById =
-  (queryOptions: QueryOptions): IActiveTodoService['getOneById']['useQuery'] =>
-  ({ activeTodoId }: { activeTodoId: string }) => {
-    const getOneById = useGetOneById();
-    const query = useQuery({
-      queryKey: [networkQueryKeys.GET_TODO, activeTodoId],
-      queryFn: () => getOneById(activeTodoId),
-      enabled: queryOptions.enabled,
-    });
-    const activeTodo = useAppSelector(
-      (state) => state.todo.activeTodos.dict[activeTodoId],
-    );
+  private constructUseQuery({
+    getOneByIdServiceMethod,
+  }: {
+    getOneByIdServiceMethod: ReturnType<typeof GetOneById>;
+  }): IActiveTodoService['getOneById']['useQuery'] {
+    return ({ activeTodoId, enabled }) => {
+      const query = useQuery({
+        queryKey: [networkQueryKeys.GET_TODO, activeTodoId],
+        queryFn: () => getOneByIdServiceMethod(activeTodoId),
+        enabled: enabled,
+      });
+      const activeTodo = useAppSelector(
+        (state) => state.todo.activeTodos.dict[activeTodoId],
+      );
+
+      return {
+        ...query,
+        data: activeTodo,
+      };
+    };
+  }
+
+  @Provides()
+  getOneByIdImpl(
+    appStore: AppStore,
+    queryClient: QueryClient,
+  ): IActiveTodoService['getOneById'] {
+    const getOneByIdServiceMethod = GetOneById(getActiveTodo, appStore);
 
     return {
-      ...query,
-      data: activeTodo,
+      queryAsync: this.constructQueryAsync(
+        getOneByIdServiceMethod,
+        appStore,
+        queryClient,
+      ),
+      useQuery: this.constructUseQuery({
+        getOneByIdServiceMethod,
+      }),
+      errorHelpers: {},
     };
-  };
-
-export const useMetaGetOneById = getUseQueryGetOneById({
-  enabled: false,
-});
-
-export const useQueryGetOneById = getUseQueryGetOneById({
-  enabled: true,
-});
-
-export const useQueryAsyncGetOneById =
-  (): IActiveTodoService['getOneById']['queryAsync'] => {
-    const getOneById = useGetOneById();
-    const queryClient = useQueryClient();
-
-    return useCallback(
-      async ({ activeTodoId, forceRefetch }) => {
-        if (forceRefetch) {
-          await queryClient.invalidateQueries({
-            queryKey: [networkQueryKeys.GET_TODO, activeTodoId],
-          });
-        }
-        return queryClient.fetchQuery({
-          queryKey: [networkQueryKeys.GET_TODO, activeTodoId],
-          queryFn: () => getOneById(activeTodoId),
-        });
-      },
-      [queryClient, getOneById],
-    );
-  };
+  }
+}

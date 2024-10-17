@@ -1,8 +1,7 @@
 import { ReactiveMutation } from 'src/utils/domain/ReactiveMutation';
+import { ReactiveQuery } from 'src/utils/domain/ReactiveQuery';
 import { ActiveTodo } from '../ActiveTodo';
 import { CreateTodoBody } from '../dtos/CreateTodoBody';
-import { ReactiveQuery } from 'src/utils/domain/ReactiveQuery';
-import { ReactiveMutationV2 } from 'src/utils/domain/ReactiveMutationV2';
 
 export type IActiveTodoService = {
   getAll: ReactiveQuery<() => Promise<ActiveTodo[]>, Error>;
@@ -10,7 +9,7 @@ export type IActiveTodoService = {
     (args: { activeTodoId: string }) => Promise<ActiveTodo | undefined>,
     Error
   >;
-  createOne: ReactiveMutationV2<
+  createOne: ReactiveMutation<
     (createTodoBody: CreateTodoBody) => Promise<{ id: string }>,
     Error
   >;

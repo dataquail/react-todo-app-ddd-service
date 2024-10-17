@@ -4,11 +4,7 @@ import { useActiveTodoService } from 'src/modules/todo/infrastructure/services/A
 
 export const TodoList = () => {
   const activeTodoService = useActiveTodoService();
-  const query = activeTodoService.getAll?.useQuery() || {
-    data: null,
-    isPending: true,
-  };
-  const { data, isPending } = query;
+  const { data, isPending } = activeTodoService.getAll.useQuery();
 
   if (isPending || !data) {
     return (

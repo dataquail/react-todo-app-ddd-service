@@ -1,28 +1,39 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { QueryClient, useMutation } from '@tanstack/react-query';
+import { Graph, ObjectGraph, Provides } from 'react-obsidian';
+import { ApplicationGraph } from 'src/api/global/ApplicationGraph';
+import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
 import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { CompleteOne } from '.';
 import { completeActiveTodo } from '../../network/completeActiveTodo';
 
-const completeOneServiceMethod = CompleteOne(completeActiveTodo);
+@Graph({ subgraphs: [ApplicationGraph] })
+export class CompleteOneMethod extends ObjectGraph {
+  @Provides()
+  completeOneImpl(queryClient: QueryClient): IActiveTodoService['completeOne'] {
+    const completeOneServiceMethod = CompleteOne(completeActiveTodo);
 
-export const useMutationCompleteOne = () => {
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation({
-    mutationKey: [networkQueryKeys.COMPLETE_TODO],
-    mutationFn: completeOneServiceMethod,
-    onSuccess: async (_data, activeTodoId) => {
+    const mutationFn = async (activeTodoId: string) => {
+      const result = await completeOneServiceMethod(activeTodoId);
       await queryClient.invalidateQueries({
         queryKey: [networkQueryKeys.GET_TODO_LIST],
       });
       await queryClient.invalidateQueries({
         queryKey: [networkQueryKeys.GET_TODO, activeTodoId],
       });
-    },
-  });
+      return result;
+    };
 
-  return {
-    ...mutation,
-    errorHelpers: {},
-  };
-};
+    const useMutationHook = () => {
+      return useMutation({
+        mutationKey: [networkQueryKeys.COMPLETE_TODO],
+        mutationFn,
+      });
+    };
+
+    return {
+      mutateAsync: mutationFn,
+      useMutation: useMutationHook,
+      errorHelpers: {},
+    };
+  }
+}
