@@ -21,6 +21,9 @@ import { useActiveTodoService } from 'src/modules/todo/infrastructure/services/A
 
 export const TodoCard = ({ todo }: { todo: ActiveTodo }) => {
   const activeTodoService = useActiveTodoService();
+  const completeOneMutation = activeTodoService.completeOne.useMutation();
+  const uncompleteOneMutation = activeTodoService.uncompleteOne.useMutation();
+  const deleteOneMutation = activeTodoService.deleteOne.useMutation();
 
   return (
     <Box key={todo.id} p="xs" pr="lg">
@@ -28,20 +31,20 @@ export const TodoCard = ({ todo }: { todo: ActiveTodo }) => {
         <Checkbox.Card
           radius="md"
           checked={Boolean(todo.completedAt)}
-          disabled={activeTodoService.deleteOne.isPending}
+          disabled={deleteOneMutation.isPending}
           onClick={() => {
             const isCompleted = Boolean(todo.completedAt);
             if (isCompleted) {
-              activeTodoService.uncompleteOne.mutateAsync(todo.id);
+              uncompleteOneMutation.mutateAsync(todo.id);
             } else {
-              activeTodoService.completeOne.mutateAsync(todo.id);
+              completeOneMutation.mutateAsync(todo.id);
             }
           }}
         >
           <Group wrap="nowrap" align="flex-start">
-            {activeTodoService.deleteOne.isPending ||
-            activeTodoService.completeOne.isPending ||
-            activeTodoService.uncompleteOne.isPending ? (
+            {deleteOneMutation.isPending ||
+            completeOneMutation.isPending ||
+            uncompleteOneMutation.isPending ? (
               <Loader p="xs" />
             ) : (
               <Checkbox.Indicator mt="sm" ml="sm" />
