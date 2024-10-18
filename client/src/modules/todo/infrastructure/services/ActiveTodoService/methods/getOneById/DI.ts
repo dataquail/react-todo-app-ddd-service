@@ -5,7 +5,7 @@ import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
 import { getActiveTodo } from '../../network/getActiveTodo';
 import { Graph, Provides, ObjectGraph } from 'react-obsidian';
-import { ApplicationGraph } from 'src/api/global/ApplicationGraph';
+import { ApplicationGraph } from 'src/global/ApplicationGraph';
 
 @Graph({ subgraphs: [ApplicationGraph] })
 export class GetOneByIdMethod extends ObjectGraph {

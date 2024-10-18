@@ -1,6 +1,6 @@
 import { QueryClient, useMutation } from '@tanstack/react-query';
 import { Graph, ObjectGraph, Provides } from 'react-obsidian';
-import { ApplicationGraph } from 'src/api/global/ApplicationGraph';
+import { ApplicationGraph } from 'src/global/ApplicationGraph';
 import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
 import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { CompleteOne } from '.';

@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { ThemeProvider } from './ThemeProvider';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { DependenciesOf, injectComponent } from 'react-obsidian';
-import { ApplicationGraph } from 'src/api/global/ApplicationGraph';
+import { ApplicationGraph } from 'src/global/ApplicationGraph';
 import { Provider as StoreProvider } from 'react-redux';
 
 type Own = { children: ReactNode };

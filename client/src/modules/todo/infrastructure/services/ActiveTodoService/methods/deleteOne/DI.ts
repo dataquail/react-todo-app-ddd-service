@@ -4,7 +4,7 @@ import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { DeleteOne } from '.';
 import { deleteActiveTodo } from '../../network/deleteActiveTodo';
 import { Graph, ObjectGraph, Provides } from 'react-obsidian';
-import { ApplicationGraph } from 'src/api/global/ApplicationGraph';
+import { ApplicationGraph } from 'src/global/ApplicationGraph';
 import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
 
 @Graph({ subgraphs: [ApplicationGraph] })

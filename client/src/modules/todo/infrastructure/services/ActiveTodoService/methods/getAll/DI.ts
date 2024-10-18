@@ -6,7 +6,7 @@ import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
 import { ActiveTodo } from 'src/modules/todo/domain/ActiveTodo';
 import { saveAllActiveTodos } from '../../activeTodoStore';
-import { ApplicationGraph } from 'src/api/global/ApplicationGraph';
+import { ApplicationGraph } from 'src/global/ApplicationGraph';
 import { getTodoList } from '../../network/getAllActiveTodos';
 import { GetAll } from '.';
 
