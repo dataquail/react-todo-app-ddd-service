@@ -3,7 +3,7 @@ import { wrappedFetch } from 'src/utils/network/wrappedFetch';
 import { ICreateActiveTodo } from '../methods/createOne/types';
 
 export const createActiveTodo: ICreateActiveTodo = async (createTodoBody) => {
-  return wrappedFetch<{ id: string }>(`${getConfig().API_URL}/todo`, {
+  return wrappedFetch<{ id: string }>(`${getConfig().API_URL}/active-todo`, {
     method: 'post',
     headers: {
       Accept: 'application/json',

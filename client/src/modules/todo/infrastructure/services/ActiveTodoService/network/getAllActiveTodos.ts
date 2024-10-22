@@ -4,5 +4,5 @@ import { wrappedFetch } from 'src/utils/network/wrappedFetch';
 import { IGetAllActiveTodos } from '../methods/getAll/types';
 
 export const getTodoList: IGetAllActiveTodos = async () => {
-  return wrappedFetch<TodoListDto>(`${getConfig().API_URL}/todo`);
+  return wrappedFetch<TodoListDto>(`${getConfig().API_URL}/active-todo`);
 };

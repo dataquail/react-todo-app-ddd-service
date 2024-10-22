@@ -12,7 +12,7 @@ Todo app written with with domain driven design service-esque layering.
 
 ### Tasks
 
-- [ ] Refactor current TodoService to hybrid-style `ActiveTodoService` including ability to prioritize ActiveTodos.
+- [X] Refactor current TodoService to hybrid-style `ActiveTodoService` including ability to prioritize ActiveTodos.
 - [ ] Implement `TodoReviewService` with ability to focus/unfocus, and maintain a `lastReviewedAt` timestamp via some `review` method.
 - [ ] Implement `SavedForLaterTodoService` with ability to save an ActiveTodo for later, and turn a SavedForLaterTodo back into an ActiveTodo.
 - [ ] Implement Domain Event Bus

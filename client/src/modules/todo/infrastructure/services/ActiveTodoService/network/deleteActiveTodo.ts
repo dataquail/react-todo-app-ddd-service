@@ -3,7 +3,7 @@ import { wrappedFetch } from 'src/utils/network/wrappedFetch';
 import { IDeleteActiveTodo } from '../methods/deleteOne/types';
 
 export const deleteActiveTodo: IDeleteActiveTodo = async (todoId) => {
-  return wrappedFetch<void>(`${getConfig().API_URL}/todo/${todoId}`, {
+  return wrappedFetch<void>(`${getConfig().API_URL}/active-todo/${todoId}`, {
     method: 'delete',
     headers: {
       Accept: 'application/json',
