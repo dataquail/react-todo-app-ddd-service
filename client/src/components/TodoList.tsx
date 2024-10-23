@@ -1,10 +1,12 @@
 import { Flex, Loader, ScrollArea } from '@mantine/core';
+import { useViewportSize } from '@mantine/hooks';
 import { TodoCard } from './TodoCard';
 import { useActiveTodoService } from 'src/modules/todo/infrastructure/services/ActiveTodoService/DI';
 
 export const TodoList = () => {
   const activeTodoService = useActiveTodoService();
   const { data, isPending } = activeTodoService.getAll.useQuery();
+  const { height } = useViewportSize();
 
   if (isPending || !data) {
     return (
@@ -15,7 +17,7 @@ export const TodoList = () => {
   }
 
   return (
-    <ScrollArea.Autosize w="60%" mah={700}>
+    <ScrollArea.Autosize mah={`calc(${height}px - 172px`}>
       {data.map((todo) => (
         <TodoCard key={todo.id} todo={todo} />
       ))}
