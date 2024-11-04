@@ -17,10 +17,9 @@ import {
   IconTrash,
 } from '@tabler/icons-react';
 import { ActiveTodo } from 'src/modules/todo/domain/ActiveTodo';
-import { useActiveTodoService } from 'src/modules/todo/infrastructure/services/ActiveTodoService/DI';
+import { activeTodoService } from 'src/inversify.config';
 
 export const TodoCard = ({ todo }: { todo: ActiveTodo }) => {
-  const activeTodoService = useActiveTodoService();
   const completeOneMutation = activeTodoService.completeOne.useMutation();
   const uncompleteOneMutation = activeTodoService.uncompleteOne.useMutation();
   const deleteOneMutation = activeTodoService.deleteOne.useMutation();

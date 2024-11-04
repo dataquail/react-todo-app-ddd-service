@@ -1,9 +1,8 @@
 import { Button, Group, TextInput } from '@mantine/core';
 import { hasLength, useForm } from '@mantine/form';
-import { useActiveTodoService } from 'src/modules/todo/infrastructure/services/ActiveTodoService/DI';
+import { activeTodoService } from 'src/inversify.config';
 
 export const AddNewTodoForm = () => {
-  const activeTodoService = useActiveTodoService();
   const { mutateAsync, isPending } = activeTodoService.createOne.useMutation();
   const form = useForm({
     mode: 'uncontrolled',

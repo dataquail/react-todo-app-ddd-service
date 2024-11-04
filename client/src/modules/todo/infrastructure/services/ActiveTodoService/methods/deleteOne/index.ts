@@ -1,10 +1,11 @@
-import { AppStore } from 'src/lib/store';
 import { IDeleteActiveTodo } from './types';
-import { removeActiveTodo } from '../../activeTodoStore';
 
 export const DeleteOne =
-  (deleteActiveTodo: IDeleteActiveTodo, appStore: AppStore) =>
+  (
+    deleteActiveTodo: IDeleteActiveTodo,
+    removeActiveTodo: (activeTodoId: string) => void,
+  ) =>
   async (activeTodoId: string) => {
     await deleteActiveTodo(activeTodoId);
-    appStore.dispatch(removeActiveTodo(activeTodoId));
+    removeActiveTodo(activeTodoId);
   };

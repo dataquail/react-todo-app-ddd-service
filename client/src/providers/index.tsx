@@ -1,26 +1,17 @@
 import { ReactNode } from 'react';
 import { ThemeProvider } from './ThemeProvider';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { DependenciesOf, injectComponent } from 'react-obsidian';
-import { ApplicationGraph } from 'src/global/ApplicationGraph';
 import { Provider as StoreProvider } from 'react-redux';
+import { appStore, queryClient } from 'src/inversify.config';
 
-type Own = { children: ReactNode };
-type Injected = DependenciesOf<ApplicationGraph, 'appStore' | 'queryClient'>;
-
-const ProvidersDI = ({ children, appStore, queryClient }: Own & Injected) => {
+export const Providers = ({ children }: { children: ReactNode }) => {
   return (
-    <StoreProvider store={appStore}>
+    <StoreProvider store={appStore.instance}>
       <ThemeProvider>
-        <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient.instance}>
           {children}
         </QueryClientProvider>
       </ThemeProvider>
     </StoreProvider>
   );
 };
-
-export const Providers = injectComponent<Own, Injected>(
-  ProvidersDI,
-  ApplicationGraph,
-);

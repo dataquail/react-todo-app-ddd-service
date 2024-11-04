@@ -1,10 +1,9 @@
 import { Flex, Loader, ScrollArea } from '@mantine/core';
 import { useViewportSize } from '@mantine/hooks';
 import { TodoCard } from './TodoCard';
-import { useActiveTodoService } from 'src/modules/todo/infrastructure/services/ActiveTodoService/DI';
+import { activeTodoService } from 'src/inversify.config';
 
 export const TodoList = () => {
-  const activeTodoService = useActiveTodoService();
   const { data, isPending } = activeTodoService.getAll.useQuery();
   const { height } = useViewportSize();
 
