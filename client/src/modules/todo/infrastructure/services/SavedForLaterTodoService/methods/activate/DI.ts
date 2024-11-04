@@ -4,7 +4,7 @@ import { Activate } from '.';
 import { ISavedForLaterTodoService } from 'src/modules/todo/domain/services/ISavedForLaterTodoService';
 import { ActivateBody } from 'src/modules/todo/domain/dtos/ActivateBody';
 import { activate } from '../../network/activate';
-import { IQueryClient } from 'src/modules/global/IQueryClient';
+import { type IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
 
 export const ActivateMethodImpl = (
   queryClient: IQueryClient,

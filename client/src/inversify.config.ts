@@ -1,17 +1,21 @@
-import { Container } from 'inversify';
-import { IAppStore } from './modules/global/IAppStore';
-import { GLOBAL_TYPES } from './modules/global/types';
-import { AppStoreImpl } from './modules/global/AppStoreImpl';
-import { IQueryClient } from './modules/global/IQueryClient';
-import { QueryClientImpl } from './modules/global/QueryClientImpl';
-import { IActiveTodoService } from './modules/todo/domain/services/IActiveTodoService';
-import { ActiveTodoServiceImpl } from './modules/todo/infrastructure/services/ActiveTodoService/ActiveTodoServiceImpl';
-import { ISavedForLaterTodoService } from './modules/todo/domain/services/ISavedForLaterTodoService';
-import { SavedForLaterTodoServiceImpl } from './modules/todo/infrastructure/services/SavedForLaterTodoService/SavedForLaterTodoServiceImpl';
+import { appContainer } from 'src/modules/global/appContainer';
+import { GLOBAL_TYPES } from 'src/modules/global/types';
+import { IAppStore } from 'src/modules/global/appStore/IAppStore';
+import { AppStoreImpl } from 'src/modules/global/appStore/AppStoreImpl';
+import { IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
+import { QueryClientImpl } from 'src/modules/global/queryClient/QueryClientImpl';
+import { TODO_SERVICE_TYPES } from 'src/modules/todo/domain/services/types';
+import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
+import { ActiveTodoServiceImpl } from 'src/modules/todo/infrastructure/services/ActiveTodoService/ActiveTodoServiceImpl';
+import { ISavedForLaterTodoService } from 'src/modules/todo/domain/services/ISavedForLaterTodoService';
+import { SavedForLaterTodoServiceImpl } from 'src/modules/todo/infrastructure/services/SavedForLaterTodoService/SavedForLaterTodoServiceImpl';
 
-export const appContainer = new Container();
+/**
+ * Inversify container configuration.
+ *
+ * Binds all dependencies to their respective implementations.
+ */
 
-// Binding interfaces to implementations
 // GLOBAL DEPENDENCIES
 appContainer
   .bind<IAppStore>(GLOBAL_TYPES.AppStore)
@@ -21,25 +25,11 @@ appContainer
   .bind<IQueryClient>(GLOBAL_TYPES.QueryClient)
   .to(QueryClientImpl)
   .inSingletonScope();
+
 // SERVICES
 appContainer
-  .bind<IActiveTodoService>(GLOBAL_TYPES.ActiveTodoService)
+  .bind<IActiveTodoService>(TODO_SERVICE_TYPES.ActiveTodoService)
   .to(ActiveTodoServiceImpl);
 appContainer
-  .bind<ISavedForLaterTodoService>(GLOBAL_TYPES.SavedForLaterTodoService)
+  .bind<ISavedForLaterTodoService>(TODO_SERVICE_TYPES.SavedForLaterTodoService)
   .to(SavedForLaterTodoServiceImpl);
-
-// Export injected dependencies
-// GLOBAL DEPENDENCIES
-export const appStore = appContainer.get<IAppStore>(GLOBAL_TYPES.AppStore);
-export const queryClient = appContainer.get<IQueryClient>(
-  GLOBAL_TYPES.QueryClient,
-);
-// SERVICES
-export const activeTodoService = appContainer.get<IActiveTodoService>(
-  GLOBAL_TYPES.ActiveTodoService,
-);
-export const savedForLaterTodoService =
-  appContainer.get<ISavedForLaterTodoService>(
-    GLOBAL_TYPES.SavedForLaterTodoService,
-  );

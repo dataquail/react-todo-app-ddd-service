@@ -1,5 +1,5 @@
 import { Title, Flex, Space } from '@mantine/core';
-import { TodoList } from 'src/components/TodoList';
+import { TodoList } from 'src/routes/Todo/TodoList';
 import { AddNewTodoForm } from 'src/components/AddNewTodoForm';
 import { AppShellWrapper } from 'src/components/AppShellWrapper';
 

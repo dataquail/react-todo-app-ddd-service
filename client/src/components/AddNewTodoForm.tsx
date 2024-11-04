@@ -1,6 +1,6 @@
 import { Button, Group, TextInput } from '@mantine/core';
 import { hasLength, useForm } from '@mantine/form';
-import { activeTodoService } from 'src/inversify.config';
+import { activeTodoService } from 'src/modules/todo/infrastructure/services/ActiveTodoService';
 
 export const AddNewTodoForm = () => {
   const { mutateAsync, isPending } = activeTodoService.createOne.useMutation();

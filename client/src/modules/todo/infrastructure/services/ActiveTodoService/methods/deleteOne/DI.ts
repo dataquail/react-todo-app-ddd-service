@@ -2,8 +2,8 @@ import { useMutation } from '@tanstack/react-query';
 import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { DeleteOne } from '.';
 import { deleteActiveTodo } from '../../network/deleteActiveTodo';
-import { IQueryClient } from 'src/modules/global/IQueryClient';
-import { IAppStore } from 'src/modules/global/IAppStore';
+import { IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
+import { IAppStore } from 'src/modules/global/appStore/IAppStore';
 import { removeActiveTodo } from '../../activeTodoStore';
 
 export const DeleteOneMethodImpl = (

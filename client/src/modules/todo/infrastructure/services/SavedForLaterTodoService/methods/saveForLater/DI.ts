@@ -4,7 +4,7 @@ import { SaveForLater } from '.';
 import { ISavedForLaterTodoService } from 'src/modules/todo/domain/services/ISavedForLaterTodoService';
 import { saveActiveTodoForLater } from '../../network/saveActiveTodoForLater';
 import { SaveForLaterBody } from 'src/modules/todo/domain/dtos/SaveForLaterBody';
-import { IQueryClient } from 'src/modules/global/IQueryClient';
+import { type IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
 
 export const SaveForLaterMethodImpl = (
   queryClient: IQueryClient,

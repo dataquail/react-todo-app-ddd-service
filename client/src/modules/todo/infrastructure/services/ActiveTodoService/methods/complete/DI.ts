@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { CompleteOne } from '.';
 import { completeActiveTodo } from '../../network/completeActiveTodo';
-import { IQueryClient } from 'src/modules/global/IQueryClient';
+import { IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
 
 export const CompleteOneMethodImpl = (queryClient: IQueryClient) => {
   const completeOneServiceMethod = CompleteOne(completeActiveTodo);

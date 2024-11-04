@@ -1,7 +1,7 @@
 import { injectable, inject } from 'inversify';
 import { GLOBAL_TYPES } from 'src/modules/global/types';
-import { type IAppStore } from 'src/modules/global/IAppStore';
-import { type IQueryClient } from 'src/modules/global/IQueryClient';
+import { type IAppStore } from 'src/modules/global/appStore/IAppStore';
+import { type IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
 import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
 import { GetOneByIdMethodImpl } from './methods/getOneById/DI';
 import { DeleteOneMethodImpl } from './methods/deleteOne/DI';

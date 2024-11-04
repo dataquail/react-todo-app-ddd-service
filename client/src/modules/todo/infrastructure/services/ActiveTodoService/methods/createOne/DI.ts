@@ -3,7 +3,7 @@ import { CreateOne } from '.';
 import { createActiveTodo } from '../../network/createActiveTodo';
 import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { CreateTodoBody } from 'src/modules/todo/domain/dtos/CreateTodoBody';
-import { IQueryClient } from 'src/modules/global/IQueryClient';
+import { IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
 
 export const CreateOneMethodImpl = (queryClient: IQueryClient) => {
   const createOneServiceMethod = CreateOne(createActiveTodo);

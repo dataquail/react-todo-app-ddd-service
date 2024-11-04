@@ -6,7 +6,7 @@ import { ActivateMethodImpl } from './methods/activate/DI';
 import { DeleteOneMethodImpl } from './methods/deleteOne/DI';
 import { inject, injectable } from 'inversify';
 import { GLOBAL_TYPES } from 'src/modules/global/types';
-import { type IQueryClient } from 'src/modules/global/IQueryClient';
+import { type IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
 
 @injectable()
 export class SavedForLaterTodoServiceImpl implements ISavedForLaterTodoService {

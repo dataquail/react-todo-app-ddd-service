@@ -1,4 +1,4 @@
-import { IAppStore } from 'src/modules/global/IAppStore';
+import { IAppStore } from 'src/modules/global/appStore/IAppStore';
 import { saveActiveTodo } from '../../activeTodoStore';
 import { deprioritizeActiveTodo } from 'src/modules/todo/domain/ActiveTodo';
 

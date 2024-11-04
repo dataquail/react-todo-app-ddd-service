@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { UncompleteOne } from '.';
 import { uncompleteActiveTodo } from '../../network/uncompleteActiveTodo';
-import { IQueryClient } from 'src/modules/global/IQueryClient';
+import { IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
 
 export const UncompleteOneMethodImpl = (queryClient: IQueryClient) => {
   const uncompleteOneServiceMethod = UncompleteOne(uncompleteActiveTodo);
