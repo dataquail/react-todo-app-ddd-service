@@ -1,16 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient, useQuery } from '@tanstack/react-query';
 import { GetOneById } from '.';
-import { useAppSelector } from 'src/lib/store';
+import { AppStore, useAppSelector } from 'src/lib/store';
 import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
 import { getActiveTodo } from '../../network/getActiveTodo';
-import { IAppStore } from 'src/modules/global/appStore/IAppStore';
-import { IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
 import { saveActiveTodo } from '../../activeTodoStore';
 
 export const GetOneByIdMethodImpl = (
-  appStore: IAppStore,
-  queryClient: IQueryClient,
+  appStore: AppStore,
+  queryClient: QueryClient,
 ): IActiveTodoService['getOneById'] => {
   const getOneByIdServiceMethod = GetOneById(getActiveTodo, (activeTodo) =>
     appStore.dispatch(saveActiveTodo(activeTodo)),

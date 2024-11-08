@@ -1,8 +1,8 @@
-import { IAppStore } from 'src/modules/global/appStore/IAppStore';
 import { saveActiveTodo } from '../../activeTodoStore';
 import { deprioritizeActiveTodo } from 'src/modules/todo/domain/ActiveTodo';
+import { AppStore } from 'src/lib/store';
 
-export const Deprioritize = (appStore: IAppStore) => (activeTodoId: string) => {
+export const Deprioritize = (appStore: AppStore) => (activeTodoId: string) => {
   const activeTodo = appStore.getState().todo.activeTodos.dict[activeTodoId];
 
   if (!activeTodo) {

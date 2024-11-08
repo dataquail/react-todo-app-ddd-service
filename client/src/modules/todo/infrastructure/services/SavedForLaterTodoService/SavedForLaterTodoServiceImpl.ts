@@ -6,7 +6,7 @@ import { ActivateMethodImpl } from './methods/activate/DI';
 import { DeleteOneMethodImpl } from './methods/deleteOne/DI';
 import { inject, injectable } from 'inversify';
 import { GLOBAL_TYPES } from 'src/modules/global/types';
-import { type IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
+import { type IQueryClientProvider } from 'src/modules/global/queryClientProvider/IQueryClientProvider';
 
 @injectable()
 export class SavedForLaterTodoServiceImpl implements ISavedForLaterTodoService {
@@ -16,11 +16,14 @@ export class SavedForLaterTodoServiceImpl implements ISavedForLaterTodoService {
   public activate: ISavedForLaterTodoService['activate'];
   public deleteOne: ISavedForLaterTodoService['deleteOne'];
 
-  constructor(@inject(GLOBAL_TYPES.QueryClient) queryClient: IQueryClient) {
-    this.getAll = GetAllMethodImpl(queryClient);
-    this.getOneById = GetOneByIdMethodImpl(queryClient);
-    this.saveForLater = SaveForLaterMethodImpl(queryClient);
-    this.activate = ActivateMethodImpl(queryClient);
-    this.deleteOne = DeleteOneMethodImpl(queryClient);
+  constructor(
+    @inject(GLOBAL_TYPES.QueryClientProvider)
+    queryClientProvider: IQueryClientProvider,
+  ) {
+    this.getAll = GetAllMethodImpl(queryClientProvider.get());
+    this.getOneById = GetOneByIdMethodImpl(queryClientProvider.get());
+    this.saveForLater = SaveForLaterMethodImpl(queryClientProvider.get());
+    this.activate = ActivateMethodImpl(queryClientProvider.get());
+    this.deleteOne = DeleteOneMethodImpl(queryClientProvider.get());
   }
 }

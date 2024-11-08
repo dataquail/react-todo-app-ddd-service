@@ -1,9 +1,9 @@
 import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
 import { Prioritize } from '.';
-import { IAppStore } from 'src/modules/global/appStore/IAppStore';
+import { AppStore } from 'src/lib/store';
 
 export const PrioritizeMethodImpl = (
-  appStore: IAppStore,
+  appStore: AppStore,
 ): IActiveTodoService['prioritize'] => {
   return Prioritize(appStore);
 };

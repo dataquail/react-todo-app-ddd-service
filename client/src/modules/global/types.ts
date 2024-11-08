@@ -1,4 +1,4 @@
 export const GLOBAL_TYPES = {
-  AppStore: Symbol.for('AppStore'),
-  QueryClient: Symbol.for('QueryClient'),
+  AppStoreProvider: Symbol.for('AppStoreProvider'),
+  QueryClientProvider: Symbol.for('QueryClientProvider'),
 };

@@ -1,18 +1,16 @@
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import { useAppSelector } from 'src/lib/store';
+import { AppStore, useAppSelector } from 'src/lib/store';
 import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
 import { ActiveTodo } from 'src/modules/todo/domain/ActiveTodo';
 import { saveAllActiveTodos } from '../../activeTodoStore';
 import { getTodoList } from '../../network/getAllActiveTodos';
 import { GetAll } from '.';
-import { IAppStore } from 'src/modules/global/appStore/IAppStore';
-import { IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
 
 export const GetAllMethodImpl = (
-  appStore: IAppStore,
-  queryClient: IQueryClient,
+  appStore: AppStore,
+  queryClient: QueryClient,
 ): IActiveTodoService['getAll'] => {
   const getAllServiceMethod = GetAll(getTodoList, (activeTodos) =>
     appStore.dispatch(saveAllActiveTodos(activeTodos)),

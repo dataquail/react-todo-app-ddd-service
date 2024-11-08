@@ -1,9 +1,9 @@
 import { appContainer } from 'src/modules/global/appContainer';
 import { GLOBAL_TYPES } from 'src/modules/global/types';
-import { IAppStore } from 'src/modules/global/appStore/IAppStore';
-import { AppStoreImpl } from 'src/modules/global/appStore/AppStoreImpl';
-import { IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
-import { QueryClientImpl } from 'src/modules/global/queryClient/QueryClientImpl';
+import { IAppStoreProvider } from 'src/modules/global/appStoreProvider/IAppStoreProvider';
+import { AppStoreProviderImpl } from 'src/modules/global/appStoreProvider/AppStoreProviderImpl';
+import { IQueryClientProvider } from 'src/modules/global/queryClientProvider/IQueryClientProvider';
+import { QueryClientProviderImpl } from 'src/modules/global/queryClientProvider/QueryClientProviderImpl';
 import { TODO_SERVICE_TYPES } from 'src/modules/todo/domain/services/types';
 import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
 import { ActiveTodoServiceImpl } from 'src/modules/todo/infrastructure/services/ActiveTodoService/ActiveTodoServiceImpl';
@@ -18,12 +18,12 @@ import { SavedForLaterTodoServiceImpl } from 'src/modules/todo/infrastructure/se
 
 // GLOBAL DEPENDENCIES
 appContainer
-  .bind<IAppStore>(GLOBAL_TYPES.AppStore)
-  .to(AppStoreImpl)
+  .bind<IAppStoreProvider>(GLOBAL_TYPES.AppStoreProvider)
+  .to(AppStoreProviderImpl)
   .inSingletonScope();
 appContainer
-  .bind<IQueryClient>(GLOBAL_TYPES.QueryClient)
-  .to(QueryClientImpl)
+  .bind<IQueryClientProvider>(GLOBAL_TYPES.QueryClientProvider)
+  .to(QueryClientProviderImpl)
   .inSingletonScope();
 
 // SERVICES

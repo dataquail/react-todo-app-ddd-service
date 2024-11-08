@@ -1,12 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient, useQuery } from '@tanstack/react-query';
 import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { ISavedForLaterTodoService } from 'src/modules/todo/domain/services/ISavedForLaterTodoService';
 import { GetOneById } from '.';
 import { getSavedForLaterTodo } from '../../network/getSavedForLaterTodo';
-import { type IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
 
 export const GetOneByIdMethodImpl = (
-  queryClient: IQueryClient,
+  queryClient: QueryClient,
 ): ISavedForLaterTodoService['getOneById'] => {
   const getOneByIdServiceMethod = GetOneById(getSavedForLaterTodo);
 

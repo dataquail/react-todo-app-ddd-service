@@ -1,10 +1,9 @@
-import { useMutation } from '@tanstack/react-query';
+import { QueryClient, useMutation } from '@tanstack/react-query';
 import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { CompleteOne } from '.';
 import { completeActiveTodo } from '../../network/completeActiveTodo';
-import { IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
 
-export const CompleteOneMethodImpl = (queryClient: IQueryClient) => {
+export const CompleteOneMethodImpl = (queryClient: QueryClient) => {
   const completeOneServiceMethod = CompleteOne(completeActiveTodo);
 
   const mutationFn = async (activeTodoId: string) => {

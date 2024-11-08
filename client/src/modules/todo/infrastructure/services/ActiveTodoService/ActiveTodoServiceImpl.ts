@@ -1,7 +1,7 @@
 import { injectable, inject } from 'inversify';
 import { GLOBAL_TYPES } from 'src/modules/global/types';
-import { type IAppStore } from 'src/modules/global/appStore/IAppStore';
-import { type IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
+import { type IAppStoreProvider } from 'src/modules/global/appStoreProvider/IAppStoreProvider';
+import { type IQueryClientProvider } from 'src/modules/global/queryClientProvider/IQueryClientProvider';
 import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
 import { GetOneByIdMethodImpl } from './methods/getOneById/DI';
 import { DeleteOneMethodImpl } from './methods/deleteOne/DI';
@@ -26,17 +26,27 @@ export class ActiveTodoServiceImpl implements IActiveTodoService {
   public deprioritize: IActiveTodoService['deprioritize'];
 
   constructor(
-    @inject(GLOBAL_TYPES.AppStore) appStore: IAppStore,
-    @inject(GLOBAL_TYPES.QueryClient) queryClient: IQueryClient,
+    @inject(GLOBAL_TYPES.AppStoreProvider) appStoreProvider: IAppStoreProvider,
+    @inject(GLOBAL_TYPES.QueryClientProvider)
+    queryClientProvider: IQueryClientProvider,
   ) {
-    this.getAll = GetAllMethodImpl(appStore, queryClient);
-    this.getOneById = GetOneByIdMethodImpl(appStore, queryClient);
-    this.clearAll = ClearAllMethodImpl(appStore);
-    this.createOne = CreateOneMethodImpl(queryClient);
-    this.deleteOne = DeleteOneMethodImpl(queryClient, appStore);
-    this.completeOne = CompleteOneMethodImpl(queryClient);
-    this.uncompleteOne = UncompleteOneMethodImpl(queryClient);
-    this.prioritize = PrioritizeMethodImpl(appStore);
-    this.deprioritize = DeprioritizeMethodImpl(appStore);
+    this.getAll = GetAllMethodImpl(
+      appStoreProvider.get(),
+      queryClientProvider.get(),
+    );
+    this.getOneById = GetOneByIdMethodImpl(
+      appStoreProvider.get(),
+      queryClientProvider.get(),
+    );
+    this.clearAll = ClearAllMethodImpl(appStoreProvider.get());
+    this.createOne = CreateOneMethodImpl(queryClientProvider.get());
+    this.deleteOne = DeleteOneMethodImpl(
+      queryClientProvider.get(),
+      appStoreProvider.get(),
+    );
+    this.completeOne = CompleteOneMethodImpl(queryClientProvider.get());
+    this.uncompleteOne = UncompleteOneMethodImpl(queryClientProvider.get());
+    this.prioritize = PrioritizeMethodImpl(appStoreProvider.get());
+    this.deprioritize = DeprioritizeMethodImpl(appStoreProvider.get());
   }
 }

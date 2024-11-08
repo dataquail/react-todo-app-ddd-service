@@ -1,13 +1,12 @@
-import { useMutation } from '@tanstack/react-query';
+import { QueryClient, useMutation } from '@tanstack/react-query';
 import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { SaveForLater } from '.';
 import { ISavedForLaterTodoService } from 'src/modules/todo/domain/services/ISavedForLaterTodoService';
 import { saveActiveTodoForLater } from '../../network/saveActiveTodoForLater';
 import { SaveForLaterBody } from 'src/modules/todo/domain/dtos/SaveForLaterBody';
-import { type IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
 
 export const SaveForLaterMethodImpl = (
-  queryClient: IQueryClient,
+  queryClient: QueryClient,
 ): ISavedForLaterTodoService['saveForLater'] => {
   const saveForLaterServiceMethod = SaveForLater(saveActiveTodoForLater);
 

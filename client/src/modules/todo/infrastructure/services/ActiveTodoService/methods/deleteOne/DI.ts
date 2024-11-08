@@ -1,14 +1,13 @@
-import { useMutation } from '@tanstack/react-query';
+import { QueryClient, useMutation } from '@tanstack/react-query';
 import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { DeleteOne } from '.';
 import { deleteActiveTodo } from '../../network/deleteActiveTodo';
-import { IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
-import { IAppStore } from 'src/modules/global/appStore/IAppStore';
 import { removeActiveTodo } from '../../activeTodoStore';
+import { AppStore } from 'src/lib/store';
 
 export const DeleteOneMethodImpl = (
-  queryClient: IQueryClient,
-  appStore: IAppStore,
+  queryClient: QueryClient,
+  appStore: AppStore,
 ) => {
   const deleteOneServiceMethod = DeleteOne(deleteActiveTodo, (activeTodoId) =>
     appStore.dispatch(removeActiveTodo(activeTodoId)),

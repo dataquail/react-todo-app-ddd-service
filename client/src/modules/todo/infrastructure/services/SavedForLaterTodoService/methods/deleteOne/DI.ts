@@ -1,12 +1,11 @@
-import { useMutation } from '@tanstack/react-query';
+import { QueryClient, useMutation } from '@tanstack/react-query';
 import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { DeleteOne } from '.';
 import { ISavedForLaterTodoService } from 'src/modules/todo/domain/services/ISavedForLaterTodoService';
 import { deleteSavedForLaterTodo } from '../../network/deleteSavedForLaterTodo';
-import { type IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
 
 export const DeleteOneMethodImpl = (
-  queryClient: IQueryClient,
+  queryClient: QueryClient,
 ): ISavedForLaterTodoService['deleteOne'] => {
   const deleteOneServiceMethod = DeleteOne(deleteSavedForLaterTodo);
 

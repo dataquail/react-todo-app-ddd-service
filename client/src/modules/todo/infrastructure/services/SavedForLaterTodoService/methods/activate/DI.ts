@@ -1,13 +1,12 @@
-import { useMutation } from '@tanstack/react-query';
+import { QueryClient, useMutation } from '@tanstack/react-query';
 import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { Activate } from '.';
 import { ISavedForLaterTodoService } from 'src/modules/todo/domain/services/ISavedForLaterTodoService';
 import { ActivateBody } from 'src/modules/todo/domain/dtos/ActivateBody';
 import { activate } from '../../network/activate';
-import { type IQueryClient } from 'src/modules/global/queryClient/IQueryClient';
 
 export const ActivateMethodImpl = (
-  queryClient: IQueryClient,
+  queryClient: QueryClient,
 ): ISavedForLaterTodoService['activate'] => {
   const activateServiceMethod = Activate(activate);
 
