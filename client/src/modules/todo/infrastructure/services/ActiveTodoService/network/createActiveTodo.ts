@@ -1,6 +1,10 @@
 import { getConfig } from 'src/utils/getConfig';
 import { wrappedFetch } from 'src/utils/network/wrappedFetch';
-import { ICreateActiveTodo } from '../methods/createOne/types';
+import { CreateTodoBody } from 'src/modules/todo/domain/dtos/CreateTodoBody';
+
+export type ICreateActiveTodo = (
+  createTodoBody: CreateTodoBody,
+) => Promise<{ id: string }>;
 
 export const createActiveTodo: ICreateActiveTodo = async (createTodoBody) => {
   return wrappedFetch<{ id: string }>(`${getConfig().API_URL}/active-todo`, {

@@ -1,6 +1,8 @@
 import { getConfig } from 'src/utils/getConfig';
 import { wrappedFetch } from 'src/utils/network/wrappedFetch';
-import { IActivate } from '../methods/activate/types';
+import { ActivateBody } from 'src/modules/todo/domain/dtos/ActivateBody';
+
+export type IActivate = (args: ActivateBody) => Promise<{ id: string }>;
 
 export const activate: IActivate = async (activateBody) => {
   return wrappedFetch<{ id: string }>(

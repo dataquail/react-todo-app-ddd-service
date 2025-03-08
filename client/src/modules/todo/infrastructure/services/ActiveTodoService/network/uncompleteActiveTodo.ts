@@ -1,6 +1,7 @@
 import { getConfig } from 'src/utils/getConfig';
 import { wrappedFetch } from 'src/utils/network/wrappedFetch';
-import { IUncompleteActiveTodo } from '../methods/uncomplete/types';
+
+export type IUncompleteActiveTodo = (activeTodoId: string) => Promise<void>;
 
 export const uncompleteActiveTodo: IUncompleteActiveTodo = async (todoId) => {
   return wrappedFetch<void>(
