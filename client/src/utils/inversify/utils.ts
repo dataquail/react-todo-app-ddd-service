@@ -9,6 +9,7 @@ export const propsInjector = <Props>(
   },
 ) => {
   return new Proxy(Object.assign({}, clientPassedProps), {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     get: (target: object, p: string, receiver: any): any => {
       if (p in target) {
         return Reflect.get(target, p, receiver);
@@ -31,14 +32,16 @@ export function genericMemo<P>(
   return React.memo(
     Component,
     propsAreEqual,
-  ) as unknown as React.FunctionComponent<P extends never ? {} : P>;
+  ) as unknown as React.FunctionComponent<P extends never ? object : P>;
 }
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type MemoizedComponent = React.MemoExoticComponent<FunctionComponent<any>> & {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   compare?: (prevProps: any, nextProps: any) => boolean;
 };
 
 export function getIsMemoizedComponent(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component: FunctionComponent<any>,
 ): component is MemoizedComponent {
   return (component as MemoizedComponent).type !== undefined;

@@ -6,7 +6,7 @@ import { propsInjector } from './utils';
 // 1. injectHookWithArguments: Should be used when a hook requires parameters in addition to the injected dependencies.
 // 2. injectHook: Should be used when a hook does not require parameters.
 
-export function injectHook<Injected, Result = {}>(
+export function injectHook<Injected, Result = object>(
   hook: (args: Injected) => Result,
   container: Container,
   propMap: { [K in keyof Injected]: symbol },
@@ -21,7 +21,7 @@ export function injectHook<Injected, Result = {}>(
   };
 }
 
-export function injectHookWithArguments<Injected, Own, Result = {}>(
+export function injectHookWithArguments<Injected, Own, Result = object>(
   hook: (args: Injected & Own) => Result,
   container: Container,
   propMap: { [K in keyof Injected]: symbol },

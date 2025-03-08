@@ -2,8 +2,6 @@ import { Container } from 'inversify';
 import { getIsMemoizedComponent, genericMemo, propsInjector } from './utils';
 import { type PropsWithChildren } from 'react';
 
-export type Constructable<T> = new (...args: any) => T;
-
 export const injectComponent = <
   InjectedProps extends {
     [K in keyof InjectedProps]: K extends keyof OwnProps
@@ -24,7 +22,7 @@ export const injectComponent = <
   container: Container,
   propMap: PropMap,
 ): React.FunctionComponent<
-  OwnProps extends never ? {} : OwnProps & Partial<InjectedProps>
+  OwnProps extends never ? object : OwnProps & Partial<InjectedProps>
 > => {
   if (container === undefined) {
     throw new Error(
