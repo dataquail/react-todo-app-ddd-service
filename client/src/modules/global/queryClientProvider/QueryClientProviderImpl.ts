@@ -4,7 +4,7 @@ import { QueryClient } from '@tanstack/react-query';
 
 @injectable()
 export class QueryClientProviderImpl implements IQueryClientProvider {
-  private _queryClient: QueryClient;
+  private readonly _queryClient: QueryClient;
 
   constructor() {
     this._queryClient = new QueryClient({

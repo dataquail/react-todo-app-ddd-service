@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { appContainer } from 'src/modules/global/appContainer';
 import { GLOBAL_TYPES } from 'src/modules/global/types';
 import { IAppStoreProvider } from 'src/modules/global/appStoreProvider/IAppStoreProvider';

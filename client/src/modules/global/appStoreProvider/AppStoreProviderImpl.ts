@@ -4,7 +4,7 @@ import { AppStore, makeStore } from 'src/lib/store';
 
 @injectable()
 export class AppStoreProviderImpl implements IAppStoreProvider {
-  private _store: AppStore;
+  private readonly _store: AppStore;
 
   constructor() {
     this._store = makeStore();
