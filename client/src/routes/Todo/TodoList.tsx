@@ -13,7 +13,6 @@ type InjectedProps = {
 const _TodoList = ({ activeTodoService }: InjectedProps) => {
   const { data, isPending } = activeTodoService.getAll.useQuery();
   const { height } = useViewportSize();
-  console.log(data, 'data');
 
   if (isPending || !data) {
     return (

@@ -15,9 +15,7 @@ export const GetAllMethodImpl = (
   queryClient: QueryClient,
 ): IActiveTodoService['getAll'] => {
   const promise = async () => {
-    console.log('getting todo list');
     const todoListDto = await getTodoList();
-    console.log('todo list', todoListDto);
     appStore.dispatch(
       saveAllActiveTodos(todoListDto.list.map(mapTodoDtoToActiveTodo)),
     );

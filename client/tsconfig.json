@@ -26,7 +26,12 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "src", "public/react-todo-app-ddd-service/mockServiceWorker.js"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "src",
+    "public/react-todo-app-ddd-service/mockServiceWorker.js"
+  ],
   "exclude": ["node_modules"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
