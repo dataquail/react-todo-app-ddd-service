@@ -1,9 +1,9 @@
 import { ISavedForLaterTodoService } from 'src/modules/todo/domain/services/ISavedForLaterTodoService';
-import { GetAllMethodImpl } from './methods/getAll/DI';
-import { GetOneByIdMethodImpl } from './methods/getOneById/DI';
-import { SaveForLaterMethodImpl } from './methods/saveForLater/DI';
-import { ActivateMethodImpl } from './methods/activate/DI';
-import { DeleteOneMethodImpl } from './methods/deleteOne/DI';
+import { GetAllMethodImpl } from './methods/getAll';
+import { GetOneByIdMethodImpl } from './methods/getOneById';
+import { SaveForLaterMethodImpl } from './methods/saveForLater';
+import { ActivateMethodImpl } from './methods/activate';
+import { DeleteOneMethodImpl } from './methods/deleteOne';
 import { inject, injectable } from 'inversify';
 import { GLOBAL_TYPES } from 'src/modules/global/types';
 import { type IQueryClientProvider } from 'src/modules/global/queryClientProvider/IQueryClientProvider';

@@ -1,6 +1,10 @@
 import { getConfig } from 'src/utils/getConfig';
 import { wrappedFetch } from 'src/utils/network/wrappedFetch';
-import { ISaveActiveTodoForLater } from '../methods/saveForLater/types';
+import { SaveForLaterBody } from 'src/modules/todo/domain/dtos/SaveForLaterBody';
+
+export type ISaveActiveTodoForLater = (
+  args: SaveForLaterBody,
+) => Promise<{ id: string }>;
 
 export const saveActiveTodoForLater: ISaveActiveTodoForLater = async (
   savedForLaterBody,

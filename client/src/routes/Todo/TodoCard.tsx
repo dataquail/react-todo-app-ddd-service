@@ -12,17 +12,37 @@ import {
 import { format } from 'date-fns';
 import {
   IconDots,
+  IconPlus,
   IconStar,
   IconStarFilled,
   IconTrash,
 } from '@tabler/icons-react';
 import { ActiveTodo } from 'src/modules/todo/domain/ActiveTodo';
-import { activeTodoService } from 'src/modules/todo/infrastructure/services/ActiveTodoService';
+import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
+import { injectComponent } from 'src/utils/inversify/injectComponent';
+import { appContainer } from 'src/modules/global/appContainer';
+import { TODO_SERVICE_TYPES } from 'src/modules/todo/domain/services/types';
+import { ISavedForLaterTodoService } from 'src/modules/todo/domain/services/ISavedForLaterTodoService';
 
-export const TodoCard = ({ todo }: { todo: ActiveTodo }) => {
+type InjectedProps = {
+  activeTodoService: IActiveTodoService;
+  savedForLaterTodoService: ISavedForLaterTodoService;
+};
+
+type OwnProps = {
+  todo: ActiveTodo;
+};
+
+const _TodoCard = ({
+  todo,
+  activeTodoService,
+  savedForLaterTodoService,
+}: InjectedProps & OwnProps) => {
   const completeOneMutation = activeTodoService.completeOne.useMutation();
   const uncompleteOneMutation = activeTodoService.uncompleteOne.useMutation();
   const deleteOneMutation = activeTodoService.deleteOne.useMutation();
+  const saveForLaterMutation =
+    savedForLaterTodoService.saveForLater.useMutation();
 
   return (
     <Box key={todo.id} p="xs" pr="lg">
@@ -102,9 +122,30 @@ export const TodoCard = ({ todo }: { todo: ActiveTodo }) => {
                 Prioritize
               </Menu.Item>
             )}
+            <Menu.Item
+              leftSection={
+                <IconPlus style={{ width: rem(14), height: rem(14) }} />
+              }
+              onClick={() =>
+                saveForLaterMutation.mutateAsync({
+                  activeTodoId: todo.id,
+                })
+              }
+            >
+              Save For Later
+            </Menu.Item>
           </Menu.Dropdown>
         </Menu>
       </Group>
     </Box>
   );
 };
+
+export const TodoCard = injectComponent<InjectedProps, OwnProps>(
+  _TodoCard,
+  appContainer,
+  {
+    activeTodoService: TODO_SERVICE_TYPES.ActiveTodoService,
+    savedForLaterTodoService: TODO_SERVICE_TYPES.SavedForLaterTodoService,
+  },
+);

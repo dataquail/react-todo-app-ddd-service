@@ -1,8 +1,15 @@
 import { Button, Group, TextInput } from '@mantine/core';
 import { hasLength, useForm } from '@mantine/form';
-import { activeTodoService } from 'src/modules/todo/infrastructure/services/ActiveTodoService';
+import { appContainer } from 'src/modules/global/appContainer';
+import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
+import { TODO_SERVICE_TYPES } from 'src/modules/todo/domain/services/types';
+import { injectComponent } from 'src/utils/inversify/injectComponent';
 
-export const AddNewTodoForm = () => {
+type InjectedProps = {
+  activeTodoService: IActiveTodoService;
+};
+
+const _AddNewTodoForm = ({ activeTodoService }: InjectedProps) => {
   const { mutateAsync, isPending } = activeTodoService.createOne.useMutation();
   const form = useForm({
     mode: 'uncontrolled',
@@ -34,3 +41,11 @@ export const AddNewTodoForm = () => {
     </form>
   );
 };
+
+export const AddNewTodoForm = injectComponent<InjectedProps>(
+  _AddNewTodoForm,
+  appContainer,
+  {
+    activeTodoService: TODO_SERVICE_TYPES.ActiveTodoService,
+  },
+);

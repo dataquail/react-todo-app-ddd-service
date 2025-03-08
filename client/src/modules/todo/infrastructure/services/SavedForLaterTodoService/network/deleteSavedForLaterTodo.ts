@@ -1,6 +1,9 @@
 import { getConfig } from 'src/utils/getConfig';
 import { wrappedFetch } from 'src/utils/network/wrappedFetch';
-import { IDeleteSavedForLaterTodo } from '../methods/deleteOne/types';
+
+export type IDeleteSavedForLaterTodo = (
+  savedForLaterTodoId: string,
+) => Promise<void>;
 
 export const deleteSavedForLaterTodo: IDeleteSavedForLaterTodo = async (
   savedForLaterTodoId,

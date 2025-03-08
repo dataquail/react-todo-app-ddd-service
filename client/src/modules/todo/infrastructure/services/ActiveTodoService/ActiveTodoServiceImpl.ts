@@ -3,15 +3,15 @@ import { GLOBAL_TYPES } from 'src/modules/global/types';
 import { type IAppStoreProvider } from 'src/modules/global/appStoreProvider/IAppStoreProvider';
 import { type IQueryClientProvider } from 'src/modules/global/queryClientProvider/IQueryClientProvider';
 import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
-import { GetOneByIdMethodImpl } from './methods/getOneById/DI';
-import { DeleteOneMethodImpl } from './methods/deleteOne/DI';
-import { CompleteOneMethodImpl } from './methods/complete/DI';
-import { UncompleteOneMethodImpl } from './methods/uncomplete/DI';
-import { GetAllMethodImpl } from './methods/getAll/DI';
-import { CreateOneMethodImpl } from './methods/createOne/DI';
-import { PrioritizeMethodImpl } from './methods/prioritize/DI';
-import { DeprioritizeMethodImpl } from './methods/deprioritize/DI';
-import { ClearAllMethodImpl } from './methods/clearAll/DI';
+import { GetOneByIdMethodImpl } from './methods/getOneById';
+import { DeleteOneMethodImpl } from './methods/deleteOne';
+import { CompleteOneMethodImpl } from './methods/complete';
+import { UncompleteOneMethodImpl } from './methods/uncomplete';
+import { GetAllMethodImpl } from './methods/getAll';
+import { CreateOneMethodImpl } from './methods/createOne';
+import { PrioritizeMethodImpl } from './methods/prioritize';
+import { DeprioritizeMethodImpl } from './methods/deprioritize';
+import { ClearAllMethodImpl } from './methods/clearAll';
 
 @injectable()
 export class ActiveTodoServiceImpl implements IActiveTodoService {

@@ -1,11 +1,19 @@
 import { Flex, Loader, ScrollArea } from '@mantine/core';
 import { useViewportSize } from '@mantine/hooks';
 import { TodoCard } from './TodoCard';
-import { activeTodoService } from 'src/modules/todo/infrastructure/services/ActiveTodoService';
+import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
+import { injectComponent } from 'src/utils/inversify/injectComponent';
+import { appContainer } from 'src/modules/global/appContainer';
+import { TODO_SERVICE_TYPES } from 'src/modules/todo/domain/services/types';
 
-export const TodoList = () => {
+type InjectedProps = {
+  activeTodoService: IActiveTodoService;
+};
+
+const _TodoList = ({ activeTodoService }: InjectedProps) => {
   const { data, isPending } = activeTodoService.getAll.useQuery();
   const { height } = useViewportSize();
+  console.log(data, 'data');
 
   if (isPending || !data) {
     return (
@@ -23,3 +31,9 @@ export const TodoList = () => {
     </ScrollArea.Autosize>
   );
 };
+
+export const TodoList = injectComponent<InjectedProps>(
+  _TodoList,
+  appContainer,
+  { activeTodoService: TODO_SERVICE_TYPES.ActiveTodoService },
+);

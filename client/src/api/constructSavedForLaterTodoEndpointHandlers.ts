@@ -11,7 +11,7 @@ export const constructSavedForLaterTodoEndpointHandlers = (
 ) => {
   return [
     http.get(`${getConfig().API_URL}/saved-for-later-todo`, async () => {
-      return HttpResponse.json(activeTodoRepository.getAll());
+      return HttpResponse.json(savedForLaterTodoRepository.getAll());
     }),
 
     http.post(

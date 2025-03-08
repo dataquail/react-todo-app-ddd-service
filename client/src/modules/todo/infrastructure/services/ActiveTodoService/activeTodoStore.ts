@@ -39,6 +39,12 @@ export const activeTodosSlice = createSlice({
           ),
         };
       }
+      const recordsNotPresentInNewActiveTodos = Object.keys(state.dict).filter(
+        (key) => !newActiveTodos.some((todo) => todo.id === key),
+      );
+      for (const recordNotPresentInNewActiveTodos of recordsNotPresentInNewActiveTodos) {
+        delete state.dict[recordNotPresentInNewActiveTodos];
+      }
     },
     removeActiveTodo: (state, action: PayloadAction<string>) => {
       const activeTodoId = action.payload;
@@ -62,10 +68,23 @@ export const activeTodosReducer = activeTodosSlice.reducer;
 const getIsPrioritizedValueToSave = (
   newActiveTodo: ActiveTodo,
   oldActiveTodo: ActiveTodo | undefined,
-) =>
-  newActiveTodo.isPrioritized === false || newActiveTodo.isPrioritized === true
-    ? newActiveTodo.isPrioritized
-    : oldActiveTodo?.isPrioritized === false ||
-        oldActiveTodo?.isPrioritized === true
-      ? oldActiveTodo?.isPrioritized
-      : false;
+): boolean => {
+  // Check if new activeTodo has explicit isPrioritized value
+  if (
+    newActiveTodo.isPrioritized === false ||
+    newActiveTodo.isPrioritized === true
+  ) {
+    return newActiveTodo.isPrioritized;
+  }
+
+  // Check if old activeTodo has explicit isPrioritized value
+  if (
+    oldActiveTodo?.isPrioritized === false ||
+    oldActiveTodo?.isPrioritized === true
+  ) {
+    return oldActiveTodo.isPrioritized;
+  }
+
+  // Default value
+  return false;
+};
