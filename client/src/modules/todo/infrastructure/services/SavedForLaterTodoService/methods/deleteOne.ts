@@ -1,33 +1,41 @@
-import { QueryClient, useMutation } from '@tanstack/react-query';
-import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
+import { QueryClient } from '@tanstack/react-query';
 import { ISavedForLaterTodoService } from 'src/modules/todo/domain/services/ISavedForLaterTodoService';
-import { deleteSavedForLaterTodo } from '../network/deleteSavedForLaterTodo';
+import { makeChimericMutation } from 'src/utils/domain/makeChimericMutation';
+import { getQueryOptionsGetAll } from './getAll';
+import { getQueryOptionsGetOneById } from './getOneById';
+import { getConfig } from 'src/utils/getConfig';
+import { wrappedFetch } from 'src/utils/network/wrappedFetch';
+
+export type IDeleteSavedForLaterTodo = (args: { id: string }) => Promise<void>;
+
+export const deleteSavedForLaterTodo: IDeleteSavedForLaterTodo = async (args: {
+  id: string;
+}) => {
+  return wrappedFetch<void>(
+    `${getConfig().API_URL}/saved-for-later-todo/${args.id}`,
+    {
+      method: 'delete',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    },
+  );
+};
 
 export const DeleteOneMethodImpl = (
   queryClient: QueryClient,
 ): ISavedForLaterTodoService['deleteOne'] => {
-  const promise = async (savedForLaterTodoId: string) => {
-    const result = await deleteSavedForLaterTodo(savedForLaterTodoId);
-    await queryClient.invalidateQueries({
-      queryKey: [networkQueryKeys.GET_SAVED_FOR_LATER_TODO_LIST],
-    });
-    await queryClient.invalidateQueries({
-      queryKey: [
-        networkQueryKeys.GET_SAVED_FOR_LATER_TODO,
-        savedForLaterTodoId,
-      ],
-    });
-    return result;
-  };
-
-  return {
-    mutateAsync: promise,
-    useMutation: () => {
-      return useMutation({
-        mutationKey: [networkQueryKeys.DELETE_SAVED_FOR_LATER_TODO],
-        mutationFn: promise,
+  return makeChimericMutation({
+    mutationFn: deleteSavedForLaterTodo,
+    errorHelpers: {},
+    onSuccess: async (_data, args) => {
+      await queryClient.invalidateQueries({
+        queryKey: getQueryOptionsGetAll().queryKey,
+      });
+      await queryClient.invalidateQueries({
+        queryKey: getQueryOptionsGetOneById(args).queryKey,
       });
     },
-    errorHelpers: {},
-  };
+  });
 };

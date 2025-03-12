@@ -1,25 +1,36 @@
-import { QueryClient, useMutation } from '@tanstack/react-query';
-import { createActiveTodo } from '../network/createActiveTodo';
-import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
+import { QueryClient } from '@tanstack/react-query';
+import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
+import { makeChimericMutation } from 'src/utils/domain/makeChimericMutation';
+import { getConfig } from 'src/utils/getConfig';
+import { wrappedFetch } from 'src/utils/network/wrappedFetch';
 import { CreateTodoBody } from 'src/modules/todo/domain/dtos/CreateTodoBody';
+import { getQueryOptionsGetAll } from './getAll';
 
-export const CreateOneMethodImpl = (queryClient: QueryClient) => {
-  const promise = async (createTodoBody: CreateTodoBody) => {
-    const result = await createActiveTodo(createTodoBody);
-    await queryClient.invalidateQueries({
-      queryKey: [networkQueryKeys.GET_TODO_LIST],
-    });
-    return result;
-  };
+export type ICreateActiveTodo = (
+  createTodoBody: CreateTodoBody,
+) => Promise<{ id: string }>;
 
-  return {
-    mutateAsync: promise,
-    useMutation: () => {
-      return useMutation({
-        mutationKey: [networkQueryKeys.CREATE_TODO],
-        mutationFn: promise,
+export const createActiveTodo: ICreateActiveTodo = async (createTodoBody) => {
+  return wrappedFetch<{ id: string }>(`${getConfig().API_URL}/active-todo`, {
+    method: 'post',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(createTodoBody),
+  });
+};
+
+export const CreateOneMethodImpl = (
+  queryClient: QueryClient,
+): IActiveTodoService['createOne'] => {
+  return makeChimericMutation({
+    mutationFn: createActiveTodo,
+    errorHelpers: {},
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: getQueryOptionsGetAll().queryKey,
       });
     },
-    errorHelpers: {},
-  };
+  });
 };

@@ -1,27 +1,41 @@
-import { QueryClient, useMutation } from '@tanstack/react-query';
-import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
-import { completeActiveTodo } from '../network/completeActiveTodo';
+import { QueryClient } from '@tanstack/react-query';
+import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
+import { makeChimericMutation } from 'src/utils/domain/makeChimericMutation';
+import { getConfig } from 'src/utils/getConfig';
+import { wrappedFetch } from 'src/utils/network/wrappedFetch';
+import { getQueryOptionsGetAll } from './getAll';
+import { getQueryOptionsGetOneById } from './getOneById';
 
-export const CompleteOneMethodImpl = (queryClient: QueryClient) => {
-  const promise = async (activeTodoId: string) => {
-    const result = await completeActiveTodo(activeTodoId);
-    await queryClient.invalidateQueries({
-      queryKey: [networkQueryKeys.GET_TODO_LIST],
-    });
-    await queryClient.invalidateQueries({
-      queryKey: [networkQueryKeys.GET_TODO, activeTodoId],
-    });
-    return result;
-  };
+export type ICompleteActiveTodo = (args: { id: string }) => Promise<void>;
 
-  return {
-    mutateAsync: promise,
-    useMutation: () => {
-      return useMutation({
-        mutationKey: [networkQueryKeys.COMPLETE_TODO],
-        mutationFn: promise,
+export const completeActiveTodo: ICompleteActiveTodo = async (args: {
+  id: string;
+}) => {
+  return wrappedFetch<void>(
+    `${getConfig().API_URL}/active-todo/${args.id}/complete`,
+    {
+      method: 'post',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    },
+  );
+};
+
+export const CompleteOneMethodImpl = (
+  queryClient: QueryClient,
+): IActiveTodoService['completeOne'] => {
+  return makeChimericMutation({
+    mutationFn: completeActiveTodo,
+    errorHelpers: {},
+    onSuccess: async (_data, args) => {
+      await queryClient.invalidateQueries({
+        queryKey: getQueryOptionsGetAll().queryKey,
+      });
+      await queryClient.invalidateQueries({
+        queryKey: getQueryOptionsGetOneById(args).queryKey,
       });
     },
-    errorHelpers: {},
-  };
+  });
 };

@@ -1,22 +1,31 @@
-import { ReactiveMutation } from 'src/utils/domain/ReactiveMutation';
-import { ReactiveQuery } from 'src/utils/domain/ReactiveQuery';
+import { ChimericMutationFactory } from 'src/utils/domain/ChimericMutation';
+import { ChimericQueryFactory } from 'src/utils/domain/ChimericQuery';
 import { ActiveTodo } from '../ActiveTodo';
 import { CreateTodoBody } from '../dtos/CreateTodoBody';
 
 export type IActiveTodoService = {
-  getAll: ReactiveQuery<() => Promise<ActiveTodo[]>, Error>;
-  getOneById: ReactiveQuery<
-    (args: { activeTodoId: string }) => Promise<ActiveTodo | undefined>,
+  getAll: ChimericQueryFactory<() => Promise<ActiveTodo[]>, Error>;
+  getOneById: ChimericQueryFactory<
+    (args: { id: string }) => Promise<ActiveTodo>,
     Error
   >;
-  createOne: ReactiveMutation<
-    (createTodoBody: CreateTodoBody) => Promise<{ id: string }>,
+  createOne: ChimericMutationFactory<
+    (body: CreateTodoBody) => Promise<{ id: string }>,
     Error
   >;
-  deleteOne: ReactiveMutation<(id: string) => Promise<void>, Error>;
-  completeOne: ReactiveMutation<(id: string) => Promise<void>, Error>;
-  uncompleteOne: ReactiveMutation<(id: string) => Promise<void>, Error>;
-  prioritize: (id: string) => void;
-  deprioritize: (id: string) => void;
+  deleteOne: ChimericMutationFactory<
+    (args: { id: string }) => Promise<void>,
+    Error
+  >;
+  completeOne: ChimericMutationFactory<
+    (args: { id: string }) => Promise<void>,
+    Error
+  >;
+  uncompleteOne: ChimericMutationFactory<
+    (args: { id: string }) => Promise<void>,
+    Error
+  >;
+  prioritize: (args: { id: string }) => void;
+  deprioritize: (args: { id: string }) => void;
   clearAll: () => void;
 };
