@@ -1,10 +1,10 @@
 import { QueryClient } from '@tanstack/react-query';
-import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
 import { makeChimericMutation } from 'src/utils/domain/makeChimericMutation';
 import { getConfig } from 'src/utils/getConfig';
 import { wrappedFetch } from 'src/utils/network/wrappedFetch';
 import { CreateTodoBody } from 'src/modules/todo/domain/dtos/CreateTodoBody';
+import { getQueryOptionsGetAll } from './getAll';
 
 export type ICreateActiveTodo = (
   createTodoBody: CreateTodoBody,
@@ -29,7 +29,7 @@ export const CreateOneMethodImpl = (
     errorHelpers: {},
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: [networkQueryKeys.GET_TODO_LIST],
+        queryKey: getQueryOptionsGetAll().queryKey,
       });
     },
   });

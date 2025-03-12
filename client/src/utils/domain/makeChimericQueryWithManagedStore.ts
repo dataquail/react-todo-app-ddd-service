@@ -36,6 +36,7 @@ export const MakeChimericQueryWithManagedStore =
           forceRefetch: false,
           ...options,
         };
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { forceRefetch, ...fetchQueryOptions } =
           optionsWithOverridesApplied;
         if (optionsWithOverridesApplied.forceRefetch) {
@@ -51,7 +52,9 @@ export const MakeChimericQueryWithManagedStore =
           ...fetchQueryOptions,
           queryKey: queryOptions.queryKey,
           queryFn: async () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const queryFn = queryOptions.queryFn as any;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             await queryFn(params as any);
             return null as unknown as TResult;
           },
@@ -73,7 +76,9 @@ export const MakeChimericQueryWithManagedStore =
           ...(queryOptions as QueryOptions<TResult, E, TResult, string[]>),
           ...(options as UseQueryOptions<TResult, E, TResult, string[]>),
           queryFn: async () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const queryFn = queryOptions.queryFn as any;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             await queryFn(params as any);
             return null as unknown as TResult;
           },

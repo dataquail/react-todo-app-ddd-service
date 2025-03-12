@@ -1,11 +1,12 @@
 import { AppStore } from 'src/lib/store';
 import { QueryClient } from '@tanstack/react-query';
-import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
 import { makeChimericMutation } from 'src/utils/domain/makeChimericMutation';
 import { removeActiveTodo } from '../activeTodoStore';
 import { getConfig } from 'src/utils/getConfig';
 import { wrappedFetch } from 'src/utils/network/wrappedFetch';
+import { getQueryOptionsGetAll } from './getAll';
+import { getQueryOptionsGetOneById } from './getOneById';
 
 export type IDeleteActiveTodo = (args: { id: string }) => Promise<void>;
 
@@ -33,10 +34,10 @@ export const DeleteOneMethodImpl = (
     errorHelpers: {},
     onSuccess: async (_data, args) => {
       await queryClient.invalidateQueries({
-        queryKey: [networkQueryKeys.GET_TODO_LIST],
+        queryKey: getQueryOptionsGetAll().queryKey,
       });
       await queryClient.invalidateQueries({
-        queryKey: [networkQueryKeys.GET_TODO, args.id],
+        queryKey: getQueryOptionsGetOneById(args).queryKey,
       });
     },
   });

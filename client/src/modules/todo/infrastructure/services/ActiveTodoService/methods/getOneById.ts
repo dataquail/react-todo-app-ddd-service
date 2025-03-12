@@ -1,6 +1,5 @@
 import { QueryClient, queryOptions } from '@tanstack/react-query';
 import { AppStore, useAppSelector } from 'src/lib/store';
-import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
 import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
 import { saveActiveTodo } from '../activeTodoStore';
 import { mapTodoDtoToActiveTodo } from 'src/modules/todo/domain/ActiveTodo';
@@ -17,7 +16,7 @@ export const getActiveTodo: IGetActiveTodo = async (args: { id: string }) => {
 
 export const getQueryOptionsGetOneById = (args: { id: string }) =>
   queryOptions({
-    queryKey: [networkQueryKeys.GET_TODO, args.id],
+    queryKey: ['GET_TODO', args.id],
   });
 
 export const GetOneByIdMethodImpl = (

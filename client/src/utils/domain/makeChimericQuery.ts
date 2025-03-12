@@ -27,6 +27,7 @@ export const MakeChimericQuery =
           forceRefetch: false,
           ...options,
         };
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { forceRefetch, ...fetchQueryOptions } =
           optionsWithOverridesApplied;
         if (optionsWithOverridesApplied.forceRefetch) {
