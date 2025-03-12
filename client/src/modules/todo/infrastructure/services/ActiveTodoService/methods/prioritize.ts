@@ -6,8 +6,8 @@ import { prioritizeActiveTodo } from 'src/modules/todo/domain/ActiveTodo';
 export const PrioritizeMethodImpl = (
   appStore: AppStore,
 ): IActiveTodoService['prioritize'] => {
-  return (activeTodoId: string) => {
-    const activeTodo = appStore.getState().todo.activeTodos.dict[activeTodoId];
+  return (args: { id: string }) => {
+    const activeTodo = appStore.getState().todo.activeTodos.dict[args.id];
 
     if (!activeTodo) {
       throw new Error('ActiveTodo not found');

@@ -1,38 +1,36 @@
-import { QueryClient, useQuery } from '@tanstack/react-query';
-import { networkQueryKeys } from 'src/utils/network/networkQueryKeys';
+import { QueryClient, queryOptions } from '@tanstack/react-query';
 import { ISavedForLaterTodoService } from 'src/modules/todo/domain/services/ISavedForLaterTodoService';
-import { getSavedForLaterTodoList } from '../network/getAllSavedForLaterTodos';
 import { mapSavedForLaterTodoDtoToSavedForLaterTodo } from 'src/modules/todo/domain/SavedForLaterTodo';
+import { MakeChimericQuery } from 'src/utils/domain/makeChimericQuery';
+import { getConfig } from 'src/utils/getConfig';
+import { TodoListDto } from 'src/modules/todo/domain/dtos/TodoListDto';
+import { wrappedFetch } from 'src/utils/network/wrappedFetch';
+import { SavedForLaterTodoListDto } from 'src/modules/todo/domain/dtos/SavedForLaterTodoListDto';
+
+export type IGetAllSavedForLaterTodos = () => Promise<SavedForLaterTodoListDto>;
+
+export const getSavedForLaterTodoList: IGetAllSavedForLaterTodos = async () => {
+  return wrappedFetch<TodoListDto>(
+    `${getConfig().API_URL}/saved-for-later-todo`,
+  );
+};
+
+export const getQueryOptionsGetAll = () =>
+  queryOptions({
+    queryKey: ['GET_SAVED_FOR_LATER_TODO_LIST'],
+    queryFn: async () => {
+      const savedForLaterTodoListDto = await getSavedForLaterTodoList();
+      return savedForLaterTodoListDto.list.map(
+        mapSavedForLaterTodoDtoToSavedForLaterTodo,
+      );
+    },
+  });
 
 export const GetAllMethodImpl = (
   queryClient: QueryClient,
 ): ISavedForLaterTodoService['getAll'] => {
-  const promise = async () => {
-    const savedForLaterTodoListDto = await getSavedForLaterTodoList();
-    return savedForLaterTodoListDto.list.map(
-      mapSavedForLaterTodoDtoToSavedForLaterTodo,
-    );
-  };
-
-  return {
-    queryAsync: async (props) => {
-      if (props?.forceRefetch) {
-        await queryClient.invalidateQueries({
-          queryKey: [networkQueryKeys.GET_SAVED_FOR_LATER_TODO_LIST],
-        });
-      }
-      return queryClient.fetchQuery({
-        queryKey: [networkQueryKeys.GET_SAVED_FOR_LATER_TODO_LIST],
-        queryFn: promise,
-      });
-    },
-    useQuery: (props) => {
-      return useQuery({
-        queryKey: [networkQueryKeys.GET_SAVED_FOR_LATER_TODO_LIST],
-        queryFn: promise,
-        enabled: props?.enabled,
-      });
-    },
+  return MakeChimericQuery(queryClient)({
+    getQueryOptions: getQueryOptionsGetAll,
     errorHelpers: {},
-  };
+  });
 };
