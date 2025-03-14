@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import '@mantine/core/styles.css';
-import 'src/inversify.config';
+import 'src/core/global/inversify.config';
 import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';

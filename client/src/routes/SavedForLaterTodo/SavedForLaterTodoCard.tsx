@@ -12,13 +12,12 @@ import {
 import { format } from 'date-fns';
 import { IconDots, IconPlus, IconTrash } from '@tabler/icons-react';
 import { injectComponent } from 'src/utils/inversify/injectComponent';
-import { appContainer } from 'src/modules/global/appContainer';
-import { TODO_SERVICE_TYPES } from 'src/modules/todo/domain/services/types';
-import { ISavedForLaterTodoService } from 'src/modules/todo/domain/services/ISavedForLaterTodoService';
-import { SavedForLaterTodo } from 'src/modules/todo/domain/SavedForLaterTodo';
+import { appContainer } from 'src/core/global/appContainer';
+import { InjectionSymbol, type InjectionType } from 'src/core/global/types';
+import { SavedForLaterTodo } from 'src/core/domain/savedForLaterTodo/entities/SavedForLaterTodo';
 
 type InjectedProps = {
-  savedForLaterTodoService: ISavedForLaterTodoService;
+  savedForLaterTodoService: InjectionType<'SavedForLaterTodoService'>;
 };
 
 type OwnProps = {
@@ -82,6 +81,6 @@ export const SavedForLaterTodoCard = injectComponent<InjectedProps, OwnProps>(
   },
   appContainer,
   {
-    savedForLaterTodoService: TODO_SERVICE_TYPES.SavedForLaterTodoService,
+    savedForLaterTodoService: InjectionSymbol('SavedForLaterTodoService'),
   },
 );

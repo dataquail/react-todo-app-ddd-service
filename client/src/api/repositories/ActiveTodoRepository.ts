@@ -1,6 +1,6 @@
-import { CreateTodoBody } from 'src/modules/todo/domain/dtos/CreateTodoBody';
-import { TodoDto } from 'src/modules/todo/domain/dtos/TodoDto';
-import { TodoListDto } from 'src/modules/todo/domain/dtos/TodoListDto';
+import { CreateTodoBody } from 'src/core/domain/activeTodo/dtos/in/CreateTodoBody';
+import { TodoDto } from 'src/core/domain/activeTodo/dtos/out/TodoDto';
+import { TodoListDto } from 'src/core/domain/activeTodo/dtos/out/TodoListDto';
 import { v4 } from 'uuid';
 
 export class ActiveTodoRepository {

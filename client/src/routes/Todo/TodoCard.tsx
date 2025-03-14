@@ -17,16 +17,14 @@ import {
   IconStarFilled,
   IconTrash,
 } from '@tabler/icons-react';
-import { ActiveTodo } from 'src/modules/todo/domain/ActiveTodo';
-import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
+import { ActiveTodo } from 'src/core/domain/activeTodo/entities/ActiveTodo';
 import { injectComponent } from 'src/utils/inversify/injectComponent';
-import { appContainer } from 'src/modules/global/appContainer';
-import { TODO_SERVICE_TYPES } from 'src/modules/todo/domain/services/types';
-import { ISavedForLaterTodoService } from 'src/modules/todo/domain/services/ISavedForLaterTodoService';
+import { appContainer } from 'src/core/global/appContainer';
+import { InjectionSymbol, type InjectionType } from 'src/core/global/types';
 
 type InjectedProps = {
-  activeTodoService: IActiveTodoService;
-  savedForLaterTodoService: ISavedForLaterTodoService;
+  activeTodoService: InjectionType<'ActiveTodoService'>;
+  savedForLaterTodoService: InjectionType<'SavedForLaterTodoService'>;
 };
 
 type OwnProps = {
@@ -142,7 +140,7 @@ export const TodoCard = injectComponent<InjectedProps, OwnProps>(
   },
   appContainer,
   {
-    activeTodoService: TODO_SERVICE_TYPES.ActiveTodoService,
-    savedForLaterTodoService: TODO_SERVICE_TYPES.SavedForLaterTodoService,
+    activeTodoService: InjectionSymbol('ActiveTodoService'),
+    savedForLaterTodoService: InjectionSymbol('SavedForLaterTodoService'),
   },
 );

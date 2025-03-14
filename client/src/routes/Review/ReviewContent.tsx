@@ -10,20 +10,15 @@ import {
 } from '@mantine/core';
 import { format } from 'date-fns';
 import { injectComponent } from 'src/utils/inversify/injectComponent';
-import { appContainer } from 'src/modules/global/appContainer';
-import { IReviewRepository } from 'src/modules/todo/domain/repositories/IReviewRepository';
-import { StartReview } from 'src/modules/todo/infrastructure/useCases/commands/StartReview';
-import { FinishReview } from 'src/modules/todo/infrastructure/useCases/commands/FinishReview';
-import { GetTodosUnderReview } from 'src/modules/todo/infrastructure/useCases/queries/GetTodosUnderReview';
+import { appContainer } from 'src/core/global/appContainer';
 import { useViewportSize } from '@mantine/hooks';
-import { TODO_REPOSITORY_TYPES } from 'src/modules/todo/domain/repositories/types';
-import { TODO_USECASE_TYPES } from 'src/modules/todo/infrastructure/useCases/types';
+import { InjectionSymbol, type InjectionType } from 'src/core/global/types';
 
 type InjectedProps = {
-  reviewRepository: IReviewRepository;
-  StartReview: StartReview;
-  FinishReview: FinishReview;
-  GetTodosUnderReview: GetTodosUnderReview;
+  reviewRepository: InjectionType<'ReviewRepository'>;
+  StartReview: InjectionType<'StartReview'>;
+  FinishReview: InjectionType<'FinishReview'>;
+  GetTodosUnderReview: InjectionType<'GetTodosUnderReview'>;
 };
 
 export const ReviewContent = injectComponent<InjectedProps>(
@@ -64,9 +59,9 @@ export const ReviewContent = injectComponent<InjectedProps>(
   },
   appContainer,
   {
-    reviewRepository: TODO_REPOSITORY_TYPES.ReviewRepository,
-    StartReview: TODO_USECASE_TYPES.StartReview,
-    FinishReview: TODO_USECASE_TYPES.FinishReview,
-    GetTodosUnderReview: TODO_USECASE_TYPES.GetTodosUnderReview,
+    reviewRepository: InjectionSymbol('ReviewRepository'),
+    StartReview: InjectionSymbol('StartReview'),
+    FinishReview: InjectionSymbol('FinishReview'),
+    GetTodosUnderReview: InjectionSymbol('GetTodosUnderReview'),
   },
 );
