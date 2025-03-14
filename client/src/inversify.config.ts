@@ -10,6 +10,15 @@ import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodo
 import { ActiveTodoServiceImpl } from 'src/modules/todo/infrastructure/services/ActiveTodoService/ActiveTodoServiceImpl';
 import { ISavedForLaterTodoService } from 'src/modules/todo/domain/services/ISavedForLaterTodoService';
 import { SavedForLaterTodoServiceImpl } from 'src/modules/todo/infrastructure/services/SavedForLaterTodoService/SavedForLaterTodoServiceImpl';
+import { TODO_REPOSITORY_TYPES } from './modules/todo/domain/repositories/types';
+import { IReviewRepository } from './modules/todo/domain/repositories/IReviewRepository';
+import { ReviewRepositoryImpl } from './modules/todo/infrastructure/repositories/ReviewRepository/ReviewRepositoryImpl';
+import { IReviewedTodoRepository } from './modules/todo/domain/repositories/IReviewedTodoRepository';
+import { ReviewedTodoRepositoryImpl } from './modules/todo/infrastructure/repositories/ReviewedTodoRepository/ReviewedRepositoryImpl';
+import { StartReview } from './modules/todo/infrastructure/useCases/commands/StartReview';
+import { FinishReview } from './modules/todo/infrastructure/useCases/commands/FinishReview';
+import { GetTodosUnderReview } from './modules/todo/infrastructure/useCases/queries/GetTodosUnderReview';
+import { TODO_USECASE_TYPES } from './modules/todo/infrastructure/useCases/types';
 
 /**
  * Inversify container configuration.
@@ -34,3 +43,20 @@ appContainer
 appContainer
   .bind<ISavedForLaterTodoService>(TODO_SERVICE_TYPES.SavedForLaterTodoService)
   .to(SavedForLaterTodoServiceImpl);
+
+// REPOSITORIES
+appContainer
+  .bind<IReviewRepository>(TODO_REPOSITORY_TYPES.ReviewRepository)
+  .to(ReviewRepositoryImpl);
+appContainer
+  .bind<IReviewedTodoRepository>(TODO_REPOSITORY_TYPES.ReviewedTodoRepository)
+  .to(ReviewedTodoRepositoryImpl);
+
+// USE CASES
+appContainer.bind<StartReview>(TODO_USECASE_TYPES.StartReview).to(StartReview);
+appContainer
+  .bind<FinishReview>(TODO_USECASE_TYPES.FinishReview)
+  .to(FinishReview);
+appContainer
+  .bind<GetTodosUnderReview>(TODO_USECASE_TYPES.GetTodosUnderReview)
+  .to(GetTodosUnderReview);

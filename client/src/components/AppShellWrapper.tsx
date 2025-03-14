@@ -1,6 +1,5 @@
 import { AppShell, Avatar, Box, Burger, NavLink, Flex } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import { useViewportSize } from '@mantine/hooks';
+import { useDisclosure, useViewportSize } from '@mantine/hooks';
 import { IconHome2, IconPencilBolt, IconRestore } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 
@@ -55,13 +54,22 @@ export const AppShellWrapper = ({ children }: Props) => {
             component={Link}
           />
           <NavLink
-            to="saved-for-later"
+            to="/saved-for-later"
             label="Saved For Later Todos"
             active={
               window.location.pathname ===
               '/react-todo-app-ddd-service/saved-for-later'
             }
             leftSection={<IconRestore size="1rem" stroke={1.5} />}
+            component={Link}
+          />
+          <NavLink
+            to="/review"
+            label="Review Todos"
+            active={
+              window.location.pathname === '/react-todo-app-ddd-service/review'
+            }
+            leftSection={<IconPencilBolt size="1rem" stroke={1.5} />}
             component={Link}
           />
         </>
