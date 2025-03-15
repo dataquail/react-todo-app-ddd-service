@@ -31,8 +31,8 @@ export class ReviewedTodoRepositoryImpl implements IReviewedTodoRepository {
     this.appStoreProvider.get().dispatch(saveReviewedTodo(reviewedTodo));
   }
 
-  private deleteImpl(reviewedTodo: ReviewedTodo) {
-    this.appStoreProvider.get().dispatch(deleteReviewedTodo(reviewedTodo));
+  private deleteImpl(args: { id: string }) {
+    this.appStoreProvider.get().dispatch(deleteReviewedTodo(args));
   }
 
   private saveManyImpl(reviewedTodos: ReviewedTodo[]) {

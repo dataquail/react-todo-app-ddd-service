@@ -15,24 +15,18 @@ type OwnProps = {
   children: ReactNode;
 };
 
-const _Providers = ({
-  children,
-  appStoreProvider,
-  queryClientProvider,
-}: InjectedProps & OwnProps) => {
-  return (
-    <StoreProvider store={appStoreProvider.get()}>
-      <ThemeProvider>
-        <QueryClientProvider client={queryClientProvider.get()}>
-          {children}
-        </QueryClientProvider>
-      </ThemeProvider>
-    </StoreProvider>
-  );
-};
-
 export const Providers = injectComponent<InjectedProps, OwnProps>(
-  _Providers,
+  ({ children, appStoreProvider, queryClientProvider }) => {
+    return (
+      <StoreProvider store={appStoreProvider.get()}>
+        <ThemeProvider>
+          <QueryClientProvider client={queryClientProvider.get()}>
+            {children}
+          </QueryClientProvider>
+        </ThemeProvider>
+      </StoreProvider>
+    );
+  },
   appContainer,
   {
     appStoreProvider: InjectionSymbol('AppStoreProvider'),
