@@ -18,6 +18,7 @@ import { StartReview } from 'src/core/useCases/review/application/StartReview';
 import { FinishReview } from 'src/core/useCases/review/application/FinishReview';
 import { GetTodosUnderReview } from 'src/core/useCases/review/application/GetTodosUnderReview';
 import { HandleActiveTodoDelete } from 'src/core/useCases/review/eventHandlers/HandleActiveTodoDelete';
+import { HandleSavedForLaterTodoDelete } from 'src/core/useCases/review/eventHandlers/HandleSavedForLaterTodoDelete';
 
 const getBindingArray = <
   K extends keyof typeof DI_SYMBOLS,
@@ -56,6 +57,10 @@ export const DI_CONFIG = {
       getBindingArray('FinishReview', FinishReview),
       getBindingArray('GetTodosUnderReview', GetTodosUnderReview),
       getBindingArray('HandleActiveTodoDelete', HandleActiveTodoDelete),
+      getBindingArray(
+        'HandleSavedForLaterTodoDelete',
+        HandleSavedForLaterTodoDelete,
+      ),
     ],
   },
 };

@@ -16,6 +16,7 @@ import { FinishReview } from '../useCases/review/application/FinishReview';
 import { GetTodosUnderReview } from '../useCases/review/application/GetTodosUnderReview';
 import { StartReview } from '../useCases/review/application/StartReview';
 import { HandleActiveTodoDelete } from '../useCases/review/eventHandlers/HandleActiveTodoDelete';
+import { HandleSavedForLaterTodoDelete } from '../useCases/review/eventHandlers/HandleSavedForLaterTodoDelete';
 
 export const DI_SYMBOLS = {
   // Globals
@@ -36,6 +37,7 @@ export const DI_SYMBOLS = {
   FinishReview: Symbol.for('FinishReview'),
   GetTodosUnderReview: Symbol.for('GetTodosUnderReview'),
   HandleActiveTodoDelete: Symbol.for('HandleActiveTodoDelete'),
+  HandleSavedForLaterTodoDelete: Symbol.for('HandleSavedForLaterTodoDelete'),
 };
 
 export interface DI_RETURN_TYPES {
@@ -57,6 +59,7 @@ export interface DI_RETURN_TYPES {
   FinishReview: FinishReview;
   GetTodosUnderReview: GetTodosUnderReview;
   HandleActiveTodoDelete: HandleActiveTodoDelete;
+  HandleSavedForLaterTodoDelete: HandleSavedForLaterTodoDelete;
 }
 
 export function InjectionSymbol<K extends keyof typeof DI_SYMBOLS>(symbol: K) {

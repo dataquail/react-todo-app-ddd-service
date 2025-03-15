@@ -31,6 +31,7 @@ DI_CONFIG.useCases.DI_ARRAY.forEach(([symbol, impl]) => {
 // Eagerly instantiate event handlers
 const EVENT_HANDLERS = [
   'HandleActiveTodoDelete',
+  'HandleSavedForLaterTodoDelete',
   // Add other event handlers here
 ] as const;
 

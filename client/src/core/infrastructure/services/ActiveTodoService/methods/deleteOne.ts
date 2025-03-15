@@ -30,13 +30,11 @@ export const DeleteOneMethodImpl = (
   applicationEventEmitter: IApplicationEventEmitter,
 ): IActiveTodoService['deleteOne'] => {
   return makeChimericMutation({
-    mutationFn: async (args) => {
-      await deleteActiveTodo(args);
-      appStore.dispatch(removeActiveTodo(args.id));
-      applicationEventEmitter.emit(new ActiveTodoDeletedEvent({ id: args.id }));
-    },
+    mutationFn: deleteActiveTodo,
     errorHelpers: {},
     onSuccess: async (_data, args) => {
+      applicationEventEmitter.emit(new ActiveTodoDeletedEvent({ id: args.id }));
+      appStore.dispatch(removeActiveTodo(args.id));
       await queryClient.invalidateQueries({
         queryKey: getQueryOptionsGetAll().queryKey,
       });
