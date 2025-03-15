@@ -1,13 +1,12 @@
 import { Flex, Loader, ScrollArea } from '@mantine/core';
 import { useViewportSize } from '@mantine/hooks';
 import { TodoCard } from './TodoCard';
-import { IActiveTodoService } from 'src/modules/todo/domain/services/IActiveTodoService';
 import { injectComponent } from 'src/utils/inversify/injectComponent';
-import { appContainer } from 'src/modules/global/appContainer';
-import { TODO_SERVICE_TYPES } from 'src/modules/todo/domain/services/types';
+import { appContainer } from 'src/core/global/appContainer';
+import { InjectionSymbol, type InjectionType } from 'src/core/global/types';
 
 type InjectedProps = {
-  activeTodoService: IActiveTodoService;
+  activeTodoService: InjectionType<'ActiveTodoService'>;
 };
 
 export const TodoList = injectComponent<InjectedProps>(
@@ -32,5 +31,5 @@ export const TodoList = injectComponent<InjectedProps>(
     );
   },
   appContainer,
-  { activeTodoService: TODO_SERVICE_TYPES.ActiveTodoService },
+  { activeTodoService: InjectionSymbol('ActiveTodoService') },
 );

@@ -1,5 +1,5 @@
-import { SavedForLaterTodoDto } from 'src/modules/todo/domain/dtos/SavedForLaterTodoDto';
-import { SavedForLaterTodoListDto } from 'src/modules/todo/domain/dtos/SavedForLaterTodoListDto';
+import { SavedForLaterTodoDto } from 'src/core/domain/savedForLaterTodo/dtos/out/SavedForLaterTodoDto';
+import { SavedForLaterTodoListDto } from 'src/core/domain/savedForLaterTodo/dtos/out/SavedForLaterTodoListDto';
 import { v4 } from 'uuid';
 
 export class SavedForLaterTodoRepository {

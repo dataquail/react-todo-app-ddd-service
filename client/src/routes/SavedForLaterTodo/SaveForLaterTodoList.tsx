@@ -1,13 +1,12 @@
 import { Flex, Loader, ScrollArea } from '@mantine/core';
 import { useViewportSize } from '@mantine/hooks';
-import { ISavedForLaterTodoService } from 'src/modules/todo/domain/services/ISavedForLaterTodoService';
 import { injectComponent } from 'src/utils/inversify/injectComponent';
-import { appContainer } from 'src/modules/global/appContainer';
-import { TODO_SERVICE_TYPES } from 'src/modules/todo/domain/services/types';
+import { appContainer } from 'src/core/global/appContainer';
+import { InjectionSymbol, type InjectionType } from 'src/core/global/types';
 import { SavedForLaterTodoCard } from './SavedForLaterTodoCard';
 
 type InjectedProps = {
-  savedForLaterTodoService: ISavedForLaterTodoService;
+  savedForLaterTodoService: InjectionType<'SavedForLaterTodoService'>;
 };
 
 export const SaveForLaterTodoList = injectComponent<InjectedProps>(
@@ -35,5 +34,7 @@ export const SaveForLaterTodoList = injectComponent<InjectedProps>(
     );
   },
   appContainer,
-  { savedForLaterTodoService: TODO_SERVICE_TYPES.SavedForLaterTodoService },
+  {
+    savedForLaterTodoService: InjectionSymbol('SavedForLaterTodoService'),
+  },
 );

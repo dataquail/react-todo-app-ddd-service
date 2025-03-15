@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
-import 'src/inversify.config';
-import { appContainer } from 'src/modules/global/appContainer';
+import 'src/core/global/inversify.config';
+import { appContainer } from 'src/core/global/appContainer';
 
 beforeEach(() => {
   appContainer.snapshot();

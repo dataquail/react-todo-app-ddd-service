@@ -1,6 +1,6 @@
 import { Title, Flex, Space } from '@mantine/core';
 import { TodoList } from 'src/routes/Todo/TodoList';
-import { AddNewTodoForm } from 'src/components/AddNewTodoForm';
+import { AddNewTodoForm } from 'src/routes/Todo/AddNewTodoForm';
 import { AppShellWrapper } from 'src/components/AppShellWrapper';
 
 export const Todo = () => {

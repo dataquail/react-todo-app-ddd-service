@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import '@mantine/core/styles.css';
-import 'src/inversify.config';
+import 'src/core/global/inversify.config';
 import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -10,6 +10,7 @@ import { ErrorPage } from './ErrorPage';
 import { setupApi } from './api/setupApi';
 import { Todo } from './routes/Todo';
 import { SavedForLaterTodo } from './routes/SavedForLaterTodo';
+import { Review } from './routes/Review';
 
 async function prepare() {
   // @ts-expect-error - async import needed to mock api
@@ -30,6 +31,11 @@ prepare().then(() => {
       {
         path: '/saved-for-later',
         element: <SavedForLaterTodo />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: '/review',
+        element: <Review />,
         errorElement: <ErrorPage />,
       },
     ],
