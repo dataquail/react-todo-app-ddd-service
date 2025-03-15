@@ -30,7 +30,7 @@ export const reviewedTodoSlice = createSlice({
         state[reviewedTodo.id] = toRecord(reviewedTodo);
       });
     },
-    deleteReviewedTodo: (state, action: PayloadAction<ReviewedTodo>) => {
+    deleteReviewedTodo: (state, action: PayloadAction<{ id: string }>) => {
       delete state[action.payload.id];
     },
   },

@@ -28,6 +28,8 @@ export class ActiveTodoServiceImpl implements IActiveTodoService {
     appStoreProvider: InjectionType<'AppStoreProvider'>,
     @inject(InjectionSymbol('QueryClientProvider'))
     queryClientProvider: InjectionType<'QueryClientProvider'>,
+    @inject(InjectionSymbol('ApplicationEventEmitter'))
+    applicationEventEmitter: InjectionType<'ApplicationEventEmitter'>,
   ) {
     this.getAll = GetAllMethodImpl(
       appStoreProvider.get(),
@@ -42,6 +44,7 @@ export class ActiveTodoServiceImpl implements IActiveTodoService {
     this.deleteOne = DeleteOneMethodImpl(
       queryClientProvider.get(),
       appStoreProvider.get(),
+      applicationEventEmitter,
     );
     this.completeOne = CompleteOneMethodImpl(queryClientProvider.get());
     this.uncompleteOne = UncompleteOneMethodImpl(queryClientProvider.get());

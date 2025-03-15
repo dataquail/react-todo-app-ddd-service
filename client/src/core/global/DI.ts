@@ -6,6 +6,7 @@ import {
 // GLOBAL
 import { AppStoreProviderImpl } from 'src/core/global/appStoreProvider/AppStoreProviderImpl';
 import { QueryClientProviderImpl } from 'src/core/global/queryClientProvider/QueryClientProviderImpl';
+import { ApplicationEventEmitterImpl } from 'src/core/global/ApplicationEventEmitter/ApplicationEventEmitterImpl';
 // SERVICES
 import { ActiveTodoServiceImpl } from 'src/core/infrastructure/services/ActiveTodoService/ActiveTodoServiceImpl';
 import { SavedForLaterTodoServiceImpl } from 'src/core/infrastructure/services/SavedForLaterTodoService/SavedForLaterTodoServiceImpl';
@@ -16,6 +17,7 @@ import { ReviewedTodoRepositoryImpl } from 'src/core/infrastructure/repositories
 import { StartReview } from 'src/core/useCases/review/application/StartReview';
 import { FinishReview } from 'src/core/useCases/review/application/FinishReview';
 import { GetTodosUnderReview } from 'src/core/useCases/review/application/GetTodosUnderReview';
+import { HandleActiveTodoDelete } from 'src/core/useCases/review/eventHandlers/HandleActiveTodoDelete';
 
 const getBindingArray = <
   K extends keyof typeof DI_SYMBOLS,
@@ -33,6 +35,7 @@ export const DI_CONFIG = {
     DI_ARRAY: [
       getBindingArray('AppStoreProvider', AppStoreProviderImpl),
       getBindingArray('QueryClientProvider', QueryClientProviderImpl),
+      getBindingArray('ApplicationEventEmitter', ApplicationEventEmitterImpl),
     ],
   },
   services: {
@@ -52,6 +55,7 @@ export const DI_CONFIG = {
       getBindingArray('StartReview', StartReview),
       getBindingArray('FinishReview', FinishReview),
       getBindingArray('GetTodosUnderReview', GetTodosUnderReview),
+      getBindingArray('HandleActiveTodoDelete', HandleActiveTodoDelete),
     ],
   },
 };

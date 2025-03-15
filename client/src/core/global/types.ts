@@ -1,6 +1,7 @@
 // Globals
 import { IAppStoreProvider } from './appStoreProvider/IAppStoreProvider';
 import { IQueryClientProvider } from './queryClientProvider/IQueryClientProvider';
+import { IApplicationEventEmitter } from './ApplicationEventEmitter/IApplicationEventEmitter';
 
 // Services
 import { IActiveTodoService } from '../domain/activeTodo/ports/IActiveTodoService';
@@ -14,11 +15,13 @@ import { IReviewRepository } from '../domain/review/ports/IReviewRepository';
 import { FinishReview } from '../useCases/review/application/FinishReview';
 import { GetTodosUnderReview } from '../useCases/review/application/GetTodosUnderReview';
 import { StartReview } from '../useCases/review/application/StartReview';
+import { HandleActiveTodoDelete } from '../useCases/review/eventHandlers/HandleActiveTodoDelete';
 
 export const DI_SYMBOLS = {
   // Globals
   AppStoreProvider: Symbol.for('AppStoreProvider'),
   QueryClientProvider: Symbol.for('QueryClientProvider'),
+  ApplicationEventEmitter: Symbol.for('ApplicationEventEmitter'),
 
   // Services
   ActiveTodoService: Symbol.for('ActiveTodoService'),
@@ -32,12 +35,14 @@ export const DI_SYMBOLS = {
   StartReview: Symbol.for('StartReview'),
   FinishReview: Symbol.for('FinishReview'),
   GetTodosUnderReview: Symbol.for('GetTodosUnderReview'),
+  HandleActiveTodoDelete: Symbol.for('HandleActiveTodoDelete'),
 };
 
 export interface DI_RETURN_TYPES {
   // Globals
   AppStoreProvider: IAppStoreProvider;
   QueryClientProvider: IQueryClientProvider;
+  ApplicationEventEmitter: IApplicationEventEmitter;
 
   // Services
   ActiveTodoService: IActiveTodoService;
@@ -51,6 +56,7 @@ export interface DI_RETURN_TYPES {
   StartReview: StartReview;
   FinishReview: FinishReview;
   GetTodosUnderReview: GetTodosUnderReview;
+  HandleActiveTodoDelete: HandleActiveTodoDelete;
 }
 
 export function InjectionSymbol<K extends keyof typeof DI_SYMBOLS>(symbol: K) {
