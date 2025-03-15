@@ -1,7 +1,7 @@
 import { ChimericMutationFactory } from 'src/utils/domain/ChimericMutation';
 import { ChimericQueryFactory } from 'src/utils/domain/ChimericQuery';
-import { ActiveTodo } from 'src/core/domain/ActiveTodos/entities/ActiveTodo';
 import { CreateTodoBody } from '../dtos/in/CreateTodoBody';
+import { ActiveTodo } from '../entities/ActiveTodo';
 
 export type IActiveTodoService = {
   getAll: ChimericQueryFactory<() => Promise<ActiveTodo[]>, Error>;

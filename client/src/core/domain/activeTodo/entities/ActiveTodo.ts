@@ -1,5 +1,5 @@
 import { parseISO } from 'date-fns';
-import { TodoDto } from './dtos/TodoDto';
+import { TodoDto } from '../dtos/out/TodoDto';
 
 export type ActiveTodo = {
   id: string;
