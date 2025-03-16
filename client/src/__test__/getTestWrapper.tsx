@@ -1,22 +1,16 @@
 import { ReactNode } from 'react';
-import { InitialState } from 'src/lib/store';
-import { getReduxWrapper } from 'src/__test__/getReduxWrapper';
 import { getThemeWrapper } from 'src/__test__/getThemeWrapper';
+import { ReduxTestWrapper } from './ReduxTestWrapper';
+import { ReactQueryTestWrapper } from './ReactQueryTestWrapper';
 
-export const getTestWrapper = ({
-  initialState,
-}: {
-  initialState?: InitialState;
-} = {}) => {
-  const { store, ReduxWrapper } = getReduxWrapper({ initialState });
+export const getTestWrapper = () => {
   const { ThemeWrapper } = getThemeWrapper();
 
-  return {
-    store,
-    TestWrapper: ({ children }: { children: ReactNode }) => (
-      <ReduxWrapper>
-        <ThemeWrapper>{children}</ThemeWrapper>
-      </ReduxWrapper>
-    ),
-  };
+  return ({ children }: { children: ReactNode }) => (
+    <ReduxTestWrapper>
+      <ThemeWrapper>
+        <ReactQueryTestWrapper>{children}</ReactQueryTestWrapper>
+      </ThemeWrapper>
+    </ReduxTestWrapper>
+  );
 };

@@ -6,12 +6,14 @@ import { wrappedFetch } from 'src/utils/network/wrappedFetch';
 import { getQueryOptionsGetAll } from './getAll';
 import { getQueryOptionsGetOneById } from './getOneById';
 
-export type IUncompleteActiveTodo = (args: { id: string }) => Promise<void>;
+export type IUncompleteActiveTodo = (args: {
+  id: string;
+}) => Promise<{ message: string }>;
 
 export const uncompleteActiveTodo: IUncompleteActiveTodo = async (args: {
   id: string;
 }) => {
-  return wrappedFetch<void>(
+  return wrappedFetch<{ message: string }>(
     `${getConfig().API_URL}/active-todo/${args.id}/uncomplete`,
     {
       method: 'post',
@@ -27,7 +29,9 @@ export const UncompleteOneMethodImpl = (
   queryClient: QueryClient,
 ): IActiveTodoService['uncompleteOne'] => {
   return makeChimericMutation({
-    mutationFn: uncompleteActiveTodo,
+    mutationFn: async (args: { id: string }) => {
+      await uncompleteActiveTodo(args);
+    },
     errorHelpers: {},
     onSuccess: async (_data, args) => {
       await queryClient.invalidateQueries({

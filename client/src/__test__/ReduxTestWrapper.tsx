@@ -12,7 +12,7 @@ type OwnProps = {
   children: ReactNode;
 };
 
-export const StoreProvider = injectComponent<InjectedProps, OwnProps>(
+export const ReduxTestWrapper = injectComponent<InjectedProps, OwnProps>(
   ({ appStoreProvider, children }) => {
     return <Provider store={appStoreProvider.get()}>{children}</Provider>;
   },
