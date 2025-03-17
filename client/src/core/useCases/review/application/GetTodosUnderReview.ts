@@ -13,9 +13,10 @@ type GetTodosUnderReviewChimaric = ChimericAsyncReadFactory<
 >;
 
 @injectable()
-export class GetTodosUnderReview {
+export class GetTodosUnderReview implements GetTodosUnderReviewChimaric {
   public readonly useAsync: GetTodosUnderReviewChimaric['useAsync'];
   public readonly call: GetTodosUnderReviewChimaric['call'];
+  public readonly errorHelpers: GetTodosUnderReviewChimaric['errorHelpers'];
 
   constructor(
     @inject(InjectionSymbol('ReviewRepository'))
@@ -29,6 +30,7 @@ export class GetTodosUnderReview {
   ) {
     this.useAsync = this.useAsyncImpl;
     this.call = this.callImpl;
+    this.errorHelpers = {};
   }
 
   private useAsyncImpl() {

@@ -15,8 +15,6 @@ export const inferMutationMethod = (method: string) => {
 export const getChimericMutationTestHarness =
   (testWrapper: ({ children }: { children: ReactNode }) => JSX.Element) =>
   <
-    TChimericMethod extends (typeof ChimericMutationMethods)[number],
-    TMethod extends keyof TService,
     TService extends {
       [key in TMethod]: ChimericMutation<
         Parameters<TService[TMethod]['call']>[0],
@@ -25,13 +23,15 @@ export const getChimericMutationTestHarness =
         TService[TMethod]['errorHelpers']
       >;
     },
+    TMethod extends keyof TService,
+    TChimericMethod extends (typeof ChimericMutationMethods)[number],
     TArgs extends Parameters<TService[TMethod]['call']>[0] = Parameters<
       TService[TMethod]['call']
     >[0],
   >(
-    chimericMethod: TChimericMethod,
-    method: TMethod,
     service: TService,
+    method: TMethod,
+    chimericMethod: TChimericMethod,
   ) => {
     let result = {
       current: {
@@ -73,7 +73,7 @@ export const getChimericMutationTestHarness =
           return new Promise<void>(async (resolve) => {
             await checkOnInterval(
               () => result.current.isSuccess,
-              100,
+              10,
               5000,
               resolve,
             );
@@ -83,7 +83,7 @@ export const getChimericMutationTestHarness =
           return new Promise<void>(async (resolve) => {
             await checkOnInterval(
               () => result.current.isError,
-              100,
+              10,
               5000,
               resolve,
             );
@@ -93,7 +93,7 @@ export const getChimericMutationTestHarness =
           return new Promise<void>(async (resolve) => {
             await checkOnInterval(
               () => result.current.isPending,
-              100,
+              10,
               5000,
               resolve,
             );

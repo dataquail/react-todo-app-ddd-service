@@ -7,9 +7,10 @@ import { InjectionSymbol, type InjectionType } from 'src/core/global/types';
 type StartReviewChimeric = ChimericPromiseFactory<() => Promise<void>, Error>;
 
 @injectable()
-export class StartReview {
+export class StartReview implements StartReviewChimeric {
   public readonly usePromise: StartReviewChimeric['usePromise'];
   public readonly call: StartReviewChimeric['call'];
+  public readonly errorHelpers: StartReviewChimeric['errorHelpers'];
 
   constructor(
     @inject(InjectionSymbol('ReviewRepository'))
@@ -25,6 +26,7 @@ export class StartReview {
     });
     this.usePromise = chimericPromise.usePromise;
     this.call = chimericPromise.call;
+    this.errorHelpers = chimericPromise.errorHelpers;
   }
 
   private async execute() {

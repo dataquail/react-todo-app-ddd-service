@@ -15,8 +15,6 @@ export const inferQueryMethod = (method: string) => {
 export const getChimericQueryTestHarness =
   (testWrapper: ({ children }: { children: ReactNode }) => JSX.Element) =>
   <
-    TChimericMethod extends (typeof ChimericQueryMethods)[number],
-    TMethod extends keyof TService,
     TService extends {
       [key in TMethod]: ChimericQuery<
         Parameters<TService[TMethod]['call']>[0],
@@ -25,13 +23,15 @@ export const getChimericQueryTestHarness =
         TService[TMethod]['errorHelpers']
       >;
     },
+    TMethod extends keyof TService,
+    TChimericMethod extends (typeof ChimericQueryMethods)[number],
     TArgs extends Parameters<TService[TMethod]['call']>[0] = Parameters<
       TService[TMethod]['call']
     >[0],
   >(
-    chimericMethod: TChimericMethod,
-    method: TMethod,
     service: TService,
+    method: TMethod,
+    chimericMethod: TChimericMethod,
     args?: TArgs,
   ) => {
     let result = {
@@ -98,7 +98,7 @@ export const getChimericQueryTestHarness =
             await promise;
             await checkOnInterval(
               () => result.current.isSuccess,
-              100,
+              10,
               5000,
               resolve,
             );
@@ -109,7 +109,7 @@ export const getChimericQueryTestHarness =
             await promise;
             await checkOnInterval(
               () => result.current.isError,
-              100,
+              10,
               5000,
               resolve,
             );
@@ -119,7 +119,7 @@ export const getChimericQueryTestHarness =
           return new Promise<void>(async (resolve) => {
             await checkOnInterval(
               () => result.current.isPending,
-              100,
+              10,
               5000,
               resolve,
             );
