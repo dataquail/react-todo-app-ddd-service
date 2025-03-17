@@ -37,19 +37,10 @@ export const GetOneByIdMethodImpl = (
     errorHelpers: {},
     getFromStore: (args) => {
       const activeTodo = appStore.getState().todo.activeTodos.dict[args.id];
-      if (!activeTodo) {
-        throw new Error('ActiveTodo not found');
-      }
       return activeTodo;
     },
     useFromStore: (args) => {
-      const activeTodo = useAppSelector(
-        (state) => state.todo.activeTodos.dict[args.id],
-      );
-      if (!activeTodo) {
-        throw new Error('ActiveTodo not found');
-      }
-      return activeTodo;
+      return useAppSelector((state) => state.todo.activeTodos.dict[args.id]);
     },
   });
 };

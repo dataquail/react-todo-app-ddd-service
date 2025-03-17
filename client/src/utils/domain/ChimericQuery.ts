@@ -15,16 +15,16 @@ export type ChimericQuery<
   call: (
     args: TParams extends void
       ? {
-          options: CallQueryOptions<TResult, E> & { forceRefetch?: boolean };
+          options?: CallQueryOptions<TResult, E> & { forceRefetch?: boolean };
         } | void
       : {
-          options: CallQueryOptions<TResult, E> & { forceRefetch: boolean };
+          options?: CallQueryOptions<TResult, E> & { forceRefetch?: boolean };
         } & TParams,
   ) => Promise<TResult>;
   useQuery: (
     args: TParams extends void
-      ? { options: UseQueryOptions<TResult, E> } | void
-      : { options: UseQueryOptions<TResult, E> } & TParams,
+      ? { options?: UseQueryOptions<TResult, E> } | void
+      : { options?: UseQueryOptions<TResult, E> } & TParams,
   ) => {
     isPending: boolean;
     isSuccess: boolean;
