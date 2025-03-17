@@ -2,6 +2,10 @@ import '@testing-library/jest-dom';
 import 'src/core/global/inversify.config';
 import { appContainer } from 'src/core/global/appContainer';
 import { vi } from 'vitest';
+import { InjectionSymbol } from 'src/core/global/types';
+import { IQueryClientProvider } from 'src/core/global/queryClientProvider/IQueryClientProvider';
+import { IAppStoreProvider } from 'src/core/global/appStoreProvider/IAppStoreProvider';
+import { revertAll } from 'src/lib/features/revertAll';
 
 const { getComputedStyle } = window;
 window.getComputedStyle = (elt) => getComputedStyle(elt);
@@ -33,6 +37,14 @@ window.HTMLElement.prototype.scrollTo = vi.fn().mockReturnValue({ x: 0, y: 0 });
 
 beforeEach(() => {
   appContainer.snapshot();
+  const queryClientProvider = appContainer.get<IQueryClientProvider>(
+    InjectionSymbol('QueryClientProvider'),
+  );
+  queryClientProvider.get().clear();
+  const appStoreProvider = appContainer.get<IAppStoreProvider>(
+    InjectionSymbol('AppStoreProvider'),
+  );
+  appStoreProvider.get().dispatch(revertAll());
 });
 
 afterEach(async () => {

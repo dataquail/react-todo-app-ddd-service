@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { ActiveTodo } from 'src/core/domain/activeTodo/entities/ActiveTodo';
+import { revertAll } from 'src/lib/features/revertAll';
 
 type ActiveTodoDictionary = {
   [id: string]: ActiveTodo | undefined;
@@ -54,6 +55,7 @@ export const activeTodosSlice = createSlice({
       state.dict = {};
     },
   },
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
 });
 
 export const {

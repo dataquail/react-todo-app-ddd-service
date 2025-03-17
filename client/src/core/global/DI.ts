@@ -1,3 +1,4 @@
+import { Container } from 'inversify';
 import {
   DI_SYMBOLS,
   InjectionType,
@@ -64,3 +65,15 @@ export const DI_CONFIG = {
     ],
   },
 };
+
+// Eagerly instantiate event handlers
+const EVENT_HANDLERS = [
+  'HandleActiveTodoDelete',
+  'HandleSavedForLaterTodoDelete',
+  // Add other event handlers here
+] as const;
+
+export const registerAllEventHandlers = (appContainer: Container) =>
+  EVENT_HANDLERS.forEach((handler) => {
+    appContainer.get(InjectionSymbol(handler));
+  });
