@@ -4,20 +4,24 @@ import { ChimericPromiseFactory } from 'src/utils/domain/ChimericPromise';
 import { makeChimericPromise } from 'src/utils/domain/makeChimericPromise';
 import { InjectionSymbol, type InjectionType } from 'src/core/global/types';
 
-type StartReviewChimeric = ChimericPromiseFactory<() => Promise<void>, Error>;
+type StartReviewUseCaseChimeric = ChimericPromiseFactory<
+  () => Promise<void>,
+  Error
+>;
 
 @injectable()
-export class StartReview {
-  public readonly usePromise: StartReviewChimeric['usePromise'];
-  public readonly call: StartReviewChimeric['call'];
+export class StartReviewUseCase implements StartReviewUseCaseChimeric {
+  public readonly usePromise: StartReviewUseCaseChimeric['usePromise'];
+  public readonly call: StartReviewUseCaseChimeric['call'];
+  public readonly errorHelpers: StartReviewUseCaseChimeric['errorHelpers'];
 
   constructor(
-    @inject(InjectionSymbol('ReviewRepository'))
-    private readonly reviewRepository: InjectionType<'ReviewRepository'>,
-    @inject(InjectionSymbol('ActiveTodoService'))
-    private readonly activeTodoService: InjectionType<'ActiveTodoService'>,
-    @inject(InjectionSymbol('SavedForLaterTodoService'))
-    private readonly savedForLaterTodoService: InjectionType<'SavedForLaterTodoService'>,
+    @inject(InjectionSymbol('IReviewRepository'))
+    private readonly reviewRepository: InjectionType<'IReviewRepository'>,
+    @inject(InjectionSymbol('IActiveTodoService'))
+    private readonly activeTodoService: InjectionType<'IActiveTodoService'>,
+    @inject(InjectionSymbol('ISavedForLaterTodoService'))
+    private readonly savedForLaterTodoService: InjectionType<'ISavedForLaterTodoService'>,
   ) {
     const chimericPromise = makeChimericPromise({
       promiseFn: this.execute.bind(this),
@@ -25,6 +29,7 @@ export class StartReview {
     });
     this.usePromise = chimericPromise.usePromise;
     this.call = chimericPromise.call;
+    this.errorHelpers = chimericPromise.errorHelpers;
   }
 
   private async execute() {

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { Review } from 'src/core/domain/review/entities/Review';
+import { revertAll } from 'src/lib/features/revertAll';
 
 export type ReviewRecord = {
   createdAt: string;
@@ -27,6 +28,7 @@ export const reviewSlice = createSlice({
       state.record = undefined;
     },
   },
+  extraReducers: (builder) => builder.addCase(revertAll, () => initialState),
 });
 
 export const { saveReview, deleteReview } = reviewSlice.actions;

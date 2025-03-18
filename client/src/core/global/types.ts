@@ -12,51 +12,54 @@ import { IReviewedTodoRepository } from '../domain/review/ports/IReviewedTodoRep
 import { IReviewRepository } from '../domain/review/ports/IReviewRepository';
 
 // Use Cases
-import { FinishReview } from '../useCases/review/application/FinishReview';
-import { GetTodosUnderReview } from '../useCases/review/application/GetTodosUnderReview';
-import { StartReview } from '../useCases/review/application/StartReview';
+import { FinishReviewUseCase } from '../useCases/review/application/FinishReviewUseCase';
+import { GetTodosUnderReviewUseCase } from '../useCases/review/application/GetTodosUnderReviewUseCase';
+import { StartReviewUseCase } from '../useCases/review/application/StartReviewUseCase';
 import { HandleActiveTodoDelete } from '../useCases/review/eventHandlers/HandleActiveTodoDelete';
+import { HandleSavedForLaterTodoDelete } from '../useCases/review/eventHandlers/HandleSavedForLaterTodoDelete';
 
 export const DI_SYMBOLS = {
   // Globals
-  AppStoreProvider: Symbol.for('AppStoreProvider'),
-  QueryClientProvider: Symbol.for('QueryClientProvider'),
-  ApplicationEventEmitter: Symbol.for('ApplicationEventEmitter'),
+  IAppStoreProvider: Symbol.for('IAppStoreProvider'),
+  IQueryClientProvider: Symbol.for('IQueryClientProvider'),
+  IApplicationEventEmitter: Symbol.for('IApplicationEventEmitter'),
 
   // Services
-  ActiveTodoService: Symbol.for('ActiveTodoService'),
-  SavedForLaterTodoService: Symbol.for('SavedForLaterTodoService'),
+  IActiveTodoService: Symbol.for('IActiveTodoService'),
+  ISavedForLaterTodoService: Symbol.for('ISavedForLaterTodoService'),
 
   // Repositories
-  ReviewedTodoRepository: Symbol.for('ReviewedTodoRepository'),
-  ReviewRepository: Symbol.for('ReviewRepository'),
+  IReviewedTodoRepository: Symbol.for('IReviewedTodoRepository'),
+  IReviewRepository: Symbol.for('IReviewRepository'),
 
   // Use Cases
-  StartReview: Symbol.for('StartReview'),
-  FinishReview: Symbol.for('FinishReview'),
-  GetTodosUnderReview: Symbol.for('GetTodosUnderReview'),
+  StartReviewUseCase: Symbol.for('StartReviewUseCase'),
+  FinishReviewUseCase: Symbol.for('FinishReviewUseCase'),
+  GetTodosUnderReviewUseCase: Symbol.for('GetTodosUnderReviewUseCase'),
   HandleActiveTodoDelete: Symbol.for('HandleActiveTodoDelete'),
+  HandleSavedForLaterTodoDelete: Symbol.for('HandleSavedForLaterTodoDelete'),
 };
 
 export interface DI_RETURN_TYPES {
   // Globals
-  AppStoreProvider: IAppStoreProvider;
-  QueryClientProvider: IQueryClientProvider;
-  ApplicationEventEmitter: IApplicationEventEmitter;
+  IAppStoreProvider: IAppStoreProvider;
+  IQueryClientProvider: IQueryClientProvider;
+  IApplicationEventEmitter: IApplicationEventEmitter;
 
   // Services
-  ActiveTodoService: IActiveTodoService;
-  SavedForLaterTodoService: ISavedForLaterTodoService;
+  IActiveTodoService: IActiveTodoService;
+  ISavedForLaterTodoService: ISavedForLaterTodoService;
 
   // Repositories
-  ReviewedTodoRepository: IReviewedTodoRepository;
-  ReviewRepository: IReviewRepository;
+  IReviewedTodoRepository: IReviewedTodoRepository;
+  IReviewRepository: IReviewRepository;
 
   // Use Cases
-  StartReview: StartReview;
-  FinishReview: FinishReview;
-  GetTodosUnderReview: GetTodosUnderReview;
+  StartReviewUseCase: StartReviewUseCase;
+  FinishReviewUseCase: FinishReviewUseCase;
+  GetTodosUnderReviewUseCase: GetTodosUnderReviewUseCase;
   HandleActiveTodoDelete: HandleActiveTodoDelete;
+  HandleSavedForLaterTodoDelete: HandleSavedForLaterTodoDelete;
 }
 
 export function InjectionSymbol<K extends keyof typeof DI_SYMBOLS>(symbol: K) {

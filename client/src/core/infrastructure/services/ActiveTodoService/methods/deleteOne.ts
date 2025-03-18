@@ -10,18 +10,23 @@ import { getQueryOptionsGetAll } from './getAll';
 import { getQueryOptionsGetOneById } from './getOneById';
 import { ActiveTodoDeletedEvent } from 'src/core/domain/activeTodo/events/ActiveTodoDeletedEvent';
 
-export type IDeleteActiveTodo = (args: { id: string }) => Promise<void>;
+export type IDeleteActiveTodo = (args: {
+  id: string;
+}) => Promise<{ message: string }>;
 
 export const deleteActiveTodo: IDeleteActiveTodo = async (args: {
   id: string;
 }) => {
-  return wrappedFetch<void>(`${getConfig().API_URL}/active-todo/${args.id}`, {
-    method: 'delete',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+  return wrappedFetch<{ message: string }>(
+    `${getConfig().API_URL}/active-todo/${args.id}`,
+    {
+      method: 'delete',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
     },
-  });
+  );
 };
 
 export const DeleteOneMethodImpl = (
@@ -30,13 +35,13 @@ export const DeleteOneMethodImpl = (
   applicationEventEmitter: IApplicationEventEmitter,
 ): IActiveTodoService['deleteOne'] => {
   return makeChimericMutation({
-    mutationFn: async (args) => {
+    mutationFn: async (args: { id: string }) => {
       await deleteActiveTodo(args);
-      appStore.dispatch(removeActiveTodo(args.id));
-      applicationEventEmitter.emit(new ActiveTodoDeletedEvent({ id: args.id }));
     },
     errorHelpers: {},
     onSuccess: async (_data, args) => {
+      applicationEventEmitter.emit(new ActiveTodoDeletedEvent({ id: args.id }));
+      appStore.dispatch(removeActiveTodo(args.id));
       await queryClient.invalidateQueries({
         queryKey: getQueryOptionsGetAll().queryKey,
       });

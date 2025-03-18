@@ -9,9 +9,13 @@ import { getConfig } from 'src/utils/getConfig';
 import { wrappedFetch } from 'src/utils/network/wrappedFetch';
 import { ActivateBody } from 'src/core/domain/savedForLaterTodo/dtos/in/ActivateBody';
 
-export type IActivate = (args: ActivateBody) => Promise<{ id: string }>;
+export type IActivateSavedForLaterTodo = (
+  args: ActivateBody,
+) => Promise<{ id: string }>;
 
-export const activate: IActivate = async (activateBody) => {
+export const activateSavedForLaterTodo: IActivateSavedForLaterTodo = async (
+  activateBody,
+) => {
   return wrappedFetch<{ id: string }>(
     `${getConfig().API_URL}/saved-for-later-todo/activate`,
     {
@@ -29,7 +33,7 @@ export const ActivateMethodImpl = (
   queryClient: QueryClient,
 ): ISavedForLaterTodoService['activate'] => {
   return makeChimericMutation({
-    mutationFn: activate,
+    mutationFn: activateSavedForLaterTodo,
     errorHelpers: {},
     onSuccess: async (data) => {
       await queryClient.invalidateQueries({

@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import { appContainer } from 'src/core/global/appContainer';
-import { DI_CONFIG } from 'src/core/global/DI';
-import { InjectionSymbol } from './types';
+import { DI_CONFIG, registerAllEventHandlers } from 'src/core/global/DI';
 /**
  * Inversify container configuration.
  *
@@ -28,12 +27,4 @@ DI_CONFIG.useCases.DI_ARRAY.forEach(([symbol, impl]) => {
   appContainer.bind(symbol).to(impl);
 });
 
-// Eagerly instantiate event handlers
-const EVENT_HANDLERS = [
-  'HandleActiveTodoDelete',
-  // Add other event handlers here
-] as const;
-
-EVENT_HANDLERS.forEach((handler) => {
-  appContainer.get(InjectionSymbol(handler));
-});
+registerAllEventHandlers(appContainer);

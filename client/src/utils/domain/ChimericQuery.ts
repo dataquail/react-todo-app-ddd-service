@@ -2,7 +2,10 @@ import {
   FetchQueryOptions,
   UseQueryOptions as RQUseQueryOptions,
 } from '@tanstack/react-query';
-import { ExtractChimericParameter, ExtractChimericReturnType } from './utils';
+import {
+  ExtractChimericParameter,
+  ExtractChimericPromiseReturnType,
+} from './utils';
 
 export type ChimericQuery<
   TParams,
@@ -15,16 +18,16 @@ export type ChimericQuery<
   call: (
     args: TParams extends void
       ? {
-          options: CallQueryOptions<TResult, E> & { forceRefetch?: boolean };
+          options?: CallQueryOptions<TResult, E> & { forceRefetch?: boolean };
         } | void
       : {
-          options: CallQueryOptions<TResult, E> & { forceRefetch: boolean };
+          options?: CallQueryOptions<TResult, E> & { forceRefetch?: boolean };
         } & TParams,
   ) => Promise<TResult>;
   useQuery: (
     args: TParams extends void
-      ? { options: UseQueryOptions<TResult, E> } | void
-      : { options: UseQueryOptions<TResult, E> } & TParams,
+      ? { options?: UseQueryOptions<TResult, E> } | void
+      : { options?: UseQueryOptions<TResult, E> } & TParams,
   ) => {
     isPending: boolean;
     isSuccess: boolean;
@@ -55,7 +58,7 @@ export type ChimericQueryFactory<
     : object,
 > = ChimericQuery<
   ExtractChimericParameter<T>,
-  ExtractChimericReturnType<T>,
+  ExtractChimericPromiseReturnType<T>,
   E,
   ErrorHelpers
 >;

@@ -5,7 +5,7 @@ import { InjectionSymbol, type InjectionType } from 'src/core/global/types';
 import { injectComponent } from 'src/utils/inversify/injectComponent';
 
 type InjectedProps = {
-  activeTodoService: InjectionType<'ActiveTodoService'>;
+  activeTodoService: InjectionType<'IActiveTodoService'>;
 };
 
 export const AddNewTodoForm = injectComponent<InjectedProps>(
@@ -43,6 +43,6 @@ export const AddNewTodoForm = injectComponent<InjectedProps>(
   },
   appContainer,
   {
-    activeTodoService: InjectionSymbol('ActiveTodoService'),
+    activeTodoService: InjectionSymbol('IActiveTodoService'),
   },
 );

@@ -12,8 +12,8 @@ export class ReviewRepositoryImpl implements IReviewRepository {
   public readonly get: IReviewRepository['get'];
 
   constructor(
-    @inject(InjectionSymbol('AppStoreProvider'))
-    private readonly appStoreProvider: InjectionType<'AppStoreProvider'>,
+    @inject(InjectionSymbol('IAppStoreProvider'))
+    private readonly appStoreProvider: InjectionType<'IAppStoreProvider'>,
   ) {
     this.save = this.saveImpl;
     this.delete = this.deleteImpl;

@@ -15,18 +15,23 @@ import { useViewportSize } from '@mantine/hooks';
 import { InjectionSymbol, type InjectionType } from 'src/core/global/types';
 
 type InjectedProps = {
-  reviewRepository: InjectionType<'ReviewRepository'>;
-  StartReview: InjectionType<'StartReview'>;
-  FinishReview: InjectionType<'FinishReview'>;
-  GetTodosUnderReview: InjectionType<'GetTodosUnderReview'>;
+  reviewRepository: InjectionType<'IReviewRepository'>;
+  startReviewUseCase: InjectionType<'StartReviewUseCase'>;
+  finishReviewUseCase: InjectionType<'FinishReviewUseCase'>;
+  getTodosUnderReviewUseCase: InjectionType<'GetTodosUnderReviewUseCase'>;
 };
 
 export const ReviewContent = injectComponent<InjectedProps>(
-  ({ reviewRepository, StartReview, FinishReview, GetTodosUnderReview }) => {
+  ({
+    reviewRepository,
+    startReviewUseCase,
+    finishReviewUseCase,
+    getTodosUnderReviewUseCase,
+  }) => {
     const review = reviewRepository.get.use();
     const hasStartedReview = Boolean(review);
-    const startReview = StartReview.usePromise();
-    const getTodosUnderReview = GetTodosUnderReview.useAsync();
+    const startReview = startReviewUseCase.usePromise();
+    const getTodosUnderReview = getTodosUnderReviewUseCase.useAsync();
     const { height } = useViewportSize();
 
     return (
@@ -34,7 +39,7 @@ export const ReviewContent = injectComponent<InjectedProps>(
         <Group justify="space-between" align="center" h="60px">
           <Title order={1}>Review Todos</Title>
           {hasStartedReview ? (
-            <Button onClick={() => FinishReview.execute()}>
+            <Button onClick={() => finishReviewUseCase.execute()}>
               Finish Review
             </Button>
           ) : (
@@ -59,9 +64,9 @@ export const ReviewContent = injectComponent<InjectedProps>(
   },
   appContainer,
   {
-    reviewRepository: InjectionSymbol('ReviewRepository'),
-    StartReview: InjectionSymbol('StartReview'),
-    FinishReview: InjectionSymbol('FinishReview'),
-    GetTodosUnderReview: InjectionSymbol('GetTodosUnderReview'),
+    reviewRepository: InjectionSymbol('IReviewRepository'),
+    startReviewUseCase: InjectionSymbol('StartReviewUseCase'),
+    finishReviewUseCase: InjectionSymbol('FinishReviewUseCase'),
+    getTodosUnderReviewUseCase: InjectionSymbol('GetTodosUnderReviewUseCase'),
   },
 );

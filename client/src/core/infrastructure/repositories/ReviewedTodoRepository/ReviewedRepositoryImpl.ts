@@ -18,8 +18,8 @@ export class ReviewedTodoRepositoryImpl implements IReviewedTodoRepository {
   public readonly getOneById: IReviewedTodoRepository['getOneById'];
 
   constructor(
-    @inject(InjectionSymbol('AppStoreProvider'))
-    private readonly appStoreProvider: InjectionType<'AppStoreProvider'>,
+    @inject(InjectionSymbol('IAppStoreProvider'))
+    private readonly appStoreProvider: InjectionType<'IAppStoreProvider'>,
   ) {
     this.save = this.saveImpl;
     this.delete = this.deleteImpl;

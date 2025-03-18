@@ -1,4 +1,7 @@
-import { ExtractChimericParameter, ExtractChimericReturnType } from './utils';
+import {
+  ExtractChimericParameter,
+  ExtractChimericPromiseReturnType,
+} from './utils';
 
 export type ChimericPromise<
   TParams,
@@ -30,7 +33,7 @@ export type ChimericPromiseFactory<
     : object,
 > = ChimericPromise<
   ExtractChimericParameter<T>,
-  ExtractChimericReturnType<T>,
+  ExtractChimericPromiseReturnType<T>,
   E,
   ErrorHelpers
 >;

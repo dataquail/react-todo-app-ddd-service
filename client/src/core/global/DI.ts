@@ -1,3 +1,4 @@
+import { Container } from 'inversify';
 import {
   DI_SYMBOLS,
   InjectionType,
@@ -14,10 +15,11 @@ import { SavedForLaterTodoServiceImpl } from 'src/core/infrastructure/services/S
 import { ReviewRepositoryImpl } from 'src/core/infrastructure/repositories/ReviewRepository/ReviewRepositoryImpl';
 import { ReviewedTodoRepositoryImpl } from 'src/core/infrastructure/repositories/ReviewedTodoRepository/ReviewedRepositoryImpl';
 // USE CASES
-import { StartReview } from 'src/core/useCases/review/application/StartReview';
-import { FinishReview } from 'src/core/useCases/review/application/FinishReview';
-import { GetTodosUnderReview } from 'src/core/useCases/review/application/GetTodosUnderReview';
+import { StartReviewUseCase } from 'src/core/useCases/review/application/StartReviewUseCase';
+import { FinishReviewUseCase } from 'src/core/useCases/review/application/FinishReviewUseCase';
+import { GetTodosUnderReviewUseCase } from 'src/core/useCases/review/application/GetTodosUnderReviewUseCase';
 import { HandleActiveTodoDelete } from 'src/core/useCases/review/eventHandlers/HandleActiveTodoDelete';
+import { HandleSavedForLaterTodoDelete } from 'src/core/useCases/review/eventHandlers/HandleSavedForLaterTodoDelete';
 
 const getBindingArray = <
   K extends keyof typeof DI_SYMBOLS,
@@ -33,29 +35,48 @@ const getBindingArray = <
 export const DI_CONFIG = {
   global: {
     DI_ARRAY: [
-      getBindingArray('AppStoreProvider', AppStoreProviderImpl),
-      getBindingArray('QueryClientProvider', QueryClientProviderImpl),
-      getBindingArray('ApplicationEventEmitter', ApplicationEventEmitterImpl),
+      getBindingArray('IAppStoreProvider', AppStoreProviderImpl),
+      getBindingArray('IQueryClientProvider', QueryClientProviderImpl),
+      getBindingArray('IApplicationEventEmitter', ApplicationEventEmitterImpl),
     ],
   },
   services: {
     DI_ARRAY: [
-      getBindingArray('ActiveTodoService', ActiveTodoServiceImpl),
-      getBindingArray('SavedForLaterTodoService', SavedForLaterTodoServiceImpl),
+      getBindingArray('IActiveTodoService', ActiveTodoServiceImpl),
+      getBindingArray(
+        'ISavedForLaterTodoService',
+        SavedForLaterTodoServiceImpl,
+      ),
     ],
   },
   repositories: {
     DI_ARRAY: [
-      getBindingArray('ReviewRepository', ReviewRepositoryImpl),
-      getBindingArray('ReviewedTodoRepository', ReviewedTodoRepositoryImpl),
+      getBindingArray('IReviewRepository', ReviewRepositoryImpl),
+      getBindingArray('IReviewedTodoRepository', ReviewedTodoRepositoryImpl),
     ],
   },
   useCases: {
     DI_ARRAY: [
-      getBindingArray('StartReview', StartReview),
-      getBindingArray('FinishReview', FinishReview),
-      getBindingArray('GetTodosUnderReview', GetTodosUnderReview),
+      getBindingArray('StartReviewUseCase', StartReviewUseCase),
+      getBindingArray('FinishReviewUseCase', FinishReviewUseCase),
+      getBindingArray('GetTodosUnderReviewUseCase', GetTodosUnderReviewUseCase),
       getBindingArray('HandleActiveTodoDelete', HandleActiveTodoDelete),
+      getBindingArray(
+        'HandleSavedForLaterTodoDelete',
+        HandleSavedForLaterTodoDelete,
+      ),
     ],
   },
 };
+
+// Eagerly instantiate event handlers
+const EVENT_HANDLERS = [
+  'HandleActiveTodoDelete',
+  'HandleSavedForLaterTodoDelete',
+  // Add other event handlers here
+] as const;
+
+export const registerAllEventHandlers = (appContainer: Container) =>
+  EVENT_HANDLERS.forEach((handler) => {
+    appContainer.get(InjectionSymbol(handler));
+  });

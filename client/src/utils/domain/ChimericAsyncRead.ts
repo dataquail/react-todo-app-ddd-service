@@ -1,4 +1,7 @@
-import { ExtractChimericParameter, ExtractChimericReturnType } from './utils';
+import {
+  ExtractChimericParameter,
+  ExtractChimericPromiseReturnType,
+} from './utils';
 
 export type ChimericAsyncRead<
   TParams,
@@ -9,7 +12,7 @@ export type ChimericAsyncRead<
     : object,
 > = {
   call: (args: TParams) => Promise<TResult>;
-  useAsync: () => {
+  useAsync: (args: TParams) => {
     isPending: boolean;
     isSuccess: boolean;
     isError: boolean;
@@ -29,7 +32,7 @@ export type ChimericAsyncReadFactory<
     : object,
 > = ChimericAsyncRead<
   ExtractChimericParameter<T>,
-  ExtractChimericReturnType<T>,
+  ExtractChimericPromiseReturnType<T>,
   E,
   ErrorHelpers
 >;

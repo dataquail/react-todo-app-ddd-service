@@ -5,13 +5,17 @@ import { getQueryOptionsGetAll } from './getAll';
 import { getQueryOptionsGetOneById } from './getOneById';
 import { getConfig } from 'src/utils/getConfig';
 import { wrappedFetch } from 'src/utils/network/wrappedFetch';
+import { IApplicationEventEmitter } from 'src/core/global/ApplicationEventEmitter/IApplicationEventEmitter';
+import { SavedForLaterTodoDeletedEvent } from 'src/core/domain/savedForLaterTodo/events/SavedForLaterTodoDeletedEvent';
 
-export type IDeleteSavedForLaterTodo = (args: { id: string }) => Promise<void>;
+export type IDeleteSavedForLaterTodo = (args: {
+  id: string;
+}) => Promise<{ message: string }>;
 
 export const deleteSavedForLaterTodo: IDeleteSavedForLaterTodo = async (args: {
   id: string;
 }) => {
-  return wrappedFetch<void>(
+  return wrappedFetch<{ message: string }>(
     `${getConfig().API_URL}/saved-for-later-todo/${args.id}`,
     {
       method: 'delete',
@@ -25,11 +29,17 @@ export const deleteSavedForLaterTodo: IDeleteSavedForLaterTodo = async (args: {
 
 export const DeleteOneMethodImpl = (
   queryClient: QueryClient,
+  applicationEventEmitter: IApplicationEventEmitter,
 ): ISavedForLaterTodoService['deleteOne'] => {
   return makeChimericMutation({
-    mutationFn: deleteSavedForLaterTodo,
+    mutationFn: async (args: { id: string }) => {
+      await deleteSavedForLaterTodo(args);
+    },
     errorHelpers: {},
     onSuccess: async (_data, args) => {
+      applicationEventEmitter.emit(
+        new SavedForLaterTodoDeletedEvent({ id: args.id }),
+      );
       await queryClient.invalidateQueries({
         queryKey: getQueryOptionsGetAll().queryKey,
       });

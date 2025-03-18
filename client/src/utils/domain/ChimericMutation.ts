@@ -2,7 +2,10 @@ import {
   UseMutationOptions as RQUseMutationOptions,
   MutateOptions as RQMutateOptions,
 } from '@tanstack/react-query';
-import { ExtractChimericParameter, ExtractChimericReturnType } from './utils';
+import {
+  ExtractChimericParameter,
+  ExtractChimericPromiseReturnType,
+} from './utils';
 
 export type ChimericMutation<
   TParams,
@@ -51,7 +54,7 @@ export type ChimericMutationFactory<
     : object,
 > = ChimericMutation<
   ExtractChimericParameter<T>,
-  ExtractChimericReturnType<T>,
+  ExtractChimericPromiseReturnType<T>,
   E,
   ErrorHelpers
 >;
