@@ -1,3 +1,4 @@
+/* eslint-disable no-async-promise-executor */
 import { waitFor, renderHook } from '@testing-library/react';
 import { ChimericAsyncRead } from '../ChimericAsyncRead';
 import { checkOnInterval } from './checkOnInterval';
@@ -26,7 +27,7 @@ export const getChimericAsyncReadTestHarness =
     chimericMethod: (typeof ChimericAsyncReadMethods)[number],
     args?: TParams,
   ) => {
-    let result = {
+    const result = {
       current: {
         data: undefined as TResult | undefined,
         isSuccess: false,
@@ -42,6 +43,7 @@ export const getChimericAsyncReadTestHarness =
       | 'rejected';
     if (chimericMethod === 'call') {
       result.current.isPending = true;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let promise = chimericAsyncRead.call(args as any);
       promiseStatus = 'pending';
       promise
@@ -66,6 +68,7 @@ export const getChimericAsyncReadTestHarness =
           return new Promise<void>(async (resolve) => {
             if (promiseStatus === 'resolved') {
               // retry promise if it has already been resolved
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               promise = chimericAsyncRead.call(args as any);
               promiseStatus = 'pending';
               promise
@@ -118,6 +121,7 @@ export const getChimericAsyncReadTestHarness =
         result,
       };
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const hook = renderHook(() => chimericAsyncRead.useAsync(args as any), {
         wrapper: testWrapper,
       });

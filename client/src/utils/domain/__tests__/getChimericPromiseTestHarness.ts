@@ -1,3 +1,4 @@
+/* eslint-disable no-async-promise-executor */
 import { waitFor, renderHook } from '@testing-library/react';
 import { ChimericPromise } from '../ChimericPromise';
 import { checkOnInterval } from './checkOnInterval';
@@ -39,26 +40,29 @@ export const getChimericPromiseTestHarness =
       };
     };
   } => {
-    let result = {
+    const result = {
       current: {
         call: async (args: TParams) => {
           result.current.isPending = true;
-          let promise = chimericPromise.call(args);
-          return promise
-            .then((data) => {
-              result.current.data = data;
-              result.current.isPending = false;
-              result.current.isSuccess = true;
-              result.current.isError = false;
-              result.current.error = null;
-              return data;
-            })
-            .catch((error) => {
-              result.current.isPending = false;
-              result.current.isSuccess = false;
-              result.current.isError = true;
-              result.current.error = error as E;
-            });
+          return (
+            chimericPromise
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              .call(args as any)
+              .then((data) => {
+                result.current.data = data;
+                result.current.isPending = false;
+                result.current.isSuccess = true;
+                result.current.isError = false;
+                result.current.error = null;
+                return data;
+              })
+              .catch((error) => {
+                result.current.isPending = false;
+                result.current.isSuccess = false;
+                result.current.isError = true;
+                result.current.error = error as E;
+              })
+          );
         },
         data: undefined as TResult | undefined,
         isSuccess: false,

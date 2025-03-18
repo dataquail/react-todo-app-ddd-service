@@ -1,3 +1,4 @@
+/* eslint-disable no-async-promise-executor */
 import { waitFor, renderHook } from '@testing-library/react';
 import { ChimericQuery } from '../ChimericQuery';
 import { checkOnInterval } from './checkOnInterval';
@@ -26,7 +27,7 @@ export const getChimericQueryTestHarness =
     chimericMethod: (typeof ChimericQueryMethods)[number],
     args?: TParams,
   ) => {
-    let result = {
+    const result = {
       current: {
         data: undefined as TResult | undefined,
         isSuccess: false,
@@ -42,6 +43,7 @@ export const getChimericQueryTestHarness =
       | 'rejected';
     if (chimericMethod === 'call') {
       result.current.isPending = true;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let promise = chimericQuery.call(args as any);
       promiseStatus = 'pending';
       promise
@@ -66,6 +68,7 @@ export const getChimericQueryTestHarness =
           return new Promise<void>(async (resolve) => {
             if (promiseStatus === 'resolved') {
               // retry promise if it has already been resolved
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               promise = chimericQuery.call(args as any);
               promiseStatus = 'pending';
               promise
@@ -118,6 +121,7 @@ export const getChimericQueryTestHarness =
         result,
       };
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const hook = renderHook(() => chimericQuery.useQuery(args as any), {
         wrapper: testWrapper,
       });

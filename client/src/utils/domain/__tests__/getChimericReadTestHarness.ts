@@ -1,3 +1,4 @@
+/* eslint-disable no-async-promise-executor */
 import { waitFor, renderHook } from '@testing-library/react';
 import { ChimericRead } from '../ChimericRead';
 import { checkOnInterval } from './checkOnInterval';
@@ -24,8 +25,9 @@ export const getChimericReadTestHarness =
       current: TResult | undefined;
     };
   } => {
-    let returnValue = {
+    const returnValue = {
       waitFor: async (cb: () => boolean) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         returnValue.result = { current: chimericRead.call(params as any) };
         return new Promise<void>(async (resolve) => {
           await checkOnInterval(cb, 1, 5000, resolve);
@@ -36,9 +38,11 @@ export const getChimericReadTestHarness =
       },
     };
     if (chimericMethod === 'call') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       returnValue.result = { current: chimericRead.call(params as any) };
       return returnValue;
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const hook = renderHook(() => chimericRead.use(params as any), {
         wrapper: testWrapper,
       });

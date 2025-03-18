@@ -1,3 +1,4 @@
+/* eslint-disable no-async-promise-executor */
 import { ReactNode } from 'react';
 import { renderHook, waitFor } from '@testing-library/react';
 import { ChimericMutation } from '../ChimericMutation';
@@ -25,7 +26,7 @@ export const getChimericMutationTestHarness =
     chimericMutation: ChimericMutation<TParams, TResult, E, ErrorHelpers>,
     chimericMethod: (typeof ChimericMutationMethods)[number],
   ) => {
-    let result = {
+    const result = {
       current: {
         data: undefined as TResult | undefined,
         isSuccess: false,
@@ -41,6 +42,7 @@ export const getChimericMutationTestHarness =
           result.current.isSuccess = false;
           result.current.isError = false;
           result.current.error = null;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const promise = chimericMutation.call(args as any);
           promise
             .then((data) => {
