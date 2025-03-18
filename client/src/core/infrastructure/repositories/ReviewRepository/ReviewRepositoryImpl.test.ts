@@ -11,8 +11,8 @@ import { createReview } from 'src/core/domain/review/entities/Review';
 
 describe('ReviewRepositoryImpl', () => {
   const getReviewRepository = () => {
-    return appContainer.get<InjectionType<'ReviewRepository'>>(
-      InjectionSymbol('ReviewRepository'),
+    return appContainer.get<InjectionType<'IReviewRepository'>>(
+      InjectionSymbol('IReviewRepository'),
     );
   };
 

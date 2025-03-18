@@ -4,7 +4,7 @@ import { QueryClientProvider as ReactQueryClientProvider } from '@tanstack/react
 import { InjectionSymbol, type InjectionType } from 'src/core/global/types';
 
 type InjectedProps = {
-  queryClientProvider: InjectionType<'QueryClientProvider'>;
+  queryClientProvider: InjectionType<'IQueryClientProvider'>;
 };
 
 type OwnProps = {
@@ -29,6 +29,6 @@ export const ReactQueryTestWrapper = injectComponent<InjectedProps, OwnProps>(
   },
   appContainer,
   {
-    queryClientProvider: InjectionSymbol('QueryClientProvider'),
+    queryClientProvider: InjectionSymbol('IQueryClientProvider'),
   },
 );

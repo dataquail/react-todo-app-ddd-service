@@ -24,12 +24,12 @@ export class ActiveTodoServiceImpl implements IActiveTodoService {
   public deprioritize: IActiveTodoService['deprioritize'];
 
   constructor(
-    @inject(InjectionSymbol('AppStoreProvider'))
-    appStoreProvider: InjectionType<'AppStoreProvider'>,
-    @inject(InjectionSymbol('QueryClientProvider'))
-    queryClientProvider: InjectionType<'QueryClientProvider'>,
-    @inject(InjectionSymbol('ApplicationEventEmitter'))
-    applicationEventEmitter: InjectionType<'ApplicationEventEmitter'>,
+    @inject(InjectionSymbol('IAppStoreProvider'))
+    appStoreProvider: InjectionType<'IAppStoreProvider'>,
+    @inject(InjectionSymbol('IQueryClientProvider'))
+    queryClientProvider: InjectionType<'IQueryClientProvider'>,
+    @inject(InjectionSymbol('IApplicationEventEmitter'))
+    applicationEventEmitter: InjectionType<'IApplicationEventEmitter'>,
   ) {
     this.getAll = GetAllMethodImpl(
       appStoreProvider.get(),

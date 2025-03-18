@@ -7,26 +7,28 @@ import { makeMetaAggregator } from 'src/utils/domain/makeMetaAggregator';
 import { TodoUnderReview } from 'src/core/domain/review/viewModels/out/TodoUnderReview';
 import { InjectionSymbol, type InjectionType } from 'src/core/global/types';
 
-type GetTodosUnderReviewChimaric = ChimericAsyncReadFactory<
+type GetTodosUnderReviewUseCaseChimaric = ChimericAsyncReadFactory<
   () => Promise<TodoUnderReview[]>,
   Error
 >;
 
 @injectable()
-export class GetTodosUnderReview implements GetTodosUnderReviewChimaric {
-  public readonly useAsync: GetTodosUnderReviewChimaric['useAsync'];
-  public readonly call: GetTodosUnderReviewChimaric['call'];
-  public readonly errorHelpers: GetTodosUnderReviewChimaric['errorHelpers'];
+export class GetTodosUnderReviewUseCase
+  implements GetTodosUnderReviewUseCaseChimaric
+{
+  public readonly useAsync: GetTodosUnderReviewUseCaseChimaric['useAsync'];
+  public readonly call: GetTodosUnderReviewUseCaseChimaric['call'];
+  public readonly errorHelpers: GetTodosUnderReviewUseCaseChimaric['errorHelpers'];
 
   constructor(
-    @inject(InjectionSymbol('ReviewRepository'))
-    private readonly reviewRepository: InjectionType<'ReviewRepository'>,
-    @inject(InjectionSymbol('ReviewedTodoRepository'))
-    private readonly reviewedTodoRepository: InjectionType<'ReviewedTodoRepository'>,
-    @inject(InjectionSymbol('ActiveTodoService'))
-    private readonly activeTodoService: InjectionType<'ActiveTodoService'>,
-    @inject(InjectionSymbol('SavedForLaterTodoService'))
-    private readonly savedForLaterTodoService: InjectionType<'SavedForLaterTodoService'>,
+    @inject(InjectionSymbol('IReviewRepository'))
+    private readonly reviewRepository: InjectionType<'IReviewRepository'>,
+    @inject(InjectionSymbol('IReviewedTodoRepository'))
+    private readonly reviewedTodoRepository: InjectionType<'IReviewedTodoRepository'>,
+    @inject(InjectionSymbol('IActiveTodoService'))
+    private readonly activeTodoService: InjectionType<'IActiveTodoService'>,
+    @inject(InjectionSymbol('ISavedForLaterTodoService'))
+    private readonly savedForLaterTodoService: InjectionType<'ISavedForLaterTodoService'>,
   ) {
     this.useAsync = this.useAsyncImpl;
     this.call = this.callImpl;

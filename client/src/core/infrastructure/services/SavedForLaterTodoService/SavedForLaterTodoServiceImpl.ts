@@ -16,10 +16,10 @@ export class SavedForLaterTodoServiceImpl implements ISavedForLaterTodoService {
   public deleteOne: ISavedForLaterTodoService['deleteOne'];
 
   constructor(
-    @inject(InjectionSymbol('QueryClientProvider'))
-    queryClientProvider: InjectionType<'QueryClientProvider'>,
-    @inject(InjectionSymbol('ApplicationEventEmitter'))
-    applicationEventEmitter: InjectionType<'ApplicationEventEmitter'>,
+    @inject(InjectionSymbol('IQueryClientProvider'))
+    queryClientProvider: InjectionType<'IQueryClientProvider'>,
+    @inject(InjectionSymbol('IApplicationEventEmitter'))
+    applicationEventEmitter: InjectionType<'IApplicationEventEmitter'>,
   ) {
     this.getAll = GetAllMethodImpl(queryClientProvider.get());
     this.getOneById = GetOneByIdMethodImpl(queryClientProvider.get());

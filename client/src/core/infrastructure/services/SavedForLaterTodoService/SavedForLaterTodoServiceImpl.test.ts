@@ -29,8 +29,8 @@ describe('SavedForLaterTodoServiceImpl', () => {
   const nowTimeStamp = new Date().toISOString();
 
   const getSavedForLaterTodoService = () => {
-    return appContainer.get<InjectionType<'SavedForLaterTodoService'>>(
-      InjectionSymbol('SavedForLaterTodoService'),
+    return appContainer.get<InjectionType<'ISavedForLaterTodoService'>>(
+      InjectionSymbol('ISavedForLaterTodoService'),
     );
   };
 

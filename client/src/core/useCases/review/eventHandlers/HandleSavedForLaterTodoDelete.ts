@@ -5,12 +5,12 @@ import { SavedForLaterTodoDeletedEvent } from 'src/core/domain/savedForLaterTodo
 @injectable()
 export class HandleSavedForLaterTodoDelete {
   constructor(
-    @inject(InjectionSymbol('ReviewRepository'))
-    private readonly reviewRepository: InjectionType<'ReviewRepository'>,
-    @inject(InjectionSymbol('ReviewedTodoRepository'))
-    private readonly reviewedTodoRepository: InjectionType<'ReviewedTodoRepository'>,
-    @inject(InjectionSymbol('ApplicationEventEmitter'))
-    private readonly applicationEventEmitter: InjectionType<'ApplicationEventEmitter'>,
+    @inject(InjectionSymbol('IReviewRepository'))
+    private readonly reviewRepository: InjectionType<'IReviewRepository'>,
+    @inject(InjectionSymbol('IReviewedTodoRepository'))
+    private readonly reviewedTodoRepository: InjectionType<'IReviewedTodoRepository'>,
+    @inject(InjectionSymbol('IApplicationEventEmitter'))
+    private readonly applicationEventEmitter: InjectionType<'IApplicationEventEmitter'>,
   ) {
     this.applicationEventEmitter.subscribe(this.execute.bind(this));
   }

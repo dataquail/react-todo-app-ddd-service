@@ -3,12 +3,12 @@ import { InjectionSymbol, type InjectionType } from 'src/core/global/types';
 import { createReviewedTodo } from 'src/core/domain/review/entities/ReviewedTodo';
 
 @injectable()
-export class FinishReview {
+export class FinishReviewUseCase {
   constructor(
-    @inject(InjectionSymbol('ReviewRepository'))
-    private readonly reviewRepository: InjectionType<'ReviewRepository'>,
-    @inject(InjectionSymbol('ReviewedTodoRepository'))
-    private readonly reviewedTodoRepository: InjectionType<'ReviewedTodoRepository'>,
+    @inject(InjectionSymbol('IReviewRepository'))
+    private readonly reviewRepository: InjectionType<'IReviewRepository'>,
+    @inject(InjectionSymbol('IReviewedTodoRepository'))
+    private readonly reviewedTodoRepository: InjectionType<'IReviewedTodoRepository'>,
   ) {}
 
   public execute() {

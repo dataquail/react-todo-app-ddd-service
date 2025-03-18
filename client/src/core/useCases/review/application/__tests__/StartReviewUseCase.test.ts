@@ -15,7 +15,7 @@ import {
   inferReadMethod,
 } from 'src/utils/domain/__tests__/getChimericReadTestHarness';
 
-describe('StartReview', () => {
+describe('StartReviewUseCase', () => {
   const server = setupServer();
 
   beforeAll(() => server.listen());
@@ -25,14 +25,14 @@ describe('StartReview', () => {
   const nowTimeStamp = new Date().toISOString();
 
   const getStartReviewUseCase = () => {
-    return appContainer.get<InjectionType<'StartReview'>>(
-      InjectionSymbol('StartReview'),
+    return appContainer.get<InjectionType<'StartReviewUseCase'>>(
+      InjectionSymbol('StartReviewUseCase'),
     );
   };
 
   const getReviewRepository = () => {
-    return appContainer.get<InjectionType<'ReviewRepository'>>(
-      InjectionSymbol('ReviewRepository'),
+    return appContainer.get<InjectionType<'IReviewRepository'>>(
+      InjectionSymbol('IReviewRepository'),
     );
   };
 

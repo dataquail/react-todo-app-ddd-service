@@ -17,7 +17,7 @@ import { InjectionSymbol, type InjectionType } from 'src/core/global/types';
 import { SavedForLaterTodo } from 'src/core/domain/savedForLaterTodo/entities/SavedForLaterTodo';
 
 type InjectedProps = {
-  savedForLaterTodoService: InjectionType<'SavedForLaterTodoService'>;
+  savedForLaterTodoService: InjectionType<'ISavedForLaterTodoService'>;
 };
 
 type OwnProps = {
@@ -81,6 +81,6 @@ export const SavedForLaterTodoCard = injectComponent<InjectedProps, OwnProps>(
   },
   appContainer,
   {
-    savedForLaterTodoService: InjectionSymbol('SavedForLaterTodoService'),
+    savedForLaterTodoService: InjectionSymbol('ISavedForLaterTodoService'),
   },
 );

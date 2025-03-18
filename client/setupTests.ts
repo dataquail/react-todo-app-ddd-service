@@ -38,11 +38,11 @@ window.HTMLElement.prototype.scrollTo = vi.fn().mockReturnValue({ x: 0, y: 0 });
 beforeEach(() => {
   appContainer.snapshot();
   const queryClientProvider = appContainer.get<IQueryClientProvider>(
-    InjectionSymbol('QueryClientProvider'),
+    InjectionSymbol('IQueryClientProvider'),
   );
   queryClientProvider.get().clear();
   const appStoreProvider = appContainer.get<IAppStoreProvider>(
-    InjectionSymbol('AppStoreProvider'),
+    InjectionSymbol('IAppStoreProvider'),
   );
   appStoreProvider.get().dispatch(revertAll());
 });

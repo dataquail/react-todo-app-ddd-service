@@ -11,8 +11,8 @@ import { createReviewedTodo } from 'src/core/domain/review/entities/ReviewedTodo
 
 describe('ReviewedTodoRepositoryImpl', () => {
   const getReviewedTodoRepository = () => {
-    return appContainer.get<InjectionType<'ReviewedTodoRepository'>>(
-      InjectionSymbol('ReviewedTodoRepository'),
+    return appContainer.get<InjectionType<'IReviewedTodoRepository'>>(
+      InjectionSymbol('IReviewedTodoRepository'),
     );
   };
 

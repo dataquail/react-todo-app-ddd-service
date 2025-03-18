@@ -15,7 +15,7 @@ import {
   ChimericAsyncReadMethods,
 } from 'src/utils/domain/__tests__/getChimericAsyncReadTestHarness';
 
-describe('GetTodosUnderReview', () => {
+describe('GetTodosUnderReviewUseCase', () => {
   const server = setupServer();
 
   beforeAll(() => server.listen());
@@ -25,14 +25,14 @@ describe('GetTodosUnderReview', () => {
   const nowTimeStamp = new Date().toISOString();
 
   const getGetTodosUnderReviewUseCase = () => {
-    return appContainer.get<InjectionType<'GetTodosUnderReview'>>(
-      InjectionSymbol('GetTodosUnderReview'),
+    return appContainer.get<InjectionType<'GetTodosUnderReviewUseCase'>>(
+      InjectionSymbol('GetTodosUnderReviewUseCase'),
     );
   };
 
   const getStartReviewUseCase = () => {
-    return appContainer.get<InjectionType<'StartReview'>>(
-      InjectionSymbol('StartReview'),
+    return appContainer.get<InjectionType<'StartReviewUseCase'>>(
+      InjectionSymbol('StartReviewUseCase'),
     );
   };
 

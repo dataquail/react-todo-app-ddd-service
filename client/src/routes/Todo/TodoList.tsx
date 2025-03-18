@@ -6,7 +6,7 @@ import { appContainer } from 'src/core/global/appContainer';
 import { InjectionSymbol, type InjectionType } from 'src/core/global/types';
 
 type InjectedProps = {
-  activeTodoService: InjectionType<'ActiveTodoService'>;
+  activeTodoService: InjectionType<'IActiveTodoService'>;
 };
 
 export const TodoList = injectComponent<InjectedProps>(
@@ -31,5 +31,5 @@ export const TodoList = injectComponent<InjectedProps>(
     );
   },
   appContainer,
-  { activeTodoService: InjectionSymbol('ActiveTodoService') },
+  { activeTodoService: InjectionSymbol('IActiveTodoService') },
 );

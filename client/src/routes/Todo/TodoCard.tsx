@@ -23,8 +23,8 @@ import { appContainer } from 'src/core/global/appContainer';
 import { InjectionSymbol, type InjectionType } from 'src/core/global/types';
 
 type InjectedProps = {
-  activeTodoService: InjectionType<'ActiveTodoService'>;
-  savedForLaterTodoService: InjectionType<'SavedForLaterTodoService'>;
+  activeTodoService: InjectionType<'IActiveTodoService'>;
+  savedForLaterTodoService: InjectionType<'ISavedForLaterTodoService'>;
 };
 
 type OwnProps = {
@@ -140,7 +140,7 @@ export const TodoCard = injectComponent<InjectedProps, OwnProps>(
   },
   appContainer,
   {
-    activeTodoService: InjectionSymbol('ActiveTodoService'),
-    savedForLaterTodoService: InjectionSymbol('SavedForLaterTodoService'),
+    activeTodoService: InjectionSymbol('IActiveTodoService'),
+    savedForLaterTodoService: InjectionSymbol('ISavedForLaterTodoService'),
   },
 );

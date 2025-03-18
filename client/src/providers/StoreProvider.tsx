@@ -5,7 +5,7 @@ import { appContainer } from 'src/core/global/appContainer';
 import { InjectionSymbol, type InjectionType } from 'src/core/global/types';
 
 type InjectedProps = {
-  appStoreProvider: InjectionType<'AppStoreProvider'>;
+  appStoreProvider: InjectionType<'IAppStoreProvider'>;
 };
 
 type OwnProps = {
@@ -18,6 +18,6 @@ export const StoreProvider = injectComponent<InjectedProps, OwnProps>(
   },
   appContainer,
   {
-    appStoreProvider: InjectionSymbol('AppStoreProvider'),
+    appStoreProvider: InjectionSymbol('IAppStoreProvider'),
   },
 );

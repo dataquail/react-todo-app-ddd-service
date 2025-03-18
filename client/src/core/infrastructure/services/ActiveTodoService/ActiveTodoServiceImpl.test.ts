@@ -30,8 +30,8 @@ describe('ActiveTodoServiceImpl', () => {
   const nowTimeStamp = new Date().toISOString();
 
   const getActiveTodoService = () => {
-    return appContainer.get<InjectionType<'ActiveTodoService'>>(
-      InjectionSymbol('ActiveTodoService'),
+    return appContainer.get<InjectionType<'IActiveTodoService'>>(
+      InjectionSymbol('IActiveTodoService'),
     );
   };
 
