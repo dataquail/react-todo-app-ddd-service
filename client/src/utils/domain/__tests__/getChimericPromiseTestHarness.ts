@@ -1,18 +1,18 @@
-import { ReactNode } from 'react';
-import { renderHook, waitFor } from '@testing-library/react';
-import { ChimericMutation } from '../ChimericMutation';
+import { waitFor, renderHook } from '@testing-library/react';
+import { ChimericPromise } from '../ChimericPromise';
 import { checkOnInterval } from './checkOnInterval';
+import { ReactNode } from 'react';
 
-export const ChimericMutationMethods = ['call', 'useMutation'] as const;
+export const ChimericPromiseMethods = ['call', 'usePromise'] as const;
 
-export const inferMutationMethod = (method: string) => {
+export const inferPromiseMethod = (method: string) => {
   if (method === 'call') {
     return 'call';
   }
-  return 'useMutation';
+  return 'usePromise';
 };
 
-export const getChimericMutationTestHarness =
+export const getChimericPromiseTestHarness =
   (testWrapper: ({ children }: { children: ReactNode }) => JSX.Element) =>
   <
     TParams,
@@ -22,33 +22,36 @@ export const getChimericMutationTestHarness =
       ? never
       : object,
   >(
-    chimericMutation: ChimericMutation<TParams, TResult, E, ErrorHelpers>,
-    chimericMethod: (typeof ChimericMutationMethods)[number],
-  ) => {
+    chimericPromise: ChimericPromise<TParams, TResult, E, ErrorHelpers>,
+    chimericMethod: (typeof ChimericPromiseMethods)[number],
+  ): {
+    waitForSuccess: () => Promise<void>;
+    waitForError: () => Promise<void>;
+    waitForPending: () => Promise<void>;
+    result: {
+      current: {
+        call: (args: TParams) => Promise<TResult | void>;
+        data: TResult | undefined;
+        isSuccess: boolean;
+        isPending: boolean;
+        isError: boolean;
+        error: E | null;
+      };
+    };
+  } => {
     let result = {
       current: {
-        data: undefined as TResult | undefined,
-        isSuccess: false,
-        isPending: true,
-        isError: false,
-        error: null as E | null,
-      },
-    };
-    if (chimericMethod === 'call') {
-      return {
-        call: (args: TParams) => {
+        call: async (args: TParams) => {
           result.current.isPending = true;
-          result.current.isSuccess = false;
-          result.current.isError = false;
-          result.current.error = null;
-          const promise = chimericMutation.call(args as any);
-          promise
+          let promise = chimericPromise.call(args);
+          return promise
             .then((data) => {
               result.current.data = data;
               result.current.isPending = false;
               result.current.isSuccess = true;
               result.current.isError = false;
               result.current.error = null;
+              return data;
             })
             .catch((error) => {
               result.current.isPending = false;
@@ -56,9 +59,16 @@ export const getChimericMutationTestHarness =
               result.current.isError = true;
               result.current.error = error as E;
             });
-
-          return promise;
         },
+        data: undefined as TResult | undefined,
+        isSuccess: false,
+        isPending: false,
+        isError: false,
+        error: null as E | null,
+      },
+    };
+    if (chimericMethod === 'call') {
+      return {
         waitForSuccess: async () => {
           return new Promise<void>(async (resolve) => {
             await checkOnInterval(
@@ -92,11 +102,10 @@ export const getChimericMutationTestHarness =
         result,
       };
     } else {
-      const hook = renderHook(() => chimericMutation.useMutation(), {
+      const hook = renderHook(() => chimericPromise.usePromise(), {
         wrapper: testWrapper,
       });
       return {
-        call: hook.result.current.call,
         waitForSuccess: async () => {
           await waitFor(() => expect(hook.result.current.isSuccess).toBe(true));
         },

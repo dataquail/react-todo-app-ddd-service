@@ -19,8 +19,7 @@ describe('ReviewRepositoryImpl', () => {
   it.each(ChimericReadMethods)('get.%s', async (chimericMethod) => {
     const reviewRepository = getReviewRepository();
     const getHarness = getChimericReadTestHarness(getTestWrapper())(
-      reviewRepository,
-      'get',
+      reviewRepository.get,
       chimericMethod,
     );
     expect(getHarness.result.current).toBeUndefined();
@@ -29,18 +28,15 @@ describe('ReviewRepositoryImpl', () => {
   it.each(ChimericReadMethods)('save.%s', async (chimericMethod) => {
     const reviewRepository = getReviewRepository();
     const getHarness = getChimericReadTestHarness(getTestWrapper())(
-      reviewRepository,
-      'get',
+      reviewRepository.get,
       chimericMethod,
     );
-    expect(getHarness.result.current).toBeUndefined();
 
     act(() => {
       reviewRepository.save(createReview(['1', '2', '3']));
     });
 
     await getHarness.waitFor(() => getHarness.result.current !== undefined);
-
     expect(getHarness.result.current).toBeDefined();
     expect(getHarness.result.current?.todoIdList).toEqual(['1', '2', '3']);
   });
@@ -48,8 +44,7 @@ describe('ReviewRepositoryImpl', () => {
   it('delete', async () => {
     const reviewRepository = getReviewRepository();
     const getHarness = getChimericReadTestHarness(getTestWrapper())(
-      reviewRepository,
-      'get',
+      reviewRepository.get,
       'call',
     );
 

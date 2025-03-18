@@ -1,18 +1,18 @@
 import { waitFor, renderHook } from '@testing-library/react';
-import { ChimericQuery } from '../ChimericQuery';
+import { ChimericAsyncRead } from '../ChimericAsyncRead';
 import { checkOnInterval } from './checkOnInterval';
 import { ReactNode } from 'react';
 
-export const ChimericQueryMethods = ['call', 'useQuery'] as const;
+export const ChimericAsyncReadMethods = ['call', 'useAsync'] as const;
 
-export const inferQueryMethod = (method: string) => {
+export const inferAsyncReadMethod = (method: string) => {
   if (method === 'call') {
     return 'call';
   }
-  return 'useQuery';
+  return 'useAsync';
 };
 
-export const getChimericQueryTestHarness =
+export const getChimericAsyncReadTestHarness =
   (testWrapper: ({ children }: { children: ReactNode }) => JSX.Element) =>
   <
     TParams,
@@ -22,8 +22,8 @@ export const getChimericQueryTestHarness =
       ? never
       : object,
   >(
-    chimericQuery: ChimericQuery<TParams, TResult, E, ErrorHelpers>,
-    chimericMethod: (typeof ChimericQueryMethods)[number],
+    chimericAsyncRead: ChimericAsyncRead<TParams, TResult, E, ErrorHelpers>,
+    chimericMethod: (typeof ChimericAsyncReadMethods)[number],
     args?: TParams,
   ) => {
     let result = {
@@ -42,7 +42,7 @@ export const getChimericQueryTestHarness =
       | 'rejected';
     if (chimericMethod === 'call') {
       result.current.isPending = true;
-      let promise = chimericQuery.call(args as any);
+      let promise = chimericAsyncRead.call(args as any);
       promiseStatus = 'pending';
       promise
         .then((data) => {
@@ -66,7 +66,7 @@ export const getChimericQueryTestHarness =
           return new Promise<void>(async (resolve) => {
             if (promiseStatus === 'resolved') {
               // retry promise if it has already been resolved
-              promise = chimericQuery.call(args as any);
+              promise = chimericAsyncRead.call(args as any);
               promiseStatus = 'pending';
               promise
                 .then((data) => {
@@ -118,7 +118,7 @@ export const getChimericQueryTestHarness =
         result,
       };
     } else {
-      const hook = renderHook(() => chimericQuery.useQuery(args as any), {
+      const hook = renderHook(() => chimericAsyncRead.useAsync(args as any), {
         wrapper: testWrapper,
       });
       return {

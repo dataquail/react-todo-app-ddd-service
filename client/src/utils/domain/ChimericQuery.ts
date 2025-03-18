@@ -2,7 +2,10 @@ import {
   FetchQueryOptions,
   UseQueryOptions as RQUseQueryOptions,
 } from '@tanstack/react-query';
-import { ExtractChimericParameter, ExtractChimericReturnType } from './utils';
+import {
+  ExtractChimericParameter,
+  ExtractChimericPromiseReturnType,
+} from './utils';
 
 export type ChimericQuery<
   TParams,
@@ -55,7 +58,7 @@ export type ChimericQueryFactory<
     : object,
 > = ChimericQuery<
   ExtractChimericParameter<T>,
-  ExtractChimericReturnType<T>,
+  ExtractChimericPromiseReturnType<T>,
   E,
   ErrorHelpers
 >;

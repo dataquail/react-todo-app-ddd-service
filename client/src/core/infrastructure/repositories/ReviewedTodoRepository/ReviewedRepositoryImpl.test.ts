@@ -19,10 +19,9 @@ describe('ReviewedTodoRepositoryImpl', () => {
   it.each(ChimericReadMethods)('getOneById.%s', async (chimericMethod) => {
     const reviewedTodoRepository = getReviewedTodoRepository();
     const getOneByIdHarness = getChimericReadTestHarness(getTestWrapper())(
-      reviewedTodoRepository,
-      'getOneById',
+      reviewedTodoRepository.getOneById,
       chimericMethod,
-      [{ id: '1' }],
+      { id: '1' },
     );
     expect(getOneByIdHarness.result.current).toBeUndefined();
 
@@ -41,17 +40,15 @@ describe('ReviewedTodoRepositoryImpl', () => {
   it.each(ChimericReadMethods)('saveMany.%s', async (chimericMethod) => {
     const reviewedTodoRepository = getReviewedTodoRepository();
     const getOneById1Harness = getChimericReadTestHarness(getTestWrapper())(
-      reviewedTodoRepository,
-      'getOneById',
+      reviewedTodoRepository.getOneById,
       chimericMethod,
-      [{ id: '1' }],
+      { id: '1' },
     );
 
     const getOneById2Harness = getChimericReadTestHarness(getTestWrapper())(
-      reviewedTodoRepository,
-      'getOneById',
+      reviewedTodoRepository.getOneById,
       chimericMethod,
-      [{ id: '2' }],
+      { id: '2' },
     );
 
     expect(getOneById1Harness.result.current).toBeUndefined();
@@ -80,10 +77,9 @@ describe('ReviewedTodoRepositoryImpl', () => {
   it.each(ChimericReadMethods)('delete.%s', async (chimericMethod) => {
     const reviewedTodoRepository = getReviewedTodoRepository();
     const getOneByIdHarness = getChimericReadTestHarness(getTestWrapper())(
-      reviewedTodoRepository,
-      'getOneById',
+      reviewedTodoRepository.getOneById,
       chimericMethod,
-      [{ id: '1' }],
+      { id: '1' },
     );
 
     expect(getOneByIdHarness.result.current).toBeUndefined();

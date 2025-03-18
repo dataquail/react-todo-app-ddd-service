@@ -8,12 +8,14 @@ import { wrappedFetch } from 'src/utils/network/wrappedFetch';
 import { IApplicationEventEmitter } from 'src/core/global/ApplicationEventEmitter/IApplicationEventEmitter';
 import { SavedForLaterTodoDeletedEvent } from 'src/core/domain/savedForLaterTodo/events/SavedForLaterTodoDeletedEvent';
 
-export type IDeleteSavedForLaterTodo = (args: { id: string }) => Promise<void>;
+export type IDeleteSavedForLaterTodo = (args: {
+  id: string;
+}) => Promise<{ message: string }>;
 
 export const deleteSavedForLaterTodo: IDeleteSavedForLaterTodo = async (args: {
   id: string;
 }) => {
-  return wrappedFetch<void>(
+  return wrappedFetch<{ message: string }>(
     `${getConfig().API_URL}/saved-for-later-todo/${args.id}`,
     {
       method: 'delete',
@@ -30,7 +32,9 @@ export const DeleteOneMethodImpl = (
   applicationEventEmitter: IApplicationEventEmitter,
 ): ISavedForLaterTodoService['deleteOne'] => {
   return makeChimericMutation({
-    mutationFn: deleteSavedForLaterTodo,
+    mutationFn: async (args: { id: string }) => {
+      await deleteSavedForLaterTodo(args);
+    },
     errorHelpers: {},
     onSuccess: async (_data, args) => {
       applicationEventEmitter.emit(
